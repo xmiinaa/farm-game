@@ -3,15 +3,16 @@
 import pygame
 pygame.init()
 
-WIDTH = 1000
-HEIGHT = 600
+WIDTH = 1010
+HEIGHT = 675
 
 # set up window
-screen = pygame.display.set_mode([WIDTH,HEIGHT])
+SCREEN = pygame.display.set_mode([WIDTH,HEIGHT])
 
+MENU_BG = pygame.transform.scale(pygame.image.load('menu-background.png'), (WIDTH, HEIGHT))
 
 def main():
-   
+    SCREEN.blit(MENU_BG, (0, 0))
     running = True
     while running:
 
