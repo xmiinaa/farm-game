@@ -7,6 +7,9 @@ pygame.init()
 WIDTH = 1080
 HEIGHT = 720
 
+TITLE_WIDTH = 450
+TITLE_HEIGHT = 90
+
 # colours
 BOX_OUTLINE = (91,164,211)
 BOX_FILL = (211, 245, 253)
@@ -44,20 +47,15 @@ class TextBox(Box):
        self.fontColour = FONT_COLOUR
 
     def draw(self):
-        pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 5)
-        pygame.draw.rect(SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 2, 5)
+        pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 10)
+        pygame.draw.rect(SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 3, 10)
 
         text = self.font.render(self.content, True, self.fontColour) 
         textRect = text.get_rect(center = (self.width / 2 + self.x, self.height / 2 + self.y))
         SCREEN.blit(text, textRect )   
 
-# creating objects from classes
-titleBox = TextBox(WIDTH / 2 - 225, 100, 450, 80, OCR_TITLE, "THE Farm Game")
 
-newGameBox = TextBox(WIDTH / 2 - 150, 250, 300, 70, OCR_TEXT, "New Game")
-loadGameBox = TextBox(WIDTH / 2 - 150, 350, 300, 70, OCR_TEXT, "Load Game")
-instructionsBox = TextBox(WIDTH / 2 - 150, 450, 300, 70, OCR_TEXT, "How To Play")
-settingsBox = TextBox(WIDTH / 2 - 150, 550, 300, 70, OCR_TEXT, "Settings")
+
 
 
 def mainmenu_loop():
@@ -68,6 +66,14 @@ def mainmenu_loop():
             # running = False
             pygame.quit()
         
+    # argument values: (x_pos, y_pos, width, height, font, content)
+
+    titleBox = TextBox(WIDTH / 2 - (TITLE_WIDTH / 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "THE Farm Game")
+
+    newGameBox = TextBox(WIDTH / 2 - 140, 220, 280, 70, OCR_TEXT, "New Game")
+    loadGameBox = TextBox(WIDTH / 2 - 140, 320, 280, 70, OCR_TEXT, "Load Game")
+    instructionsBox = TextBox(WIDTH / 2 - 140, 420, 280, 70, OCR_TEXT, "How To Play")
+    settingsBox = TextBox(WIDTH / 2 - 140, 520, 280, 70, OCR_TEXT, "Settings")
 
     titleBox.draw()
     newGameBox.draw()
@@ -77,13 +83,47 @@ def mainmenu_loop():
 
     pygame.display.flip()
 
+def newgame1_loop():
+    SCREEN.blit(MENU_BG, (0, 0))
+    
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            # running = False
+            pygame.quit()
+        
+    # argument values: (x_pos, y_pos, width, height, font, content)
+
+    titleBox = TextBox(WIDTH / 2 - (TITLE_WIDTH / 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "New Game")
+
+    backButton = TextBox(30, 30, 90, 70, OCR_TITLE, "<-"  )
+    tickButton = TextBox( (WIDTH-30-90) , (HEIGHT-30-70) , 90, 70, OCR_TITLE, "->")
+
+    save1Title = TextBox(220, 250, 280, 80, OCR_TEXT, "Save 1:")
+    save2Title = TextBox(220, 370, 280, 80, OCR_TEXT, "Save 2:")
+    save3Title = TextBox(220, 490, 280, 80, OCR_TEXT, "Save 3:")
+
+    save1Content = TextBox(560, 250, 280, 80, OCR_TEXT, "no save")
+    save2Content = TextBox(560, 370, 280, 80, OCR_TEXT, "no save")
+    save3Content = TextBox(560, 490, 280, 80, OCR_TEXT, "no save")
+
+    titleBox.draw()
+    backButton.draw()
+    tickButton.draw()
+    save1Title.draw()
+    save2Title.draw()
+    save3Title.draw()
+    save1Content.draw()
+    save2Content.draw()
+    save3Content.draw()
+
+    pygame.display.flip()
 
 def main():
 
     running = True
 
     while running:
-        mainmenu_loop()
+        newgame1_loop()
 
 
 if __name__ == "__main__":
