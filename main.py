@@ -42,54 +42,61 @@ class Box:
 class TextBox(Box):
     def __init__(self, x, y,  width, height, font, content):
        super().__init__(x, y, width, height)
-       self.content = content
+       self.text = font.render(content, True, FONT_COLOUR) 
        self.font = font
        self.fontColour = FONT_COLOUR
+       self.textRect = self.text.get_rect(center = (self.width // 2 + self.x, self.height // 2 + self.y))
 
     def draw(self):
         pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 10)
         pygame.draw.rect(SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 3, 10)
 
-        text = self.font.render(self.content, True, self.fontColour) 
-        textRect = text.get_rect(center = (self.width / 2 + self.x, self.height / 2 + self.y))
-        SCREEN.blit(text, textRect )   
+        SCREEN.blit(self.text, self.textRect )   
 
+class Button(TextBox):
+    def __init__(self, x, y,  width, height, font, text):
+        super().__init__(x, y, width, height, font, text)
 
+    def onClick(self, position):
+        if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
+            print("button pressed")
 
 
 
 def mainmenu_loop():
-    SCREEN.blit(MENU_BG, (0, 0))
-    
-    for event in pygame.event.get():
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if 10 <= mouse[0] <= 100 and 10 <= mouse[1] <= 100: 
-                newgame1_loop()
+    while True:
 
-        if event.type == pygame.QUIT:
-            # running = False
-            pygame.quit()
+        SCREEN.blit(MENU_BG, (0, 0))
+        mouse = pygame.mouse.get_pos()
         
-    # argument values: (x_pos, y_pos, width, height, font, content)
+        for event in pygame.event.get():
 
-    titleBox = TextBox(WIDTH / 2 - (TITLE_WIDTH / 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "THE Farm Game")
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                newGameButton.onClick(mouse)
 
-    newGameBox = TextBox(WIDTH / 2 - 140, 220, 280, 70, OCR_TEXT, "New Game")
-    loadGameBox = TextBox(WIDTH / 2 - 140, 320, 280, 70, OCR_TEXT, "Load Game")
-    instructionsBox = TextBox(WIDTH / 2 - 140, 420, 280, 70, OCR_TEXT, "How To Play")
-    settingsBox = TextBox(WIDTH / 2 - 140, 520, 280, 70, OCR_TEXT, "Settings")
+            if event.type == pygame.QUIT:
+                # running = False
+                pygame.quit()
+            
+        # argument values: (x_pos, y_pos, width, height, font, content)
 
-    titleBox.draw()
-    newGameBox.draw()
-    loadGameBox.draw()
-    instructionsBox.draw()
-    settingsBox.draw()
+        titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "THE Farm Game")
 
-    # stores co-ordinates of curser in tuple as (x,y)
-    mouse = pygame.mouse.get_pos()
+        newGameButton = Button(WIDTH // 2 - 140, 220, 280, 70, OCR_TEXT, "New Game")
+        loadGameBox = TextBox(WIDTH // 2 - 140, 320, 280, 70, OCR_TEXT, "Load Game")
+        instructionsBox = TextBox(WIDTH // 2 - 140, 420, 280, 70, OCR_TEXT, "How To Play")
+        settingsBox = TextBox(WIDTH // 2 - 140, 520, 280, 70, OCR_TEXT, "Settings")
 
-    pygame.display.flip()
+        titleBox.draw()
+        newGameButton.draw()
+        loadGameBox.draw()
+        instructionsBox.draw()
+        settingsBox.draw()
+
+        # stores co-ordinates of curser in tuple as (x,y)
+
+        pygame.display.flip()
 
 def newgame1_loop():
     SCREEN.blit(MENU_BG, (0, 0))
@@ -101,7 +108,7 @@ def newgame1_loop():
         
     # argument values: (x_pos, y_pos, width, height, font, content)
 
-    titleBox = TextBox(WIDTH / 2 - (TITLE_WIDTH / 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "New Game")
+    titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "New Game")
 
     backButton = TextBox(30, 30, 90, 70, OCR_TITLE, "<-"  )
     tickButton = TextBox( (WIDTH-30-90) , (HEIGHT-30-70) , 90, 70, OCR_TITLE, "->")
@@ -137,7 +144,7 @@ def newgame2_loop():
         
     # argument values: (x_pos, y_pos, width, height, font, content)
 
-    titleBox = TextBox(WIDTH / 2 - (TITLE_WIDTH / 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "New Game")
+    titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "New Game")
 
     backButton = TextBox(30, 30, 90, 70, OCR_TITLE, "<-"  )
 
@@ -149,7 +156,7 @@ def newgame2_loop():
     password1Content = TextBox(560, 350, 280, 80, OCR_TEXT, "")
     password2Content = TextBox(560, 460, 280, 80, OCR_TEXT, "")
 
-    startButton = TextBox(WIDTH / 2 - (240 / 2), 570, 240, 80, OCR_TEXT, "Start")
+    startButton = TextBox(WIDTH // 2 - (240 // 2), 570, 240, 80, OCR_TEXT, "Start")
 
     titleBox.draw()
     backButton.draw()
@@ -173,4 +180,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    mainmenu_loop()
