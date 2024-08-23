@@ -62,6 +62,11 @@ def mainmenu_loop():
     SCREEN.blit(MENU_BG, (0, 0))
     
     for event in pygame.event.get():
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if 10 <= mouse[0] <= 100 and 10 <= mouse[1] <= 100: 
+                newgame1_loop()
+
         if event.type == pygame.QUIT:
             # running = False
             pygame.quit()
@@ -80,6 +85,9 @@ def mainmenu_loop():
     loadGameBox.draw()
     instructionsBox.draw()
     settingsBox.draw()
+
+    # stores co-ordinates of curser in tuple as (x,y)
+    mouse = pygame.mouse.get_pos()
 
     pygame.display.flip()
 
@@ -109,6 +117,7 @@ def newgame1_loop():
     titleBox.draw()
     backButton.draw()
     tickButton.draw()
+
     save1Title.draw()
     save2Title.draw()
     save3Title.draw()
@@ -118,12 +127,49 @@ def newgame1_loop():
 
     pygame.display.flip()
 
+def newgame2_loop():
+    SCREEN.blit(MENU_BG, (0, 0))
+    
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            # running = False
+            pygame.quit()
+        
+    # argument values: (x_pos, y_pos, width, height, font, content)
+
+    titleBox = TextBox(WIDTH / 2 - (TITLE_WIDTH / 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "New Game")
+
+    backButton = TextBox(30, 30, 90, 70, OCR_TITLE, "<-"  )
+
+    nameTitle = TextBox(220, 240, 280, 80, OCR_TEXT, "Name:")
+    password1Title = TextBox(220, 350, 280, 80, OCR_TEXT, "Password:")
+    password2Title = TextBox(220, 460, 280, 80, OCR_TEXT, "Password:")
+
+    nameContent = TextBox(560, 240, 280, 80, OCR_TEXT, "")
+    password1Content = TextBox(560, 350, 280, 80, OCR_TEXT, "")
+    password2Content = TextBox(560, 460, 280, 80, OCR_TEXT, "")
+
+    startButton = TextBox(WIDTH / 2 - (240 / 2), 570, 240, 80, OCR_TEXT, "Start")
+
+    titleBox.draw()
+    backButton.draw()
+    nameTitle.draw()
+
+    password1Title.draw()
+    password2Title.draw()
+    nameContent.draw()
+    password1Content.draw()
+    password2Content.draw()
+    startButton.draw()
+
+    pygame.display.flip()
+
 def main():
 
     running = True
 
     while running:
-        newgame1_loop()
+        mainmenu_loop()
 
 
 if __name__ == "__main__":
