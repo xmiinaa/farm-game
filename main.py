@@ -20,33 +20,45 @@ SCREEN = pygame.display.set_mode([WIDTH,HEIGHT])
 MENU_BG = pygame.transform.scale(pygame.image.load('menu-background.png'), (WIDTH, HEIGHT))
 
 class Box:
-    def __init__(self, x, y, colour, width, height):
+    def __init__(self, x, y, colourFill, colourBorder, width, height):
         self.x = x
         self.y = y
-        self.colour = colour
+        self.colourFill = colourFill
+        self.colourBorder = colourBorder
         self.width = width
         self.height = height
 
-    def draw(self, x, y, colour, width, height):
-        pygame.draw.rect(SCREEN, colour, pygame.Rect(x, y, width, height),  2, 2)
+    def draw(self):
+        pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 3)
+        pygame.draw.rect(SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 2, 3)
 
 
-box1 = Box(10, 10, BOX_OUTLINE, 20, 30)
+titleBox = Box(10, 10, BOX_FILL, BOX_OUTLINE, 20, 30)
+
+
+def mainmenu():
+    SCREEN.blit(MENU_BG, (0, 0))
+    
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            # running = False
+            pygame.quit()
+        
+
+    titleBox.draw()
+
+    pygame.display.flip()
+
+
+
 
 def main():
-    SCREEN.blit(MENU_BG, (0, 0))
+
     running = True
+
     while running:
+        mainmenu()
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-        
-        box1.draw(10, 10, BOX_OUTLINE, 20, 30)
-
-        pygame.display.flip()
-
-    pygame.quit()
 
 if __name__ == "__main__":
     main()
