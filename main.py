@@ -24,9 +24,18 @@ CLOCK = pygame.time.Clock()
 SCREEN = pygame.display.set_mode([WIDTH,HEIGHT])
 pygame.display.set_caption('THE Farm Game')
 
+# images 
 MENU_BG = pygame.transform.scale(pygame.image.load('Resources\Images\menu-background.png'), (WIDTH, HEIGHT))
 FEMALE_MC = pygame.image.load('Resources\Images\girlMC.png')
 MALE_MC = pygame.image.load('Resources\Images\maleMC.png')
+
+# music
+musicVal = 5
+sfxVal = 5
+
+pygame.mixer.music.load('Resources\Music\music1.mp3')
+pygame.mixer.music.play(-1)
+
 
 class Box:
     def __init__(self, x, y, width, height):
@@ -277,11 +286,13 @@ def instructions_loop():
         pygame.display.flip()
 
 def settings_loop():
-    musicVal = 5
-    sfxVal = 5
+
     while True:
         SCREEN.blit(MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
+
+        global musicVal
+        global sfxVal
 
         titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "Settings")
 
@@ -315,12 +326,16 @@ def settings_loop():
                     musicVal = int(musicNum.getText())
                     if musicVal > 0:
                         musicVal -= 1
+                        pygame.mixer.music.set_volume(musicVal / 10)
+                        print(musicVal/10)
                         musicNum.changeText(musicVal)
                 
                 if addMusicButton.onClick(mouse):
                     musicVal = int(musicNum.getText())
                     if musicVal < 10:
                         musicVal += 1
+                        pygame.mixer.music.set_volume(musicVal / 10)
+                        print(musicVal/10)
                         musicNum.changeText(musicVal)
                     
                 if minusSfxButton.onClick(mouse):
@@ -344,5 +359,9 @@ def settings_loop():
 
 
 if __name__ == "__main__":
-    settings_loop()
+    while True:
+        pygame.mixer.music.load('Resources\Music\music1.mp3')
+        pygame.mixer.music.play(-1)
+        mainmenu_loop()
+
 pygame.quit()
