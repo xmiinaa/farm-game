@@ -36,6 +36,13 @@ sfxVal = 5
 pygame.mixer.music.load('Resources\Music\music1.mp3')
 pygame.mixer.music.play(-1)
 
+button1 = pygame.mixer.Sound('Resources\Sound-effects\cbutton1.mp3')
+button2 = pygame.mixer.Sound('Resources\Sound-effects\cbutton2.mp3')
+button3 = pygame.mixer.Sound('Resources\Sound-effects\cbutton3.mp3')
+button4 = pygame.mixer.Sound('Resources\Sound-effects\cbutton4.mp3')
+
+for sounds in [button1, button2, button3, button4]:
+    sounds.set_volume(0.5)
 
 class Box:
     def __init__(self, x, y, width, height):
@@ -77,6 +84,7 @@ class Button(TextBox):
 
     def onClick(self, position):
         if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
+            button4.play()
             return True
         else:
             return False
@@ -342,12 +350,16 @@ def settings_loop():
                     sfxVal = int(sfxNum.getText())
                     if sfxVal > 0:
                         sfxVal -= 1
+                        for effect in [button1, button2, button3, button4]:
+                            effect.set_volume(sfxVal / 10)
                         sfxNum.changeText(sfxVal)
                     
                 if addSfxButton.onClick(mouse):
                     sfxVal = int(sfxNum.getText())
                     if sfxVal < 10:
                         sfxVal += 1
+                        for effect in [button1, button2, button3, button4]:
+                            effect.set_volume(sfxVal / 10)
                         sfxNum.changeText(sfxVal)
 
             if event.type == pygame.QUIT:
@@ -360,8 +372,6 @@ def settings_loop():
 
 if __name__ == "__main__":
     while True:
-        pygame.mixer.music.load('Resources\Music\music1.mp3')
-        pygame.mixer.music.play(-1)
         mainmenu_loop()
 
 pygame.quit()
