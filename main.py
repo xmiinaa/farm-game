@@ -30,11 +30,12 @@ FEMALE_MC = pygame.image.load('Resources\Images\girlMC.png')
 MALE_MC = pygame.image.load('Resources\Images\maleMC.png')
 
 # music
-musicVal = 5
+musicVal = 0
 sfxVal = 5
 
 pygame.mixer.music.load('Resources\Music\music1.mp3')
 pygame.mixer.music.play(-1)
+pygame.mixer.music.set_volume(0) # this cause im gonna get sick of music when testing it 
 
 button1 = pygame.mixer.Sound('Resources\Sound-effects\cbutton1.mp3')
 button2 = pygame.mixer.Sound('Resources\Sound-effects\cbutton2.mp3')
@@ -94,6 +95,8 @@ class Button(TextBox):
         #if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
            # pygame.draw.rect(SCREEN, , pygame.Rect(self.x, self.y, self.width, self.height), 0, 10)
 
+class InputBox(Box):
+    
 
 def mainmenu_loop():
 
