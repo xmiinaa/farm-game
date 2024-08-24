@@ -277,6 +277,8 @@ def instructions_loop():
         pygame.display.flip()
 
 def settings_loop():
+    musicVal = 5
+    sfxVal = 5
     while True:
         SCREEN.blit(MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
@@ -293,8 +295,8 @@ def settings_loop():
         minusSfxButton = Button(570, 390, 90, 70, OCR_TITLE, "-"  )
         addSfxButton = Button(850, 390, 90, 70, OCR_TITLE, "+"  )
 
-        musicNum = TextBox(710, 250, 90, 70, OCR_TITLE, "6"  )
-        sfxNum = TextBox(710, 390, 90, 70, OCR_TITLE, "10"  )
+        musicNum = TextBox(710, 250, 90, 70, OCR_TITLE, str(musicVal)  )
+        sfxNum = TextBox(710, 390, 90, 70, OCR_TITLE, str(sfxVal)  )
 
         titleBox.draw()
 
@@ -311,10 +313,27 @@ def settings_loop():
                     mainmenu_loop()
                 if minusMusicButton.onClick(mouse):
                     musicVal = int(musicNum.getText())
-                    print(musicVal)
-                    musicVal -= 1
-                    musicNum.changeText(musicVal)
-                    musicNum.draw()
+                    if musicVal > 0:
+                        musicVal -= 1
+                        musicNum.changeText(musicVal)
+                
+                if addMusicButton.onClick(mouse):
+                    musicVal = int(musicNum.getText())
+                    if musicVal < 10:
+                        musicVal += 1
+                        musicNum.changeText(musicVal)
+                    
+                if minusSfxButton.onClick(mouse):
+                    sfxVal = int(sfxNum.getText())
+                    if sfxVal > 0:
+                        sfxVal -= 1
+                        sfxNum.changeText(sfxVal)
+                    
+                if addSfxButton.onClick(mouse):
+                    sfxVal = int(sfxNum.getText())
+                    if sfxVal < 10:
+                        sfxVal += 1
+                        sfxNum.changeText(sfxVal)
 
             if event.type == pygame.QUIT:
                 pygame.quit()
