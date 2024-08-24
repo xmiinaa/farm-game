@@ -67,15 +67,18 @@ class TextBox(Box):
        self.fontColour = FONT_COLOUR
        self.textRect = self.text.get_rect(center = (self.width // 2 + self.x, self.height // 2 + self.y))
 
-    def draw(self):
+    # displays text box onto screen
+    def draw(self): 
         pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 10)
         pygame.draw.rect(SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 3, 10)
 
         SCREEN.blit(self.text, self.textRect )   
 
+    # getter method to access text inside text box
     def getText(self):
         return self.content
 
+    # setter method to change text in text box
     def changeText(self, newText):
         self.content = newText
 
@@ -83,6 +86,7 @@ class Button(TextBox):
     def __init__(self, x, y,  width, height, font, text):
         super().__init__(x, y, width, height, font, text)
 
+    # checks to see if mouse click was on button, and returns True if so
     def onClick(self, position):
         if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
             button4.play()
@@ -95,8 +99,8 @@ class Button(TextBox):
         #if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
            # pygame.draw.rect(SCREEN, , pygame.Rect(self.x, self.y, self.width, self.height), 0, 10)
 
-class InputBox(Box):
-    
+#class InputBox(Box):
+
 
 def mainmenu_loop():
 
@@ -105,6 +109,7 @@ def mainmenu_loop():
         SCREEN.blit(MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
         
+        # creation of objects
         titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "THE Farm Game")
 
         newGameButton = Button(WIDTH // 2 - 140, 220, 280, 70, OCR_TEXT, "New Game")
@@ -112,10 +117,12 @@ def mainmenu_loop():
         instructionsButton = Button(WIDTH // 2 - 140, 420, 280, 70, OCR_TEXT, "How To Play")
         settingsButton = Button(WIDTH // 2 - 140, 520, 280, 70, OCR_TEXT, "Settings")
 
+        # displays all elements
         titleBox.draw()
         for button in [newGameButton, loadGameButton, instructionsButton, settingsButton]:
             button.draw()
 
+        # handling user interaction
         for event in pygame.event.get():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -369,8 +376,6 @@ def settings_loop():
                 pygame.quit()
             
         pygame.display.flip()
-
-
 
 
 if __name__ == "__main__":
