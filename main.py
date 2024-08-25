@@ -94,7 +94,16 @@ class Button(TextBox):
             return True
         else:
             return False
-    
+        
+    def draw(self):
+        pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 10)
+        pygame.draw.rect(SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 3, 10)
+        SCREEN.blit(self.text, self.textRect )
+
+    def onHover(self, position):
+        if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
+            self.colourBorder = BOX_HOVER_OUTLINE
+"""
     def draw(self, position): 
         if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
             pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 10)
@@ -104,9 +113,28 @@ class Button(TextBox):
             pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 10)
             pygame.draw.rect(SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 3, 10)
             SCREEN.blit(self.text, self.textRect )
+"""
 
+class InputBox(Box):
+    def __init__(self, x, y, width, height):
+        super().__init__(x, y, width, height) 
+    
+    def draw(self):
+        pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 10)
+        pygame.draw.rect(SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 3, 10)
+        #SCREEN.blit(self.text, self.textRect )
 
-#class InputBox(Box):
+    def onHover(self, position):
+        if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
+            self.colourBorder = BOX_HOVER_OUTLINE
+    
+    def onClick(self, position):
+        if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
+            self.colourBorder = BOX_HOVER_OUTLINE
+            button4.play()
+            return True
+        else:
+            return False
 
 
 def mainmenu_loop():
@@ -127,7 +155,8 @@ def mainmenu_loop():
         # displays all elements
         titleBox.draw()
         for button in [newGameButton, loadGameButton, instructionsButton, settingsButton]:
-            button.draw(mouse)
+            button.onHover(mouse)
+            button.draw()
 
         # handling user interaction
         for event in pygame.event.get():
@@ -169,7 +198,8 @@ def newgame1_loop():
         titleBox.draw()
 
         for button in [backButton, tickButton, save1Content, save2Content, save3Content]:
-            button.draw(mouse)
+            button.onHover(mouse)
+            button.draw()
 
         for textbox in [save1Label, save2Label, save3Label]:
             textbox.draw()
@@ -219,7 +249,8 @@ def newgame2_loop():
 
         
         for button in [backButton, startButton, speedButton]:
-            button.draw(mouse)
+            button.onHover(mouse)
+            button.draw()
 
         for textbox in [titleBox, nameLabel, passwordLabel, save3Label]:
             textbox.draw()
@@ -258,15 +289,17 @@ def loadgame_loop():
         save2Content = Button(570, 350, 280, 80, OCR_TEXT, "no save")
         save3Content = Button(570, 460, 280, 80, OCR_TEXT, "no save")
 
-        passwordInputBox = TextBox(WIDTH // 2 - (300 // 2), 580, 300, 80, OCR_TEXT, "")
+        passwordInputBox = InputBox(WIDTH // 2 - (300 // 2), 580, 300, 80)
 
         for textbox in [titleBox, save1Label, save2Label, save3Label]:
             textbox.draw()
 
         for button in [backButton, tickButton, save1Content, save2Content, save3Content]:
-            button.draw(mouse)
+            button.onHover(mouse)
+            button.draw()
 
         for inputbox in [passwordInputBox]:
+            inputbox.onHover(mouse)
             inputbox.draw()
 
         for event in pygame.event.get():
@@ -285,14 +318,16 @@ def instructions_loop():
         SCREEN.blit(MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
 
-        titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "How to Play:")
+        titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "How to Play")
 
         backButton = Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
 
-        titleBox.draw()
+        for textBox in [titleBox]:
+          textBox.draw()
 
         for button in [backButton]:
-            button.draw(mouse)
+            button.onHover(mouse)
+            button.draw()
         
         for event in pygame.event.get():
 
@@ -329,12 +364,11 @@ def settings_loop():
         musicNum = TextBox(710, 250, 90, 70, OCR_TITLE, str(musicVal)  )
         sfxNum = TextBox(710, 390, 90, 70, OCR_TITLE, str(sfxVal)  )
 
-        titleBox.draw()
-
         for button in [backButton, minusMusicButton, addMusicButton, minusSfxButton, addSfxButton ]:
-            button.draw(mouse)
+            button.onHover(mouse)
+            button.draw()
         
-        for textbox in [musicLabel, sfxLabel, musicNum, sfxNum]:
+        for textbox in [titleBox, musicLabel, sfxLabel, musicNum, sfxNum]:
             textbox.draw()
         
         for event in pygame.event.get():
@@ -347,7 +381,6 @@ def settings_loop():
                     if musicVal > 0:
                         musicVal -= 1
                         pygame.mixer.music.set_volume(musicVal / 10)
-                        print(musicVal/10)
                         musicNum.changeText(musicVal)
                 
                 if addMusicButton.onClick(mouse):
@@ -355,7 +388,6 @@ def settings_loop():
                     if musicVal < 10:
                         musicVal += 1
                         pygame.mixer.music.set_volume(musicVal / 10)
-                        print(musicVal/10)
                         musicNum.changeText(musicVal)
                     
                 if minusSfxButton.onClick(mouse):
