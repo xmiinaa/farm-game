@@ -55,6 +55,7 @@ class Box:
         self.width = width
         self.height = height
 
+    # displays box onto screen
     def draw(self):
         pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 3)
         pygame.draw.rect(SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 2, 3)
@@ -97,18 +98,21 @@ class Button(TextBox):
             return True
         else:
             return False
-        
+    
+    # dispalys button onto screen
     def draw(self):
         pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 10)
         pygame.draw.rect(SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 3, 10)
         SCREEN.blit(self.text, self.textRect )
 
+    # changes colour of button border if user is hovering over it with the cursor
     def checkHover(self, position):
         if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
             self.colourBorder = BOX_HOVER_OUTLINE
         else:
             self.colourBorder = BOX_OUTLINE
-        
+
+    # changes colour of button border (used when choice is made)    
     def choiceClick(self):
         self.colourBorder = BOX_HOVER_OUTLINE
 
@@ -126,6 +130,7 @@ class InputBox(Button):
     def checkActive(self):
         return self.active
 
+    # changes colour of box border depending on if the user is hovering over the box or if they have clicked it
     def checkHoverOrClick(self, position):
         if self.active:
             self.colourBorder = BOX_HOVER_OUTLINE
@@ -168,7 +173,8 @@ def mainmenu_loop():
                     instructions_loop()
                 if settingsButton.onClick(mouse):
                     settings_loop()
-
+            
+            # exits program
             if event.type == pygame.QUIT:
                 pygame.quit()
 
@@ -198,6 +204,7 @@ def newgame1_loop():
         SCREEN.blit(MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
 
+        # displays all elements
         for button in [backButton, tickButton, save1Content, save2Content, save3Content]:
             if button == saveChoice:
                 button.draw()
@@ -211,7 +218,7 @@ def newgame1_loop():
         for inputbox in []:
             inputbox.draw()
 
-        
+        # handles user interaction
         for event in pygame.event.get():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -227,7 +234,7 @@ def newgame1_loop():
                 if tickButton.onClick(mouse):
                     newgame2_loop()
                 
-
+            #  ends program
             if event.type == pygame.QUIT:
                 pygame.quit()
             
@@ -260,9 +267,9 @@ def newgame2_loop():
         SCREEN.blit(MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
 
-
-        SCREEN.blit(FEMALE_MC, (100,500) )
-        SCREEN.blit(MALE_MC, (200,500) )
+        # dislpays all elements
+        SCREEN.blit(FEMALE_MC, (170,530) )
+        SCREEN.blit(MALE_MC, (290,530) )
 
         
         for button in [backButton, startButton, speedButton]:
@@ -276,7 +283,7 @@ def newgame2_loop():
             inputbox.checkHoverOrClick(mouse)
             inputbox.draw()
 
-
+        # handles user interaction
         for event in pygame.event.get():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -339,6 +346,7 @@ def newgame2_loop():
 
                 print(name, password1, password2)
             
+            # ends program
             if event.type == pygame.QUIT:
                 pygame.quit()
             
@@ -351,6 +359,7 @@ def loadgame_loop():
     saveChoice = -1
     password = ""
 
+    # creation of objects
     titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "Load Game")
 
     backButton = Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
@@ -371,6 +380,7 @@ def loadgame_loop():
         SCREEN.blit(MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
 
+        # dislpays all elements
         for textbox in [titleBox, save1Label, save2Label, save3Label]:
             textbox.draw()
 
@@ -385,6 +395,7 @@ def loadgame_loop():
             inputbox.checkHoverOrClick(mouse)
             inputbox.draw()
 
+        # handles user interaction
         for event in pygame.event.get():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -409,7 +420,6 @@ def loadgame_loop():
                 
                 if passwordInputBox.checkActive():
 
-                    # Check for backspace 
                     if event.key == pygame.K_BACKSPACE: 
         
                         # get text input from 0 to -1 i.e. end. 
@@ -422,6 +432,7 @@ def loadgame_loop():
 
                 print(password)
 
+            # ends program
             if event.type == pygame.QUIT:
                 pygame.quit()
         
@@ -437,6 +448,7 @@ def instructions_loop():
         SCREEN.blit(MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
 
+        # displays all elements
         for textBox in [titleBox]:
           textBox.draw()
 
@@ -444,12 +456,14 @@ def instructions_loop():
             button.checkHover(mouse)
             button.draw()
         
+        # handles user interaction
         for event in pygame.event.get():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if backButton.onClick(mouse):
                     mainmenu_loop()
 
+            # ends program
             if event.type == pygame.QUIT:
                 pygame.quit()
             
@@ -481,9 +495,7 @@ def settings_loop():
         SCREEN.blit(MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
 
-        #global musicVal
-        #global sfxVal
-
+        # displays all elements
         for button in [backButton, minusMusicButton, addMusicButton, minusSfxButton, addSfxButton ]:
             button.checkHover(mouse)
             button.draw()
@@ -491,6 +503,7 @@ def settings_loop():
         for textbox in [titleBox, musicLabel, sfxLabel, musicNum, sfxNum]:
             textbox.draw()
         
+        # handles user interaction
         for event in pygame.event.get():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -526,6 +539,7 @@ def settings_loop():
                             effect.set_volume(sfxVal / 10)
                         sfxNum.changeText(sfxVal)
 
+            # ends program
             if event.type == pygame.QUIT:
                 pygame.quit()
             
