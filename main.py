@@ -79,9 +79,12 @@ class TextBox(Box):
     def getText(self):
         return self.content
 
-    # setter method to change text in text box
+    # method to change text in text box
     def changeText(self, newText):
-        self.content = newText
+        self.content = str(newText)
+        font = self.font
+        self.text = font.render(self.content, True, FONT_COLOUR)
+        self.textRect = self.text.get_rect(center = (self.width // 2 + self.x, self.height // 2 + self.y))
 
 class Button(TextBox):
     def __init__(self, x, y,  width, height, font, text):
@@ -100,62 +103,40 @@ class Button(TextBox):
         pygame.draw.rect(SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 3, 10)
         SCREEN.blit(self.text, self.textRect )
 
-    def onHover(self, position):
+    def checkHover(self, position):
         if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
             self.colourBorder = BOX_HOVER_OUTLINE
-"""
-    def draw(self, position): 
-        if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
-            pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 10)
-            pygame.draw.rect(SCREEN, BOX_HOVER_OUTLINE, pygame.Rect(self.x, self.y, self.width, self.height), 3, 10)
-            SCREEN.blit(self.text, self.textRect )
         else:
-            pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 10)
-            pygame.draw.rect(SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 3, 10)
-            SCREEN.blit(self.text, self.textRect )
-"""
+            self.colourBorder = BOX_OUTLINE
+        
+    def choiceClick(self):
+        self.colourBorder = BOX_HOVER_OUTLINE
 
-class InputBox(Box):
+class InputBox(Button):
     def __init__(self, x, y, width, height):
         super().__init__(x, y, width, height) 
     
-    def draw(self):
-        pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 10)
-        pygame.draw.rect(SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 3, 10)
-        #SCREEN.blit(self.text, self.textRect )
-
-    def onHover(self, position):
-        if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
-            self.colourBorder = BOX_HOVER_OUTLINE
-    
-    def onClick(self, position):
-        if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
-            self.colourBorder = BOX_HOVER_OUTLINE
-            button4.play()
-            return True
-        else:
-            return False
 
 
 def mainmenu_loop():
+
+    # creation of objects
+    titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "THE Farm Game")
+
+    newGameButton = Button(WIDTH // 2 - 140, 220, 280, 70, OCR_TEXT, "New Game")
+    loadGameButton = Button(WIDTH // 2 - 140, 320, 280, 70, OCR_TEXT, "Load Game")
+    instructionsButton = Button(WIDTH // 2 - 140, 420, 280, 70, OCR_TEXT, "How To Play")
+    settingsButton = Button(WIDTH // 2 - 140, 520, 280, 70, OCR_TEXT, "Settings")
 
     while True:
 
         SCREEN.blit(MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
-        
-        # creation of objects
-        titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "THE Farm Game")
-
-        newGameButton = Button(WIDTH // 2 - 140, 220, 280, 70, OCR_TEXT, "New Game")
-        loadGameButton = Button(WIDTH // 2 - 140, 320, 280, 70, OCR_TEXT, "Load Game")
-        instructionsButton = Button(WIDTH // 2 - 140, 420, 280, 70, OCR_TEXT, "How To Play")
-        settingsButton = Button(WIDTH // 2 - 140, 520, 280, 70, OCR_TEXT, "Settings")
 
         # displays all elements
         titleBox.draw()
         for button in [newGameButton, loadGameButton, instructionsButton, settingsButton]:
-            button.onHover(mouse)
+            button.checkHover(mouse)
             button.draw()
 
         # handling user interaction
@@ -178,30 +159,36 @@ def mainmenu_loop():
 
 def newgame1_loop():
 
+    # creation of objects
+    titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "New Game")
+
+    backButton = Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
+    tickButton = Button( (WIDTH-30-90) , (HEIGHT-30-70) , 90, 70, OCR_TITLE, "->")
+
+    save1Label = TextBox(220, 250, 280, 80, OCR_TEXT, "Save 1:")
+    save2Label = TextBox(220, 370, 280, 80, OCR_TEXT, "Save 2:")
+    save3Label = TextBox(220, 490, 280, 80, OCR_TEXT, "Save 3:")
+
+    save1Content = Button(560, 250, 280, 80, OCR_TEXT, "no save")
+    save2Content = Button(560, 370, 280, 80, OCR_TEXT, "no save")
+    save3Content = Button(560, 490, 280, 80, OCR_TEXT, "no save")
+
+    # user's save choice
+    saveChoice = -1
+
     while True:
+
         SCREEN.blit(MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
 
-        titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "New Game")
-
-        backButton = Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
-        tickButton = Button( (WIDTH-30-90) , (HEIGHT-30-70) , 90, 70, OCR_TITLE, "->")
-
-        save1Label = TextBox(220, 250, 280, 80, OCR_TEXT, "Save 1:")
-        save2Label = TextBox(220, 370, 280, 80, OCR_TEXT, "Save 2:")
-        save3Label = TextBox(220, 490, 280, 80, OCR_TEXT, "Save 3:")
-
-        save1Content = Button(560, 250, 280, 80, OCR_TEXT, "no save")
-        save2Content = Button(560, 370, 280, 80, OCR_TEXT, "no save")
-        save3Content = Button(560, 490, 280, 80, OCR_TEXT, "no save")
-
-        titleBox.draw()
-
         for button in [backButton, tickButton, save1Content, save2Content, save3Content]:
-            button.onHover(mouse)
-            button.draw()
+            if button == saveChoice:
+                button.draw()
+            else:
+                button.checkHover(mouse)
+                button.draw()
 
-        for textbox in [save1Label, save2Label, save3Label]:
+        for textbox in [titleBox, save1Label, save2Label, save3Label]:
             textbox.draw()
 
         for inputbox in []:
@@ -209,47 +196,62 @@ def newgame1_loop():
 
         
         for event in pygame.event.get():
-            
+
             if event.type == pygame.MOUSEBUTTONDOWN:
+
                 if backButton.onClick(mouse):
                     mainmenu_loop()
+
+                if save1Content.onClick(mouse):
+                    saveChoice = save1Content
+
+                if save2Content.onClick(mouse):
+                    saveChoice = save2Content
+
+                if save3Content.onClick(mouse):
+                    saveChoice = save3Content 
 
                 if tickButton.onClick(mouse):
                     newgame2_loop()
 
+                saveChoice.choiceClick()
+                
+
             if event.type == pygame.QUIT:
                 pygame.quit()
             
-
-        
         pygame.display.flip()
 
+
 def newgame2_loop():
+
+    # creation of objects 
+    titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "New Game")
+
+    backButton = Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
+    startButton = Button(WIDTH // 2 - (240 // 2), 570, 240, 80, OCR_TEXT, "Start")
+    speedButton = Button(720, 580, 170, 60, OCR_TEXT, "Slow")
+
+    nameLabel = TextBox(230, 240, 280, 80, OCR_TEXT, "Name:")
+    passwordLabel = TextBox(230, 350, 280, 80, OCR_TEXT, "Password:")
+    save3Label = TextBox(230, 460, 280, 80, OCR_TEXT, "Password:")
+
+    nameInputBox = TextBox(570, 240, 280, 80, OCR_TEXT, "")
+    password1InputBox = TextBox(570, 350, 280, 80, OCR_TEXT, "")
+    password2InputBox = TextBox(570, 460, 280, 80, OCR_TEXT, "")
+
     while True:
 
         SCREEN.blit(MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
 
-        titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "New Game")
-
-        backButton = Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
-        startButton = Button(WIDTH // 2 - (240 // 2), 570, 240, 80, OCR_TEXT, "Start")
-        speedButton = Button(720, 580, 170, 60, OCR_TEXT, "Slow")
-
-        nameLabel = TextBox(230, 240, 280, 80, OCR_TEXT, "Name:")
-        passwordLabel = TextBox(230, 350, 280, 80, OCR_TEXT, "Password:")
-        save3Label = TextBox(230, 460, 280, 80, OCR_TEXT, "Password:")
-
-        nameInputBox = TextBox(570, 240, 280, 80, OCR_TEXT, "")
-        password1InputBox = TextBox(570, 350, 280, 80, OCR_TEXT, "")
-        password2InputBox = TextBox(570, 460, 280, 80, OCR_TEXT, "")
 
         SCREEN.blit(FEMALE_MC, (100,500) )
         SCREEN.blit(MALE_MC, (200,500) )
 
         
         for button in [backButton, startButton, speedButton]:
-            button.onHover(mouse)
+            button.checkHover(mouse)
             button.draw()
 
         for textbox in [titleBox, nameLabel, passwordLabel, save3Label]:
@@ -272,34 +274,39 @@ def newgame2_loop():
 
 
 def loadgame_loop():
+
+    titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "Load Game")
+
+    backButton = Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
+    tickButton = Button( (WIDTH-30-90) , (HEIGHT-30-70) , 90, 70, OCR_TITLE, "->")
+
+    save1Label = TextBox(230, 240, 280, 80, OCR_TEXT, "Save 1:")
+    save2Label = TextBox(230, 350, 280, 80, OCR_TEXT, "Save 2:")
+    save3Label = TextBox(230, 460, 280, 80, OCR_TEXT, "Save 3:")
+
+    save1Content = Button(570, 240, 280, 80, OCR_TEXT, "no save")
+    save2Content = Button(570, 350, 280, 80, OCR_TEXT, "no save")
+    save3Content = Button(570, 460, 280, 80, OCR_TEXT, "no save")
+
+    passwordInputBox = Button(WIDTH // 2 - (300 // 2), 580, 300, 80, OCR_TEXT, "")
+    
+    saveChoice = -1
+
     while True:
         SCREEN.blit(MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
-
-        titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "Load Game")
-
-        backButton = Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
-        tickButton = Button( (WIDTH-30-90) , (HEIGHT-30-70) , 90, 70, OCR_TITLE, "->")
-
-        save1Label = TextBox(230, 240, 280, 80, OCR_TEXT, "Save 1:")
-        save2Label = TextBox(230, 350, 280, 80, OCR_TEXT, "Save 2:")
-        save3Label = TextBox(230, 460, 280, 80, OCR_TEXT, "Save 3:")
-
-        save1Content = Button(570, 240, 280, 80, OCR_TEXT, "no save")
-        save2Content = Button(570, 350, 280, 80, OCR_TEXT, "no save")
-        save3Content = Button(570, 460, 280, 80, OCR_TEXT, "no save")
-
-        passwordInputBox = InputBox(WIDTH // 2 - (300 // 2), 580, 300, 80)
 
         for textbox in [titleBox, save1Label, save2Label, save3Label]:
             textbox.draw()
 
         for button in [backButton, tickButton, save1Content, save2Content, save3Content]:
-            button.onHover(mouse)
-            button.draw()
+            if button == saveChoice:
+                button.draw()
+            else:
+                button.checkHover(mouse)
+                button.draw()
 
         for inputbox in [passwordInputBox]:
-            inputbox.onHover(mouse)
             inputbox.draw()
 
         for event in pygame.event.get():
@@ -307,6 +314,15 @@ def loadgame_loop():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if backButton.onClick(mouse):
                     mainmenu_loop()
+                if save1Content.onClick(mouse):
+                    saveChoice = save1Content
+                if save2Content.onClick(mouse):
+                    saveChoice = save2Content
+                if save3Content.onClick(mouse):
+                    saveChoice = save3Content 
+                #if tickButton.onClick(mouse):
+                saveChoice.choiceClick()
+                
 
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -314,19 +330,20 @@ def loadgame_loop():
         pygame.display.flip()
 
 def instructions_loop():
+
+    # creation of objects
+    titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "How to Play")
+    backButton = Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
+    
     while True:
         SCREEN.blit(MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
-
-        titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "How to Play")
-
-        backButton = Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
 
         for textBox in [titleBox]:
           textBox.draw()
 
         for button in [backButton]:
-            button.onHover(mouse)
+            button.checkHover(mouse)
             button.draw()
         
         for event in pygame.event.get():
@@ -342,30 +359,35 @@ def instructions_loop():
 
 def settings_loop():
 
+    global musicVal
+    global sfxVal
+
+
+    # creation of objects
+    titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "Settings")
+
+    backButton = Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
+
+    musicLabel = TextBox(160, 250, 320, 70, OCR_TEXT, "Music")
+    sfxLabel = TextBox(160, 390, 320, 70, OCR_TEXT, "Sound Effects")
+
+    minusMusicButton = Button(570, 250, 90, 70, OCR_TITLE, "-"  )
+    addMusicButton = Button(850, 250, 90, 70, OCR_TITLE, "+"  )
+    minusSfxButton = Button(570, 390, 90, 70, OCR_TITLE, "-"  )
+    addSfxButton = Button(850, 390, 90, 70, OCR_TITLE, "+"  )
+
+    musicNum = TextBox(710, 250, 90, 70, OCR_TITLE, str(musicVal)  )
+    sfxNum = TextBox(710, 390, 90, 70, OCR_TITLE, str(sfxVal)  )
+
     while True:
         SCREEN.blit(MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
 
-        global musicVal
-        global sfxVal
-
-        titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "Settings")
-
-        backButton = Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
-
-        musicLabel = TextBox(160, 250, 320, 70, OCR_TEXT, "Music")
-        sfxLabel = TextBox(160, 390, 320, 70, OCR_TEXT, "Sound Effects")
-
-        minusMusicButton = Button(570, 250, 90, 70, OCR_TITLE, "-"  )
-        addMusicButton = Button(850, 250, 90, 70, OCR_TITLE, "+"  )
-        minusSfxButton = Button(570, 390, 90, 70, OCR_TITLE, "-"  )
-        addSfxButton = Button(850, 390, 90, 70, OCR_TITLE, "+"  )
-
-        musicNum = TextBox(710, 250, 90, 70, OCR_TITLE, str(musicVal)  )
-        sfxNum = TextBox(710, 390, 90, 70, OCR_TITLE, str(sfxVal)  )
+        #global musicVal
+        #global sfxVal
 
         for button in [backButton, minusMusicButton, addMusicButton, minusSfxButton, addSfxButton ]:
-            button.onHover(mouse)
+            button.checkHover(mouse)
             button.draw()
         
         for textbox in [titleBox, musicLabel, sfxLabel, musicNum, sfxNum]:
