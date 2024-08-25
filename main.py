@@ -113,10 +113,27 @@ class Button(TextBox):
         self.colourBorder = BOX_HOVER_OUTLINE
 
 class InputBox(Button):
-    def __init__(self, x, y, width, height):
-        super().__init__(x, y, width, height) 
-    
+    def __init__(self, x, y,  width, height, font, text):
+        super().__init__(x, y, width, height, font, text)
+        self.active = False
 
+    def activate(self):
+        self.active = True
+    
+    def deactivate(self):
+        self.active = False
+    
+    def checkActive(self):
+        return self.active
+
+    def checkHoverOrClick(self, position):
+        if self.active:
+            self.colourBorder = BOX_HOVER_OUTLINE
+        else:
+            if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
+                self.colourBorder = BOX_HOVER_OUTLINE
+            else:
+                self.colourBorder = BOX_OUTLINE
 
 def mainmenu_loop():
 
@@ -202,19 +219,13 @@ def newgame1_loop():
                 if backButton.onClick(mouse):
                     mainmenu_loop()
 
-                if save1Content.onClick(mouse):
-                    saveChoice = save1Content
-
-                if save2Content.onClick(mouse):
-                    saveChoice = save2Content
-
-                if save3Content.onClick(mouse):
-                    saveChoice = save3Content 
+                for choice in [save1Content, save2Content, save3Content]:
+                    if choice.onClick(mouse):
+                        saveChoice = choice
+                        saveChoice.choiceClick() 
 
                 if tickButton.onClick(mouse):
                     newgame2_loop()
-
-                saveChoice.choiceClick()
                 
 
             if event.type == pygame.QUIT:
@@ -225,20 +236,24 @@ def newgame1_loop():
 
 def newgame2_loop():
 
+    name = ""
+    password1 = ""
+    password2 = ""
+
     # creation of objects 
     titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "New Game")
 
     backButton = Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
-    startButton = Button(WIDTH // 2 - (240 // 2), 570, 240, 80, OCR_TEXT, "Start")
-    speedButton = Button(720, 580, 170, 60, OCR_TEXT, "Slow")
+    startButton = Button(WIDTH // 2 - (240 // 2), 580, 240, 80, OCR_TEXT, "Start")
+    speedButton = Button(720, 590, 170, 60, OCR_TEXT, "Slow")
 
-    nameLabel = TextBox(230, 240, 280, 80, OCR_TEXT, "Name:")
-    passwordLabel = TextBox(230, 350, 280, 80, OCR_TEXT, "Password:")
-    save3Label = TextBox(230, 460, 280, 80, OCR_TEXT, "Password:")
+    nameLabel = TextBox(210, 230, 300, 80, OCR_TEXT, "Name:")
+    passwordLabel = TextBox(210, 330, 300, 80, OCR_TEXT, "Password:")
+    save3Label = TextBox(210, 430, 300, 80, OCR_TEXT, "Password:")
 
-    nameInputBox = TextBox(570, 240, 280, 80, OCR_TEXT, "")
-    password1InputBox = TextBox(570, 350, 280, 80, OCR_TEXT, "")
-    password2InputBox = TextBox(570, 460, 280, 80, OCR_TEXT, "")
+    nameInputBox = InputBox(560, 230, 300, 80, OCR_TEXT, name)
+    password1InputBox = InputBox(560, 330, 300, 80, OCR_TEXT, password1)
+    password2InputBox = InputBox(560, 430, 300, 80, OCR_TEXT, password2)
 
     while True:
 
@@ -258,13 +273,71 @@ def newgame2_loop():
             textbox.draw()
 
         for inputbox in [nameInputBox, password1InputBox, password2InputBox]:
+            inputbox.checkHoverOrClick(mouse)
             inputbox.draw()
 
 
         for event in pygame.event.get():
+
             if event.type == pygame.MOUSEBUTTONDOWN:
+
                 if backButton.onClick(mouse):
                         newgame1_loop()
+                
+                if nameInputBox.onClick(mouse):
+                    nameInputBox.activate()
+                else:
+                    nameInputBox.deactivate()
+
+                if password1InputBox.onClick(mouse):
+                    password1InputBox.activate()
+                else:
+                    password1InputBox.deactivate()
+                
+                if password2InputBox.onClick(mouse):
+                    password2InputBox.activate()
+                else:
+                    password2InputBox.deactivate()
+            
+            if event.type == pygame.KEYDOWN: 
+                
+                if nameInputBox.checkActive():
+
+                    if event.key == pygame.K_BACKSPACE: 
+        
+                        # get text input from 0 to -1 i.e. end. 
+                        name = name[:-1] 
+
+                    elif len(name) <= 11: 
+                        name += event.unicode
+                    
+                    nameInputBox.changeText(name)
+                
+                if password1InputBox.checkActive():
+
+                    if event.key == pygame.K_BACKSPACE: 
+        
+                        # get text input from 0 to -1 i.e. end. 
+                        password1 = password1[:-1] 
+
+                    elif len(password1) <= 11: 
+                        password1 += event.unicode
+                    
+                    password1InputBox.changeText(password1)
+                
+                if password2InputBox.checkActive():
+
+                    if event.key == pygame.K_BACKSPACE: 
+        
+                        # get text input from 0 to -1 i.e. end. 
+                        password2 = password2[:-1] 
+
+                    elif len(password2) <= 11: 
+                        password2 += event.unicode
+                    
+                    password2InputBox.changeText(password2)
+
+                print(name, password1, password2)
             
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -274,6 +347,9 @@ def newgame2_loop():
 
 
 def loadgame_loop():
+
+    saveChoice = -1
+    password = ""
 
     titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "Load Game")
 
@@ -288,9 +364,8 @@ def loadgame_loop():
     save2Content = Button(570, 350, 280, 80, OCR_TEXT, "no save")
     save3Content = Button(570, 460, 280, 80, OCR_TEXT, "no save")
 
-    passwordInputBox = Button(WIDTH // 2 - (300 // 2), 580, 300, 80, OCR_TEXT, "")
+    passwordInputBox = InputBox(WIDTH // 2 - (320 // 2), 580, 320, 80, OCR_TEXT, password)
     
-    saveChoice = -1
 
     while True:
         SCREEN.blit(MENU_BG, (0, 0))
@@ -307,26 +382,49 @@ def loadgame_loop():
                 button.draw()
 
         for inputbox in [passwordInputBox]:
+            inputbox.checkHoverOrClick(mouse)
             inputbox.draw()
 
         for event in pygame.event.get():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
+
                 if backButton.onClick(mouse):
                     mainmenu_loop()
-                if save1Content.onClick(mouse):
-                    saveChoice = save1Content
-                if save2Content.onClick(mouse):
-                    saveChoice = save2Content
-                if save3Content.onClick(mouse):
-                    saveChoice = save3Content 
-                #if tickButton.onClick(mouse):
-                saveChoice.choiceClick()
+
+                for choice in [save1Content, save2Content, save3Content]:
+                    if choice.onClick(mouse):
+                        saveChoice = choice
+                        saveChoice.choiceClick() 
                 
+                if passwordInputBox.onClick(mouse):
+                    passwordInputBox.activate()
+                else:
+                    passwordInputBox.deactivate()
+
+                if tickButton.onClick(mouse):
+                    print(saveChoice)
+                
+            if event.type == pygame.KEYDOWN: 
+                
+                if passwordInputBox.checkActive():
+
+                    # Check for backspace 
+                    if event.key == pygame.K_BACKSPACE: 
+        
+                        # get text input from 0 to -1 i.e. end. 
+                        password = password[:-1] 
+
+                    elif len(password) <= 11: 
+                        password += event.unicode
+                    
+                    passwordInputBox.changeText(password)
+
+                print(password)
 
             if event.type == pygame.QUIT:
                 pygame.quit()
-            
+        
         pygame.display.flip()
 
 def instructions_loop():
@@ -436,6 +534,6 @@ def settings_loop():
 
 if __name__ == "__main__":
     while True:
-        mainmenu_loop()
+        newgame2_loop()
 
 pygame.quit()
