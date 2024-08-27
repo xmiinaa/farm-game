@@ -1,5 +1,6 @@
 # imports and initialise the pygame library
 
+import re
 import pygame
 pygame.init()
 
@@ -38,12 +39,14 @@ pygame.mixer.music.load('Resources\Music\music1.mp3')
 pygame.mixer.music.play(-1)
 pygame.mixer.music.set_volume(0) # this cause im gonna get sick of music when testing it 
 
-button1 = pygame.mixer.Sound('Resources\Sound-effects\cbutton1.mp3')
-button2 = pygame.mixer.Sound('Resources\Sound-effects\cbutton2.mp3')
-button3 = pygame.mixer.Sound('Resources\Sound-effects\cbutton3.mp3')
-button4 = pygame.mixer.Sound('Resources\Sound-effects\cbutton4.mp3')
+button1 = pygame.mixer.Sound('Resources\Sound-effects\cbutton3.mp3')
+button2 = pygame.mixer.Sound('Resources\Sound-effects\cbutton4.mp3')
 
-for sounds in [button1, button2, button3, button4]:
+# saves files
+savesFile = open("saveFile.txt", "a+")
+savesFile.close()
+
+for sounds in [button1, button2]:
     sounds.set_volume(0.5)
 
 class Box:
@@ -94,7 +97,7 @@ class Button(TextBox):
     # checks to see if mouse click was on button, and returns True if so
     def onClick(self, position):
         if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
-            button4.play()
+            button1.play()
             return True
         else:
             return False
@@ -139,6 +142,23 @@ class InputBox(Button):
                 self.colourBorder = BOX_HOVER_OUTLINE
             else:
                 self.colourBorder = BOX_OUTLINE
+
+def checkNewPassword(password1, password2):
+    valid = False
+    required = r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$"
+
+    if password1 == password2:
+        if len(password1) >= 8:
+            if bool(re.fullmatch(required, password1)):
+                valid = True
+            else:
+                print("Passwords must include 1 uppercase, 1 lowercase and 1 number")
+        else:
+            print("Password must be 8 characters or longer")
+    else:
+        print("Passwords do not match")
+
+    return valid
 
 def mainmenu_loop():
 
@@ -232,7 +252,8 @@ def newgame1_loop():
                         saveChoice.choiceClick() 
 
                 if tickButton.onClick(mouse):
-                    newgame2_loop()
+                    if saveChoice != -1:
+                        newgame2_loop()
                 
             #  ends program
             if event.type == pygame.QUIT:
@@ -305,6 +326,11 @@ def newgame2_loop():
                     password2InputBox.activate()
                 else:
                     password2InputBox.deactivate()
+                
+                if startButton.onClick(mouse):
+                    if checkNewPassword(password1, password2) == True:
+                        print("passwords are good to go")
+
             
             if event.type == pygame.KEYDOWN: 
                 
@@ -343,8 +369,6 @@ def newgame2_loop():
                         password2 += event.unicode
                     
                     password2InputBox.changeText(password2)
-
-                print(name, password1, password2)
             
             # ends program
             if event.type == pygame.QUIT:
