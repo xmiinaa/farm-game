@@ -157,23 +157,36 @@ class Text():
         self.font = font
         self.fontColour = colour
         self.content = content
+        self.active = False
         self.text = font.render(self.content, True, self.fontColour)
         self.textRect = self.text.get_rect()
     
+    def activate(self):
+        self.active = True
+    
+    def deactivate(self):
+        self.active = False
+    
+    def checkActive(self):
+        return self.active
+    
     def draw(self):
-        SCREEN.blit(self.text, self.textRect)
+        SCREEN.blit(self.text, (self.x, self.y))
 
-def checkNewPassword(password1, password2):
-    valid = False
+def checkNewPassword(password1, password2, error1, error2, error3):
     required = r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$"
+    print("checking")
 
     if password1 == password2:
         print("pass 1")
+        error1.deactivate()
         if len(password1) >= 8:
             print("pass 2")
+            error2.deactivate()
             if bool(re.fullmatch(required, password1)):
                 print("pass 3")
-                valid = True
+                error3.deactivate()
+                return 0
             else:
                 return 3
         else:
@@ -181,7 +194,6 @@ def checkNewPassword(password1, password2):
     else:
         return 1
 
-    return valid
 
 def mainmenu_loop():
 
@@ -306,9 +318,9 @@ def newgame2_loop():
     password1InputBox = InputBox(560, 330, 300, 80, OCR_TEXT, password1)
     password2InputBox = InputBox(560, 430, 300, 80, OCR_TEXT, password2)
 
-    error3 = Text(50, 690, OCR_ERROR, ERROR_FONT_COLOUR, "Error - password must include uppercase, lowercase and a number" )
-    error2 = Text(50, 690, OCR_ERROR, ERROR_FONT_COLOUR, "Error - Password must be 8 characters or longer" )
-    error1 = Text(50, 690, OCR_ERROR, ERROR_FONT_COLOUR, "Passwords do not match" )
+    error3 = Text(50, 60, OCR_ERROR, ERROR_FONT_COLOUR, "Error - password must include uppercase, lowercase and a number" )
+    error2 = Text(50, 660, OCR_ERROR, ERROR_FONT_COLOUR, "Error - Password must be 8 characters or longer" )
+    error1 = Text(50, 450, OCR_ERROR, ERROR_FONT_COLOUR, "Passwords do not match" )
 
     while True:
 
@@ -331,8 +343,9 @@ def newgame2_loop():
             inputbox.checkHoverOrClick(mouse)
             inputbox.draw()
         
-        #for error in [error1, error2, error3]:
-           # error.draw()
+        for error in [error1, error2, error3]:
+           if error.checkActive() == True:
+               error.draw()
 
         # handles user interaction
         for event in pygame.event.get():
@@ -358,18 +371,19 @@ def newgame2_loop():
                     password2InputBox.deactivate()
                 
                 if startButton.onClick(mouse):
-                    correct = checkNewPassword(password1, password2)
-                    if correct == True:
+                    correct = checkNewPassword(password1, password2, error1, error2, error3)
+                    print(correct)
+                    if correct == 0:
                         print("passwords are good to go")
                         dataBase_password = password1+salt
                         hashed = hashlib.md5(dataBase_password.encode())
                         print(hashed.hexdigest())
-                    elif correct == 1:
-                        error1.draw()
-                    elif correct == 2:
-                        error2.draw()
-                    elif correct == 3:
-                        error3.draw()
+                    if correct == 1:
+                        error1.activate()
+                    if correct == 2:
+                        error2.activate()
+                    if correct == 3:
+                        error3.activate()
             
             if event.type == pygame.KEYDOWN: 
                 
