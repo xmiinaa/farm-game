@@ -42,6 +42,7 @@ pygame.mixer.music.set_volume(0) # this cause im gonna get sick of music when te
 button1 = pygame.mixer.Sound('Resources\Sound-effects\cbutton3.mp3')
 button2 = pygame.mixer.Sound('Resources\Sound-effects\cbutton4.mp3')
 
+
 # saves files
 savesFile = open("saveFile.txt", "a+")
 savesFile.close()
@@ -89,6 +90,7 @@ class TextBox(Box):
         font = self.font
         self.text = font.render(self.content, True, FONT_COLOUR)
         self.textRect = self.text.get_rect(center = (self.width // 2 + self.x, self.height // 2 + self.y))
+    
 
 class Button(TextBox):
     def __init__(self, x, y,  width, height, font, text):
@@ -142,6 +144,17 @@ class InputBox(Button):
                 self.colourBorder = BOX_HOVER_OUTLINE
             else:
                 self.colourBorder = BOX_OUTLINE
+
+class Text():
+    def __init__(self, x, y, font, colour, content):
+        self.x = x
+        self.y = y
+        self.font = font
+        self.colour = colour
+        self.content = content
+    
+    def draw(self):
+        SCREEN.blit(self.text, self.textRect)
 
 def checkNewPassword(password1, password2):
     valid = False
@@ -267,6 +280,8 @@ def newgame2_loop():
     name = ""
     password1 = ""
     password2 = ""
+
+    print(hash("Password1"))
 
     # creation of objects 
     titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "New Game")
