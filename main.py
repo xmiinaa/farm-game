@@ -18,10 +18,12 @@ BOX_OUTLINE = (91,164,211)
 BOX_HOVER_OUTLINE = (255,255,255)
 BOX_FILL = (211, 245, 253)
 FONT_COLOUR = (2, 100, 106)
+ERROR_FONT_COLOUR = (255, 45, 45)
 
 # text font
 OCR_TITLE = pygame.font.Font('Resources\OCR.ttf', 48)
 OCR_TEXT = pygame.font.Font('Resources\OCR.ttf', 38)
+OCR_ERROR = pygame.font.Font('Resources\OCR.ttf', 28)
 
 # set up window
 CLOCK = pygame.time.Clock()
@@ -72,8 +74,8 @@ class TextBox(Box):
        super().__init__(x, y, width, height) 
        self.font = font
        self.content = content
-       self.text = font.render(self.content, True, FONT_COLOUR)
        self.fontColour = FONT_COLOUR
+       self.text = font.render(self.content, True, self.fontColour)
        self.textRect = self.text.get_rect(center = (self.width // 2 + self.x, self.height // 2 + self.y))
 
     # displays text box onto screen
@@ -91,7 +93,7 @@ class TextBox(Box):
     def changeText(self, newText):
         self.content = str(newText)
         font = self.font
-        self.text = font.render(self.content, True, FONT_COLOUR)
+        self.text = font.render(self.content, True, self.fontColour)
         self.textRect = self.text.get_rect(center = (self.width // 2 + self.x, self.height // 2 + self.y))
     
 
@@ -153,8 +155,10 @@ class Text():
         self.x = x
         self.y = y
         self.font = font
-        self.colour = colour
+        self.fontColour = colour
         self.content = content
+        self.text = font.render(self.content, True, self.fontColour)
+        self.textRect = self.text.get_rect()
     
     def draw(self):
         SCREEN.blit(self.text, self.textRect)
@@ -164,15 +168,18 @@ def checkNewPassword(password1, password2):
     required = r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$"
 
     if password1 == password2:
+        print("pass 1")
         if len(password1) >= 8:
+            print("pass 2")
             if bool(re.fullmatch(required, password1)):
+                print("pass 3")
                 valid = True
             else:
-                print("Passwords must include 1 uppercase, 1 lowercase and 1 number")
+                return 3
         else:
-            print("Password must be 8 characters or longer")
+            return 2
     else:
-        print("Passwords do not match")
+        return 1
 
     return valid
 
@@ -299,6 +306,10 @@ def newgame2_loop():
     password1InputBox = InputBox(560, 330, 300, 80, OCR_TEXT, password1)
     password2InputBox = InputBox(560, 430, 300, 80, OCR_TEXT, password2)
 
+    error3 = Text(50, 690, OCR_ERROR, ERROR_FONT_COLOUR, "Error - password must include uppercase, lowercase and a number" )
+    error2 = Text(50, 690, OCR_ERROR, ERROR_FONT_COLOUR, "Error - Password must be 8 characters or longer" )
+    error1 = Text(50, 690, OCR_ERROR, ERROR_FONT_COLOUR, "Passwords do not match" )
+
     while True:
 
         SCREEN.blit(MENU_BG, (0, 0))
@@ -319,6 +330,9 @@ def newgame2_loop():
         for inputbox in [nameInputBox, password1InputBox, password2InputBox]:
             inputbox.checkHoverOrClick(mouse)
             inputbox.draw()
+        
+        #for error in [error1, error2, error3]:
+           # error.draw()
 
         # handles user interaction
         for event in pygame.event.get():
@@ -344,12 +358,18 @@ def newgame2_loop():
                     password2InputBox.deactivate()
                 
                 if startButton.onClick(mouse):
-                    if checkNewPassword(password1, password2) == True:
+                    correct = checkNewPassword(password1, password2)
+                    if correct == True:
                         print("passwords are good to go")
                         dataBase_password = password1+salt
                         hashed = hashlib.md5(dataBase_password.encode())
                         print(hashed.hexdigest())
-
+                    elif correct == 1:
+                        error1.draw()
+                    elif correct == 2:
+                        error2.draw()
+                    elif correct == 3:
+                        error3.draw()
             
             if event.type == pygame.KEYDOWN: 
                 
