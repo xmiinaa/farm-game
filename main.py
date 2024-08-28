@@ -1,6 +1,7 @@
 # imports and initialise the pygame library
 
 import re
+import hashlib
 import pygame
 pygame.init()
 
@@ -42,6 +43,7 @@ pygame.mixer.music.set_volume(0) # this cause im gonna get sick of music when te
 button1 = pygame.mixer.Sound('Resources\Sound-effects\cbutton3.mp3')
 button2 = pygame.mixer.Sound('Resources\Sound-effects\cbutton4.mp3')
 
+salt = "5gz"
 
 # saves files
 savesFile = open("saveFile.txt", "a+")
@@ -281,8 +283,6 @@ def newgame2_loop():
     password1 = ""
     password2 = ""
 
-    print(hash("Password1"))
-
     # creation of objects 
     titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "New Game")
 
@@ -345,6 +345,9 @@ def newgame2_loop():
                 if startButton.onClick(mouse):
                     if checkNewPassword(password1, password2) == True:
                         print("passwords are good to go")
+                        dataBase_password = password1+salt
+                        hashed = hashlib.md5(dataBase_password.encode())
+                        print(hashed.hexdigest())
 
             
             if event.type == pygame.KEYDOWN: 
@@ -468,8 +471,6 @@ def loadgame_loop():
                         password += event.unicode
                     
                     passwordInputBox.changeText(password)
-
-                print(password)
 
             # ends program
             if event.type == pygame.QUIT:
