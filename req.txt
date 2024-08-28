@@ -1,2 +1,5 @@
 # libraries needed to run my farm game
 pygame
+re
+sqlite
+hashlib

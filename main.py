@@ -1,6 +1,7 @@
 # imports and initialise the pygame library
 
 import re
+import sqlite3
 import hashlib
 import pygame
 pygame.init()
