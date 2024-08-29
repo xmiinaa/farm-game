@@ -364,6 +364,7 @@ def newgame2_loop():
     password1 = ""
     password2 = ""
     chosenCharacter = ""
+    speed = "slow"
 
     # creation of objects 
     titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "New Game")
@@ -450,6 +451,14 @@ def newgame2_loop():
                     chosenCharacter = "male"
                     maleCharacter.activate()
                     femaleCharacter.deactivate()
+                
+                if speedButton.onClick(mouse):
+                    if speedButton.getText() == "Slow":
+                        speed = "Fast"
+                        speedButton.changeText("Fast")
+                    elif speedButton.getText() == "Fast":
+                        speed = "Slow"
+                        speedButton.changeText("Slow")
 
                 if startButton.onClick(mouse):
                     correct = checkNewPassword(password1, password2, error1, error2, error3)
