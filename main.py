@@ -181,17 +181,36 @@ class ImageButton():
         self.width = width
         self.height = height
         self.rect = self.image.get_rect(center = (self.x, self.y))
+        self.active = False
     
     def onClick(self, position):
-        if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
+        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
             button1.play()
-            print("clicked")
+            self.drawBox()
             return True
         else:
             return False
-    
+        
+    def checkHover(self, position):
+        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
+            self.drawBox()
+        else:
+            SCREEN.blit(self.image, self.rect)
+
     def draw(self):
         SCREEN.blit(self.image, self.rect)
+    
+    def activate(self):
+        self.active = True
+    
+    def deactivate(self):
+        self.active = False
+    
+    def checkActive(self):
+        return self.active
+    
+    def drawBox(self):
+        pygame.draw.rect(SCREEN, (255,255,255, 0), pygame.Rect(self.rect.left, self.rect.top, self.width, self.height), 2, 3)
 
 def checkNewPassword(password1, password2, error1, error2, error3):
     required = r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$"
@@ -391,7 +410,12 @@ def newgame2_loop():
             inputbox.draw()
         
         for character in [femaleCharacter, maleCharacter]:
-            character.draw()
+            if character.checkActive() == True:
+                character.draw()
+                character.drawBox()
+            else:
+                character.checkHover(mouse)
+                character.draw()
         
         for error in [usernameError, error1, error2, error3]:
            if error.checkActive() == True:
@@ -422,10 +446,16 @@ def newgame2_loop():
                 
                 if femaleCharacter.onClick(mouse):
                     characterChoice = "female"
+                    femaleCharacter.activate()
+                else:
+                    femaleCharacter.deactivate()
                 
                 if maleCharacter.onClick(mouse):
                     characterChoice = "male"
-                
+                    maleCharacter.activate()
+                else:
+                    maleCharacter.deactivate()
+
                 if startButton.onClick(mouse):
                     correct = checkNewPassword(password1, password2, error1, error2, error3)
                     print(correct)
