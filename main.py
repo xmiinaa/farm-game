@@ -32,16 +32,16 @@ pygame.display.set_caption('THE Farm Game')
 
 # images 
 MENU_BG = pygame.transform.scale(pygame.image.load('Resources\Images\menu-background.png'), (WIDTH, HEIGHT))
-FEMALE_MC = pygame.transform.scale(pygame.image.load('Resources\Images\girlMC.png'), (100, 300))
-MALE_MC = pygame.image.load('Resources\Images\maleMC.png')
+FEMALE_MC = pygame.transform.scale(pygame.image.load('Resources\Images\girlMC.png'), (115, 156))
+MALE_MC = pygame.transform.scale(pygame.image.load('Resources\Images\maleMC.png'), (115, 156))
 
 # music
-musicVal = 0
+musicVal = 5
 sfxVal = 5
 
 pygame.mixer.music.load('Resources\Music\music1.mp3')
 pygame.mixer.music.play(-1)
-pygame.mixer.music.set_volume(0) # this cause im gonna get sick of music when testing it 
+pygame.mixer.music.set_volume(0) # todo: set to 5 cause im gonna get sick of music when testing it 
 
 button1 = pygame.mixer.Sound('Resources\Sound-effects\cbutton3.mp3')
 button2 = pygame.mixer.Sound('Resources\Sound-effects\cbutton4.mp3')
@@ -180,11 +180,12 @@ class ImageButton():
         self.y = y
         self.width = width
         self.height = height
-        self.rect = self.image.get_rect(centre=(self.x, self,y))
+        self.rect = self.image.get_rect(center = (self.x, self.y))
     
     def onClick(self, position):
         if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
             button1.play()
+            print("clicked")
             return True
         else:
             return False
@@ -201,18 +202,20 @@ def checkNewPassword(password1, password2, error1, error2, error3):
     else:
         if password1 == password2:
             error1.deactivate()
+
+            if len(password1) >= 8:
+                error2.deactivate()
+            else:
+                error2.activate()
+    
+            if bool(re.fullmatch(required, password1)):
+                error3.deactivate()
+            else:
+                error3.activate()
+
         else:
             error1.activate()
         
-        if len(password1) >= 8:
-            error2.deactivate()
-        else:
-            error2.activate()
-    
-        if bool(re.fullmatch(required, password1)):
-            error3.deactivate()
-        else:
-            error3.activate()
 
         return False
 """
@@ -341,6 +344,7 @@ def newgame2_loop():
     name = ""
     password1 = ""
     password2 = ""
+    characterChoice = ""
 
     # creation of objects 
     titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "New Game")
@@ -357,8 +361,8 @@ def newgame2_loop():
     password1InputBox = InputBox(560, 310, 300, 75, OCR_TEXT, password1)
     password2InputBox = InputBox(560, 400, 300, 75, OCR_TEXT, password2)
 
-    femaleCharacter = ImageButton(FEMALE_MC, 170, 530, 100, 150)
-    maleCharacter = ImageButton(MALE_MC, 290, 530, 100, 150)
+    femaleCharacter = ImageButton(FEMALE_MC, 170, 580, 115, 156)
+    maleCharacter = ImageButton(MALE_MC, 290, 580, 115, 156)
 
     usernameError = Text(50, 600, OCR_ERROR, ERROR_FONT_COLOUR, "Error - Username already exists" )
     error3 = Text(50, 630, OCR_ERROR, ERROR_FONT_COLOUR, "Error - password must include uppercase, lowercase and a number" )
@@ -371,8 +375,8 @@ def newgame2_loop():
         mouse = pygame.mouse.get_pos()
 
         # dislpays all elements
-        SCREEN.blit(FEMALE_MC, (170,530) )
-        SCREEN.blit(MALE_MC, (290,530) )
+        #SCREEN.blit(FEMALE_MC, (170,530) )
+        #SCREEN.blit(MALE_MC, (290,530) )
 
         
         for button in [backButton, startButton, speedButton]:
@@ -390,7 +394,7 @@ def newgame2_loop():
             character.draw()
         
         for error in [usernameError, error1, error2, error3]:
-           #if error.checkActive() == True:
+           if error.checkActive() == True:
             error.draw()
 
         # handles user interaction
@@ -415,6 +419,12 @@ def newgame2_loop():
                     password2InputBox.activate()
                 else:
                     password2InputBox.deactivate()
+                
+                if femaleCharacter.onClick(mouse):
+                    characterChoice = "female"
+                
+                if maleCharacter.onClick(mouse):
+                    characterChoice = "male"
                 
                 if startButton.onClick(mouse):
                     correct = checkNewPassword(password1, password2, error1, error2, error3)
@@ -468,8 +478,8 @@ def newgame2_loop():
             if event.type == pygame.QUIT:
                 pygame.quit()
             
-
         pygame.display.flip()
+            
 
 
 def loadgame_loop():
@@ -643,7 +653,7 @@ def settings_loop():
                     sfxVal = int(sfxNum.getText())
                     if sfxVal > 0:
                         sfxVal -= 1
-                        for effect in [button1, button2, button3, button4]:
+                        for effect in [button1, button2]:
                             effect.set_volume(sfxVal / 10)
                         sfxNum.changeText(sfxVal)
                     
@@ -651,7 +661,7 @@ def settings_loop():
                     sfxVal = int(sfxNum.getText())
                     if sfxVal < 10:
                         sfxVal += 1
-                        for effect in [button1, button2, button3, button4]:
+                        for effect in [button1, button2]:
                             effect.set_volume(sfxVal / 10)
                         sfxNum.changeText(sfxVal)
 
