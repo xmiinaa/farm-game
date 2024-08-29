@@ -186,7 +186,7 @@ class ImageButton():
     def onClick(self, position):
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
             button1.play()
-            self.drawBox()
+            self.activate()
             return True
         else:
             return False
@@ -363,7 +363,7 @@ def newgame2_loop():
     name = ""
     password1 = ""
     password2 = ""
-    characterChoice = ""
+    chosenCharacter = ""
 
     # creation of objects 
     titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "New Game")
@@ -394,10 +394,7 @@ def newgame2_loop():
         mouse = pygame.mouse.get_pos()
 
         # dislpays all elements
-        #SCREEN.blit(FEMALE_MC, (170,530) )
-        #SCREEN.blit(MALE_MC, (290,530) )
 
-        
         for button in [backButton, startButton, speedButton]:
             button.checkHover(mouse)
             button.draw()
@@ -445,16 +442,14 @@ def newgame2_loop():
                     password2InputBox.deactivate()
                 
                 if femaleCharacter.onClick(mouse):
-                    characterChoice = "female"
+                    chosenCharacter = "female"
                     femaleCharacter.activate()
-                else:
-                    femaleCharacter.deactivate()
+                    maleCharacter.deactivate()
                 
                 if maleCharacter.onClick(mouse):
-                    characterChoice = "male"
+                    chosenCharacter = "male"
                     maleCharacter.activate()
-                else:
-                    maleCharacter.deactivate()
+                    femaleCharacter.deactivate()
 
                 if startButton.onClick(mouse):
                     correct = checkNewPassword(password1, password2, error1, error2, error3)
