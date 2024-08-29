@@ -367,6 +367,7 @@ def newgame2_loop():
     password2Display = ""
     chosenCharacter = ""
     speed = "slow"
+    validName = False
 
     # creation of objects 
     titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "New Game")
@@ -463,13 +464,13 @@ def newgame2_loop():
                         speedButton.changeText("Slow")
 
                 if startButton.onClick(mouse):
-                    correct = checkNewPassword(password1, password2, error1, error2, error3)
-                    print(correct)
-                    if correct:
+                    correctPassword = checkNewPassword(password1, password2, error1, error2, error3)
+                    print(correctPassword)
+                    if correctPassword:
                         print("passwords are good to go")
+                    if correctPassword and chosenCharacter != "" and validName:
                         dataBase_password = password1+salt
-                        hashed = hashlib.md5(dataBase_password.encode())
-                        print(hashed.hexdigest())
+                        hashedPass = hashlib.md5(dataBase_password.encode())
 
             
             if event.type == pygame.KEYDOWN: 
@@ -529,6 +530,7 @@ def loadgame_loop():
 
     saveChoice = -1
     password = ""
+    passwordDisplay = ""
 
     # creation of objects
     titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "Load Game")
@@ -544,7 +546,7 @@ def loadgame_loop():
     save2Content = Button(570, 350, 280, 80, OCR_TEXT, "no save")
     save3Content = Button(570, 460, 280, 80, OCR_TEXT, "no save")
 
-    passwordInputBox = InputBox(WIDTH // 2 - (320 // 2), 580, 320, 80, OCR_TEXT, password)
+    passwordInputBox = InputBox(WIDTH // 2 - (320 // 2), 580, 320, 80, OCR_TEXT, passwordDisplay)
     
 
     while True:
@@ -599,7 +601,8 @@ def loadgame_loop():
                     elif len(password) <= 11: 
                         password += event.unicode
                     
-                    passwordInputBox.changeText(password)
+                    passwordDisplay = "*" * len(password)
+                    passwordInputBox.changeText(passwordDisplay)
 
             # ends program
             if event.type == pygame.QUIT:
