@@ -496,9 +496,10 @@ def newgame2_loop():
 
                     elif len(password1) <= 11: 
                         password1 += event.unicode
-                        password1Display += "*"
+                        
                     
-                    password1InputBox.changeText(password1)
+                    password1Display = "*" * len(password1)
+                    password1InputBox.changeText(password1Display)
                 
                 if password2InputBox.checkActive():
 
@@ -511,13 +512,14 @@ def newgame2_loop():
 
                     elif len(password2) <= 11: 
                         password2 += event.unicode
-                        password2Display += "*"
                     
-                    password2InputBox.changeText(password2)
-            
+                    password2Display = "*" * len(password2)
+                    password2InputBox.changeText(password2Display)
+                            
             # ends program
             if event.type == pygame.QUIT:
                 pygame.quit()
+        
             
         pygame.display.flip()
             
