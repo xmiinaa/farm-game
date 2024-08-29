@@ -1,9 +1,6 @@
-# imports and initialise the pygame library
+# imports and initialise the pygame library, and oher libraries used and needed in program
 
-import re
-import sqlite3
-import hashlib
-import pygame
+import re, sqlite3, hashlib, pygame
 pygame.init()
 
 # dimensions of screen
@@ -34,9 +31,10 @@ pygame.display.set_caption('THE Farm Game')
 MENU_BG = pygame.transform.scale(pygame.image.load('Resources\Images\menu-background.png'), (WIDTH, HEIGHT))
 FEMALE_MC = pygame.transform.scale(pygame.image.load('Resources\Images\girlMC.png'), (115, 156))
 MALE_MC = pygame.transform.scale(pygame.image.load('Resources\Images\maleMC.png'), (115, 156))
+ERROR = pygame.transform.scale(pygame.image.load('Resources\Images\error-icon.png'), (50, 44))
 
 # music
-musicVal = 5
+musicVal = 0 # todo: set this to
 sfxVal = 5
 
 pygame.mixer.music.load('Resources\Music\music1.mp3')
@@ -150,28 +148,17 @@ class InputBox(Button):
             else:
                 self.colourBorder = BOX_OUTLINE
 
-class Text():
-    def __init__(self, x, y, font, colour, content):
+class Error():
+    def __init__(self, image, x, y, width, height):
+        self.image = image
         self.x = x
         self.y = y
-        self.font = font
-        self.fontColour = colour
-        self.content = content
-        self.active = False
-        self.text = font.render(self.content, True, self.fontColour)
-        self.textRect = self.text.get_rect()
-    
-    def activate(self):
-        self.active = True
-    
-    def deactivate(self):
-        self.active = False
-    
-    def checkActive(self):
-        return self.active
-    
+        self.width = width
+        self.height = height
+        self.rect = self.image.get_rect(center = (self.x, self.y))
+
     def draw(self):
-        SCREEN.blit(self.text, (self.x, self.y))
+        SCREEN.blit(self.image, self.rect)
 
 class ImageButton():
     def __init__(self, image, x, y, width, height):
@@ -217,47 +204,32 @@ def checkNewPassword(password1, password2, error1, error2, error3):
     print("checking")
 
     if password1 == password2 and len(password1) >= 8 and bool(re.fullmatch(required, password1)):
+        error1.deactivate()
+        error2.deactivate()
+        error3.deactivate()
         return True
     else:
         if password1 == password2:
             error1.deactivate()
-
             if len(password1) >= 8:
                 error2.deactivate()
             else:
                 error2.activate()
-    
+
             if bool(re.fullmatch(required, password1)):
                 error3.deactivate()
             else:
                 error3.activate()
-
         else:
             error1.activate()
-        
+            error2.deactivate()
+            error3.deactivate()
 
         return False
-"""
-    if password1 == password2:
-        print("pass 1")
-        error1.deactivate()
-        if len(password1) >= 8:
-            print("pass 2")
-            error2.deactivate()
-            if bool(re.fullmatch(required, password1)):
-                print("pass 3")
-                error3.deactivate()
-                return 0
-            else:
-                return 3
-        else:
-            return 2
-    else:
-        return 1
-"""
 
 def mainmenu_loop():
 
+    running = True
     # creation of objects
     titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "THE Farm Game")
 
@@ -266,7 +238,7 @@ def mainmenu_loop():
     instructionsButton = Button(WIDTH // 2 - 140, 420, 280, 70, OCR_TEXT, "How To Play")
     settingsButton = Button(WIDTH // 2 - 140, 520, 280, 70, OCR_TEXT, "Settings")
 
-    while True:
+    while running:
 
         SCREEN.blit(MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
@@ -292,12 +264,15 @@ def mainmenu_loop():
             
             # exits program
             if event.type == pygame.QUIT:
-                pygame.quit()
+                running = False
 
         pygame.display.flip()
+    
+    pygame.quit()
 
 def newgame1_loop():
 
+    running = True
     # creation of objects
     titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "New Game")
 
@@ -315,7 +290,7 @@ def newgame1_loop():
     # user's save choice
     saveChoice = -1
 
-    while True:
+    while running:
 
         SCREEN.blit(MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
@@ -353,13 +328,15 @@ def newgame1_loop():
                 
             #  ends program
             if event.type == pygame.QUIT:
-                pygame.quit()
+                running = False
             
         pygame.display.flip()
 
+    pygame.quit()
 
 def newgame2_loop():
 
+    running = True
     name = ""
     password1 = ""
     password1Display = ""
@@ -392,7 +369,7 @@ def newgame2_loop():
     error2 = Text(50, 660, OCR_ERROR, ERROR_FONT_COLOUR, "Error - Password must be 8 characters or longer" )
     error1 = Text(50, 690, OCR_ERROR, ERROR_FONT_COLOUR, "Error - Passwords do not match" )
 
-    while True:
+    while running:
 
         SCREEN.blit(MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
@@ -519,15 +496,18 @@ def newgame2_loop():
                             
             # ends program
             if event.type == pygame.QUIT:
-                pygame.quit()
+                running = False
         
             
         pygame.display.flip()
+    
+    pygame.quit()
             
 
 
 def loadgame_loop():
 
+    running = True
     saveChoice = -1
     password = ""
     passwordDisplay = ""
@@ -549,7 +529,7 @@ def loadgame_loop():
     passwordInputBox = InputBox(WIDTH // 2 - (320 // 2), 580, 320, 80, OCR_TEXT, passwordDisplay)
     
 
-    while True:
+    while running:
         SCREEN.blit(MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
 
@@ -609,14 +589,17 @@ def loadgame_loop():
                 pygame.quit()
         
         pygame.display.flip()
+    
+    pygame.quit()
 
 def instructions_loop():
 
+    running = True
     # creation of objects
     titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "How to Play")
     backButton = Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
     
-    while True:
+    while running:
         SCREEN.blit(MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
 
@@ -637,12 +620,14 @@ def instructions_loop():
 
             # ends program
             if event.type == pygame.QUIT:
-                pygame.quit()
+                running = False
             
         pygame.display.flip()
+    pygame.quit()
 
 def settings_loop():
 
+    running = True
     global musicVal
     global sfxVal
 
@@ -663,7 +648,7 @@ def settings_loop():
     musicNum = TextBox(710, 250, 90, 70, OCR_TITLE, str(musicVal)  )
     sfxNum = TextBox(710, 390, 90, 70, OCR_TITLE, str(sfxVal)  )
 
-    while True:
+    while running:
         SCREEN.blit(MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
 
@@ -713,9 +698,10 @@ def settings_loop():
 
             # ends program
             if event.type == pygame.QUIT:
-                pygame.quit()
+                running = False
             
         pygame.display.flip()
+    pygame.quit()
 
 
 if __name__ == "__main__":
