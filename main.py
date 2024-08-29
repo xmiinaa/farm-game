@@ -362,7 +362,9 @@ def newgame2_loop():
 
     name = ""
     password1 = ""
+    password1Display = ""
     password2 = ""
+    password2Display = ""
     chosenCharacter = ""
     speed = "slow"
 
@@ -378,8 +380,8 @@ def newgame2_loop():
     save3Label = TextBox(210, 400, 300, 75, OCR_TEXT, "Password:")
 
     nameInputBox = InputBox(560, 220, 300, 75, OCR_TEXT, name)
-    password1InputBox = InputBox(560, 310, 300, 75, OCR_TEXT, password1)
-    password2InputBox = InputBox(560, 400, 300, 75, OCR_TEXT, password2)
+    password1InputBox = InputBox(560, 310, 300, 75, OCR_TEXT, password1Display)
+    password2InputBox = InputBox(560, 400, 300, 75, OCR_TEXT, password2Display)
 
     femaleCharacter = ImageButton(FEMALE_MC, 170, 580, 115, 156)
     maleCharacter = ImageButton(MALE_MC, 290, 580, 115, 156)
@@ -490,9 +492,11 @@ def newgame2_loop():
         
                         # get text input from 0 to -1 i.e. end. 
                         password1 = password1[:-1] 
+                        password1Display = password1Display[:-1]
 
                     elif len(password1) <= 11: 
                         password1 += event.unicode
+                        password1Display += "*"
                     
                     password1InputBox.changeText(password1)
                 
@@ -502,9 +506,12 @@ def newgame2_loop():
         
                         # get text input from 0 to -1 i.e. end. 
                         password2 = password2[:-1] 
+                        password2Display = password2Display[:-1]
+
 
                     elif len(password2) <= 11: 
                         password2 += event.unicode
+                        password2Display += "*"
                     
                     password2InputBox.changeText(password2)
             
