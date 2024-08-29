@@ -12,7 +12,7 @@ TITLE_HEIGHT = 90
 
 # colours
 BOX_OUTLINE = (91,164,211)
-BOX_HOVER_OUTLINE = (255,255,255)
+WHITE = (255,255,255)
 BOX_FILL = (211, 245, 253)
 FONT_COLOUR = (2, 100, 106)
 ERROR_FONT_COLOUR = (255, 45, 45)
@@ -31,7 +31,7 @@ pygame.display.set_caption('THE Farm Game')
 MENU_BG = pygame.transform.scale(pygame.image.load('Resources\Images\menu-background.png'), (WIDTH, HEIGHT))
 FEMALE_MC = pygame.transform.scale(pygame.image.load('Resources\Images\girlMC.png'), (115, 156))
 MALE_MC = pygame.transform.scale(pygame.image.load('Resources\Images\maleMC.png'), (115, 156))
-ERROR = pygame.transform.scale(pygame.image.load('Resources\Images\error-icon.png'), (50, 44))
+ERROR = pygame.transform.scale(pygame.image.load('Resources\Images\error-icon.png'), (55, 48))
 
 # music
 musicVal = 0 # todo: set this to
@@ -116,13 +116,13 @@ class Button(TextBox):
     # changes colour of button border if user is hovering over it with the cursor
     def checkHover(self, position):
         if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
-            self.colourBorder = BOX_HOVER_OUTLINE
+            self.colourBorder = WHITE
         else:
             self.colourBorder = BOX_OUTLINE
 
     # changes colour of button border (used when choice is made)    
     def choiceClick(self):
-        self.colourBorder = BOX_HOVER_OUTLINE
+        self.colourBorder = WHITE
 
 class InputBox(Button):
     def __init__(self, x, y,  width, height, font, text):
@@ -141,24 +141,34 @@ class InputBox(Button):
     # changes colour of box border depending on if the user is hovering over the box or if they have clicked it
     def checkHoverOrClick(self, position):
         if self.active:
-            self.colourBorder = BOX_HOVER_OUTLINE
+            self.colourBorder = WHITE
         else:
             if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
-                self.colourBorder = BOX_HOVER_OUTLINE
+                self.colourBorder = WHITE
             else:
                 self.colourBorder = BOX_OUTLINE
 
 class Error():
-    def __init__(self, image, x, y, width, height):
+    def __init__(self, image, x, y, text, textWidth, textHeight):
         self.image = image
         self.x = x
         self.y = y
-        self.width = width
-        self.height = height
+        self.width = 55
+        self.height = 48
+        self.content = str(text)
+        self.fontColour = FONT_COLOUR
+        font = OCR_ERROR
         self.rect = self.image.get_rect(center = (self.x, self.y))
+        self.text = font.render(self.content, True, self.fontColour)
+        self.colourFill = WHITE
 
     def draw(self):
         SCREEN.blit(self.image, self.rect)
+
+    def checkHover(self, position):
+        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
+            pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(position[0]+16, position[1] -16, self.width, self.height), 0, 3)
+            SCREEN.blit(self.text, self.rect)
 
 class ImageButton():
     def __init__(self, image, x, y, width, height):
@@ -364,10 +374,10 @@ def newgame2_loop():
     femaleCharacter = ImageButton(FEMALE_MC, 170, 580, 115, 156)
     maleCharacter = ImageButton(MALE_MC, 290, 580, 115, 156)
 
-    usernameError = Text(50, 600, OCR_ERROR, ERROR_FONT_COLOUR, "Error - Username already exists" )
-    error3 = Text(50, 630, OCR_ERROR, ERROR_FONT_COLOUR, "Error - password must include uppercase, lowercase and a number" )
-    error2 = Text(50, 660, OCR_ERROR, ERROR_FONT_COLOUR, "Error - Password must be 8 characters or longer" )
-    error1 = Text(50, 690, OCR_ERROR, ERROR_FONT_COLOUR, "Error - Passwords do not match" )
+    usernameError = Error(ERROR, 900, 220, "W", 50, 44)
+    error3 = Error(ERROR, 900, 310, "A", 100, 80)
+    error2 = Error(ERROR, 900, 400, "S", 100, 80 )
+    error1 = Error(ERROR, 900, 490, "D", 100, 80 )
 
     while running:
 
@@ -396,7 +406,7 @@ def newgame2_loop():
                 character.draw()
         
         for error in [usernameError, error1, error2, error3]:
-           if error.checkActive() == True:
+            error.checkHover(mouse)
             error.draw()
 
         # handles user interaction
