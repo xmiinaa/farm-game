@@ -18,9 +18,9 @@ FONT_COLOUR = (2, 100, 106)
 ERROR_FONT_COLOUR = (255, 45, 45)
 
 # text font
-OCR_TITLE = pygame.font.Font('Resources\OCR.ttf', 48)
-OCR_TEXT = pygame.font.Font('Resources\OCR.ttf', 38)
-OCR_ERROR = pygame.font.Font('Resources\OCR.ttf', 10)
+OCR_TITLE = pygame.font.Font('Resources/OCR.ttf', 48)
+OCR_TEXT = pygame.font.Font('Resources/OCR.ttf', 38)
+OCR_ERROR = pygame.font.Font('Resources/OCR.ttf', 20)
 
 # set up window
 CLOCK = pygame.time.Clock()
@@ -28,21 +28,21 @@ SCREEN = pygame.display.set_mode([WIDTH,HEIGHT])
 pygame.display.set_caption('THE Farm Game')
 
 # images 
-MENU_BG = pygame.transform.scale(pygame.image.load('Resources\Images\menu-background.png'), (WIDTH, HEIGHT))
-FEMALE_MC = pygame.transform.scale(pygame.image.load('Resources\Images\girlMC.png'), (115, 156))
-MALE_MC = pygame.transform.scale(pygame.image.load('Resources\Images\maleMC.png'), (115, 156))
-ERROR = pygame.transform.scale(pygame.image.load('Resources\Images\error-icon.png'), (55, 48))
+MENU_BG = pygame.transform.scale(pygame.image.load('Resources/Images/menu-background.png'), (WIDTH, HEIGHT))
+FEMALE_MC = pygame.transform.scale(pygame.image.load('Resources/Images/girlMC.png'), (115, 156))
+MALE_MC = pygame.transform.scale(pygame.image.load('Resources/Images\maleMC.png'), (115, 156))
+ERROR = pygame.transform.scale(pygame.image.load('Resources/Images/error-icon.png'), (55, 48))
 
 # music
 musicVal = 0 # todo: set this to
 sfxVal = 5
 
-pygame.mixer.music.load('Resources\Music\music1.mp3')
+pygame.mixer.music.load('Resources/Music/music1.mp3')
 pygame.mixer.music.play(-1)
 pygame.mixer.music.set_volume(0) # todo: set to 5 cause im gonna get sick of music when testing it 
 
-button1 = pygame.mixer.Sound('Resources\Sound-effects\cbutton3.mp3')
-button2 = pygame.mixer.Sound('Resources\Sound-effects\cbutton4.mp3')
+button1 = pygame.mixer.Sound('Resources/Sound-effects/cbutton3.mp3')
+button2 = pygame.mixer.Sound('Resources/Sound-effects/cbutton4.mp3')
 
 salt = "5gz"
 
@@ -70,7 +70,7 @@ class Box:
 class TextBox(Box):
     def __init__(self, x, y,  width, height, font, content):
        super().__init__(x, y, width, height) 
-       font = font
+       self.font = font
        self.content = content
        self.fontColour = FONT_COLOUR
        self.text = font.render(self.content, True, self.fontColour)
@@ -90,8 +90,8 @@ class TextBox(Box):
     # method to change text in text box
     def changeText(self, newText):
         self.content = str(newText)
-        font = self.font
-        self.text = font.render(self.content, True, self.fontColour)
+        self.font = self.font
+        self.text = self.font.render(self.content, True, self.fontColour)
         self.textRect = self.text.get_rect(center = (self.width // 2 + self.x, self.height // 2 + self.y))
     
 
@@ -149,27 +149,41 @@ class InputBox(Button):
                 self.colourBorder = BOX_OUTLINE
 
 class Error():
-    def __init__(self, image, x, y, text):
+    def __init__(self, image, imageX, imageY, text, width, height, textX, textY):
         self.image = image
-        self.x = x
-        self.y = y
-        self.width = 160
-        self.height = 48
+        self.imageX = imageX
+        self.imageY = imageY
+        self.width = width
+        self.height = height
+        self.active = False
+        self.rect = self.image.get_rect(center = (self.imageX, self.imageY))
+        self.textX = textX
+        self.textY = textY
         self.content = str(text)
-        self.fontColour = FONT_COLOUR
+        self.fontColour = ERROR_FONT_COLOUR
+        self.colourBorder = (190,0, 0)
         font = OCR_ERROR
-        self.rect = self.image.get_rect(center = (self.x, self.y))
         self.text = font.render(self.content, True, self.fontColour)
         self.colourFill = WHITE
-        self.textRect = self.text.get_rect(center = (self.width // 2 + self.x, self.height // 2 + self.y))
-
+        self.textRect = self.text.get_rect(center = (self.width // 2 + self.textX, self.height // 2 + self.textY))
+        
+    def activate(self):
+        self.active = True
+    
+    def deactivate(self):
+        self.active = False
+    
+    def checkActive(self):
+        return self.active
+    
     def draw(self):
         SCREEN.blit(self.image, (self.rect))
 
     def checkHover(self, position):
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-            pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.rect.right-20, self.rect.top - 40 , self.width, self.height), 0, 3)
-            SCREEN.blit(self.text, (self.rect.right -20, self.rect.top - 40))
+            pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.textX, self.textY , self.width, self.height))
+            pygame.draw.rect(SCREEN, self.colourBorder, pygame.Rect(self.textX, self.textY , self.width, self.height), 1, 0)
+            SCREEN.blit(self.text, self.textRect)
 
 class ImageButton():
     def __init__(self, image, x, y, width, height):
@@ -210,31 +224,24 @@ class ImageButton():
     def drawBox(self):
         pygame.draw.rect(SCREEN, (255,255,255, 0), pygame.Rect(self.rect.left, self.rect.top, self.width, self.height), 2, 3)
 
-def checkNewPassword(password1, password2, error1, error2, error3):
+def checkNewPassword(password1, password2, matchError, characterError):
     required = r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$"
     print("checking")
 
     if password1 == password2 and len(password1) >= 8 and bool(re.fullmatch(required, password1)):
-        error1.deactivate()
-        error2.deactivate()
-        error3.deactivate()
+        matchError.deactivate()
+        characterError.deactivate()
         return True
     else:
         if password1 == password2:
-            error1.deactivate()
-            if len(password1) >= 8:
-                error2.deactivate()
-            else:
-                error2.activate()
-
-            if bool(re.fullmatch(required, password1)):
-                error3.deactivate()
-            else:
-                error3.activate()
+            matchError.deactivate()
         else:
-            error1.activate()
-            error2.deactivate()
-            error3.deactivate()
+            matchError.activate()
+
+        if len(password1) >= 8 and bool(re.fullmatch(required, password1)):
+            characterError.deactivate()
+        else:
+            characterError.activate()
 
         return False
 
@@ -362,7 +369,7 @@ def newgame2_loop():
 
     backButton = Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
     startButton = Button(WIDTH // 2 - (240 // 2), 520, 240, 80, OCR_TEXT, "Start")
-    speedButton = Button(720, 530, 170, 60, OCR_TEXT, "Slow")
+    speedButton = Button(720, 630, 170, 60, OCR_TEXT, "Slow")
 
     nameLabel = TextBox(210, 220, 300, 75, OCR_TEXT, "Name:")
     passwordLabel = TextBox(210, 310, 300, 75, OCR_TEXT, "Password:")
@@ -375,9 +382,9 @@ def newgame2_loop():
     femaleCharacter = ImageButton(FEMALE_MC, 170, 580, 115, 156)
     maleCharacter = ImageButton(MALE_MC, 290, 580, 115, 156)
 
-    usernameError = Error(ERROR, 890, 255, "Username already exists", 50, 44)
-    error3 = Error(ERROR, 890, 345, "Paawords do not match", 100, 80)
-    error2 = Error(ERROR, 890, 435, "Passwords must be over 8 characters and must include lowercase, uppercase and a number", 100, 80 )
+    usernameError = Error(ERROR, 890, 255, "Username already exists", 275, 34, 750, 195)
+    matchError = Error(ERROR, 890, 345, "Passwords do not match", 265, 34, 750, 285)
+    characterError = Error(ERROR, 890, 435, "Password must be over 8 characters and must include lowercase, uppercase and a number", 970, 34, 100, 375)
 
     while running:
 
@@ -405,9 +412,10 @@ def newgame2_loop():
                 character.checkHover(mouse)
                 character.draw()
         
-        for error in [usernameError, error2, error3]:
-            error.checkHover(mouse)
-            error.draw()
+        for error in [usernameError, matchError, characterError]:
+            if error.checkActive() == True:
+                error.checkHover(mouse)
+                error.draw()
 
         # handles user interaction
         for event in pygame.event.get():
@@ -451,7 +459,7 @@ def newgame2_loop():
                         speedButton.changeText("Slow")
 
                 if startButton.onClick(mouse):
-                    correctPassword = checkNewPassword(password1, password2, error2, error3)
+                    correctPassword = checkNewPassword(password1, password2, matchError, characterError)
                     print(correctPassword)
                     if correctPassword:
                         print("passwords are good to go")
