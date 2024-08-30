@@ -20,7 +20,7 @@ ERROR_FONT_COLOUR = (255, 45, 45)
 # text font
 OCR_TITLE = pygame.font.Font('Resources\OCR.ttf', 48)
 OCR_TEXT = pygame.font.Font('Resources\OCR.ttf', 38)
-OCR_ERROR = pygame.font.Font('Resources\OCR.ttf', 26)
+OCR_ERROR = pygame.font.Font('Resources\OCR.ttf', 10)
 
 # set up window
 CLOCK = pygame.time.Clock()
@@ -70,7 +70,7 @@ class Box:
 class TextBox(Box):
     def __init__(self, x, y,  width, height, font, content):
        super().__init__(x, y, width, height) 
-       self.font = font
+       font = font
        self.content = content
        self.fontColour = FONT_COLOUR
        self.text = font.render(self.content, True, self.fontColour)
@@ -81,7 +81,7 @@ class TextBox(Box):
         pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 10)
         pygame.draw.rect(SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 3, 10)
 
-        SCREEN.blit(self.text, self.textRect )   
+        SCREEN.blit(self.text, (self.textRect) )   
 
     # getter method to access text inside text box
     def getText(self):
@@ -149,11 +149,11 @@ class InputBox(Button):
                 self.colourBorder = BOX_OUTLINE
 
 class Error():
-    def __init__(self, image, x, y, text, textWidth, textHeight):
+    def __init__(self, image, x, y, text):
         self.image = image
         self.x = x
         self.y = y
-        self.width = 55
+        self.width = 160
         self.height = 48
         self.content = str(text)
         self.fontColour = FONT_COLOUR
@@ -161,14 +161,15 @@ class Error():
         self.rect = self.image.get_rect(center = (self.x, self.y))
         self.text = font.render(self.content, True, self.fontColour)
         self.colourFill = WHITE
+        self.textRect = self.text.get_rect(center = (self.width // 2 + self.x, self.height // 2 + self.y))
 
     def draw(self):
-        SCREEN.blit(self.image, self.rect)
+        SCREEN.blit(self.image, (self.rect))
 
     def checkHover(self, position):
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-            pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(position[0]+16, position[1] -16, self.width, self.height), 0, 3)
-            SCREEN.blit(self.text, self.rect)
+            pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.rect.right-20, self.rect.top - 40 , self.width, self.height), 0, 3)
+            SCREEN.blit(self.text, (self.rect.right -20, self.rect.top - 40))
 
 class ImageButton():
     def __init__(self, image, x, y, width, height):
@@ -374,10 +375,9 @@ def newgame2_loop():
     femaleCharacter = ImageButton(FEMALE_MC, 170, 580, 115, 156)
     maleCharacter = ImageButton(MALE_MC, 290, 580, 115, 156)
 
-    usernameError = Error(ERROR, 900, 220, "W", 50, 44)
-    error3 = Error(ERROR, 900, 310, "A", 100, 80)
-    error2 = Error(ERROR, 900, 400, "S", 100, 80 )
-    error1 = Error(ERROR, 900, 490, "D", 100, 80 )
+    usernameError = Error(ERROR, 890, 255, "Username already exists", 50, 44)
+    error3 = Error(ERROR, 890, 345, "Paawords do not match", 100, 80)
+    error2 = Error(ERROR, 890, 435, "Passwords must be over 8 characters and must include lowercase, uppercase and a number", 100, 80 )
 
     while running:
 
@@ -405,7 +405,7 @@ def newgame2_loop():
                 character.checkHover(mouse)
                 character.draw()
         
-        for error in [usernameError, error1, error2, error3]:
+        for error in [usernameError, error2, error3]:
             error.checkHover(mouse)
             error.draw()
 
@@ -451,7 +451,7 @@ def newgame2_loop():
                         speedButton.changeText("Slow")
 
                 if startButton.onClick(mouse):
-                    correctPassword = checkNewPassword(password1, password2, error1, error2, error3)
+                    correctPassword = checkNewPassword(password1, password2, error2, error3)
                     print(correctPassword)
                     if correctPassword:
                         print("passwords are good to go")
