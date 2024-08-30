@@ -29,8 +29,8 @@ pygame.display.set_caption('THE Farm Game')
 
 # images 
 MENU_BG = pygame.transform.scale(pygame.image.load('Resources/Images/menu-background.png'), (WIDTH, HEIGHT))
-FEMALE_MC = pygame.transform.scale(pygame.image.load('Resources/Images/girlMC.png'), (115, 156))
-MALE_MC = pygame.transform.scale(pygame.image.load('Resources/Images\maleMC.png'), (115, 156))
+FEMALE_MC = pygame.transform.scale(pygame.image.load('Resources/Images/girlMC.png'), (96, 144))
+MALE_MC = pygame.transform.scale(pygame.image.load('Resources/Images\maleMC.png'), (96, 144))
 ERROR = pygame.transform.scale(pygame.image.load('Resources/Images/error-icon.png'), (55, 48))
 
 # music
@@ -226,7 +226,6 @@ class ImageButton():
 
 def checkNewPassword(password1, password2, matchError, characterError):
     required = r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$"
-    print("checking")
 
     if password1 == password2 and len(password1) >= 8 and bool(re.fullmatch(required, password1)):
         matchError.deactivate()
@@ -368,23 +367,23 @@ def newgame2_loop():
     titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "New Game")
 
     backButton = Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
-    startButton = Button(WIDTH // 2 - (240 // 2), 520, 240, 80, OCR_TEXT, "Start")
-    speedButton = Button(720, 630, 170, 60, OCR_TEXT, "Slow")
+    startButton = Button(WIDTH // 2 - (240 // 2), 580, 240, 80, OCR_TEXT, "Start")
+    speedButton = Button(690, 590, 170, 60, OCR_TEXT, "Slow")
 
-    nameLabel = TextBox(210, 220, 300, 75, OCR_TEXT, "Name:")
-    passwordLabel = TextBox(210, 310, 300, 75, OCR_TEXT, "Password:")
-    save3Label = TextBox(210, 400, 300, 75, OCR_TEXT, "Password:")
+    nameLabel = TextBox(205, 230, 300, 80, OCR_TEXT, "Name:")
+    passwordLabel = TextBox(205, 330, 300, 80, OCR_TEXT, "Password:")
+    save3Label = TextBox(205, 430, 300, 80, OCR_TEXT, "Password:")
 
-    nameInputBox = InputBox(560, 220, 300, 75, OCR_TEXT, name)
-    password1InputBox = InputBox(560, 310, 300, 75, OCR_TEXT, password1Display)
-    password2InputBox = InputBox(560, 400, 300, 75, OCR_TEXT, password2Display)
+    nameInputBox = InputBox(565, 230, 300, 80, OCR_TEXT, name)
+    password1InputBox = InputBox(565, 330, 300, 80, OCR_TEXT, password1Display)
+    password2InputBox = InputBox(565, 430, 300, 80, OCR_TEXT, password2Display)
 
-    femaleCharacter = ImageButton(FEMALE_MC, 170, 580, 115, 156)
-    maleCharacter = ImageButton(MALE_MC, 290, 580, 115, 156)
+    femaleCharacter = ImageButton(FEMALE_MC, 240, 610, 96, 144)
+    maleCharacter = ImageButton(MALE_MC, 340, 610, 96, 144)
 
-    usernameError = Error(ERROR, 890, 255, "Username already exists", 275, 34, 750, 195)
-    matchError = Error(ERROR, 890, 345, "Passwords do not match", 265, 34, 750, 285)
-    characterError = Error(ERROR, 890, 435, "Password must be over 8 characters and must include lowercase, uppercase and a number", 970, 34, 100, 375)
+    usernameError = Error(ERROR, 890, 265, "Username already exists", 275, 34, 750, 205)
+    matchError = Error(ERROR, 890, 365, "Passwords do not match", 265, 34, 750, 305)
+    characterError = Error(ERROR, 890, 470, "Password must be over 8 characters and must include lowercase, uppercase and a number", 970, 34, 100, 405)
 
     while running:
 
@@ -416,6 +415,7 @@ def newgame2_loop():
             if error.checkActive() == True:
                 error.checkHover(mouse)
                 error.draw()
+        
 
         # handles user interaction
         for event in pygame.event.get():
@@ -460,7 +460,6 @@ def newgame2_loop():
 
                 if startButton.onClick(mouse):
                     correctPassword = checkNewPassword(password1, password2, matchError, characterError)
-                    print(correctPassword)
                     if correctPassword:
                         print("passwords are good to go")
                     if correctPassword and chosenCharacter != "" and validName:
