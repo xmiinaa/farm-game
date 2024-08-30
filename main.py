@@ -1,6 +1,7 @@
 # imports and initialise the pygame library, and oher libraries used and needed in program
 
-import re, sqlite3, hashlib, pygame
+import re, sqlite3, hashlib, pygame, json
+import menu_class
 pygame.init()
 
 # dimensions of screen
@@ -52,6 +53,7 @@ savesFile.close()
 
 for sounds in [button1, button2]:
     sounds.set_volume(0.5)
+
 
 class Box:
     def __init__(self, x, y, width, height):
@@ -224,6 +226,7 @@ class ImageButton():
     def drawBox(self):
         pygame.draw.rect(SCREEN, (255,255,255, 0), pygame.Rect(self.rect.left, self.rect.top, self.width, self.height), 2, 3)
 
+
 def checkNewPassword(password1, password2, matchError, characterError):
     required = r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$"
 
@@ -280,12 +283,10 @@ def mainmenu_loop():
                     settings_loop()
             
             # exits program
-            if event.type == pygame.QUIT:
-                running = False
-
-        pygame.display.flip()
-    
-    pygame.quit()
+            if event.type != pygame.QUIT:
+                pygame.display.flip()
+            else:
+                pygame.quit()
 
 def newgame1_loop():
 
@@ -722,7 +723,6 @@ def settings_loop():
 
 
 if __name__ == "__main__":
-    while True:
-        newgame2_loop()
+    mainmenu_loop()
 
 pygame.quit()
