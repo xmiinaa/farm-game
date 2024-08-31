@@ -1,7 +1,6 @@
 # imports and initialise the pygame library, and oher libraries used and needed in program
 
 import re, sqlite3, hashlib, pygame, json
-import menu_class
 pygame.init()
 
 # dimensions of screen
@@ -31,7 +30,7 @@ pygame.display.set_caption('THE Farm Game')
 # images 
 MENU_BG = pygame.transform.scale(pygame.image.load('Resources/Images/menu-background.png'), (WIDTH, HEIGHT))
 FEMALE_MC = pygame.transform.scale(pygame.image.load('Resources/Images/girlMC.png'), (96, 144))
-MALE_MC = pygame.transform.scale(pygame.image.load('Resources/Images\maleMC.png'), (96, 144))
+MALE_MC = pygame.transform.scale(pygame.image.load('Resources/Images/maleMC.png'), (96, 144))
 ERROR = pygame.transform.scale(pygame.image.load('Resources/Images/error-icon.png'), (55, 48))
 
 # music
@@ -96,7 +95,6 @@ class TextBox(Box):
         self.text = self.font.render(self.content, True, self.fontColour)
         self.textRect = self.text.get_rect(center = (self.width // 2 + self.x, self.height // 2 + self.y))
     
-
 class Button(TextBox):
     def __init__(self, x, y,  width, height, font, text):
         super().__init__(x, y, width, height, font, text)
@@ -225,7 +223,6 @@ class ImageButton():
     
     def drawBox(self):
         pygame.draw.rect(SCREEN, (255,255,255, 0), pygame.Rect(self.rect.left, self.rect.top, self.width, self.height), 2, 3)
-
 
 def checkNewPassword(password1, password2, matchError, characterError):
     required = r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$"
@@ -463,9 +460,10 @@ def newgame2_loop():
                     correctPassword = checkNewPassword(password1, password2, matchError, characterError)
                     if correctPassword:
                         print("passwords are good to go")
-                    if correctPassword and chosenCharacter != "" and validName:
+                    #if correctPassword and chosenCharacter != "" and validName:
                         dataBase_password = password1+salt
                         hashedPass = hashlib.md5(dataBase_password.encode())
+                        print(hashedPass)
 
             
             if event.type == pygame.KEYDOWN: 
@@ -521,8 +519,6 @@ def newgame2_loop():
     
     pygame.quit()
             
-
-
 def loadgame_loop():
 
     running = True
