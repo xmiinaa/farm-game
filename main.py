@@ -29,12 +29,9 @@ pygame.display.set_caption('THE Farm Game')
 
 # images 
 MENU_BG = pygame.transform.scale(pygame.image.load('Resources/Images/menu-background.png'), (WIDTH, HEIGHT))
-FEMALE_MC = pygame.transform.scale(pygame.image.load('Resources/Images/girlMC.png'), (96, 144))
-MALE_MC = pygame.transform.scale(pygame.image.load('Resources/Images/maleMC.png'), (96, 144))
-ERROR = pygame.transform.scale(pygame.image.load('Resources/Images/error-icon.png'), (55, 48))
 
 # music
-musicVal = 0 # todo: set this to
+musicVal = 0 # todo: set this to 5
 sfxVal = 5
 
 pygame.mixer.music.load('Resources/Music/music1.mp3')
@@ -43,12 +40,6 @@ pygame.mixer.music.set_volume(0) # todo: set to 5 cause im gonna get sick of mus
 
 button1 = pygame.mixer.Sound('Resources/Sound-effects/cbutton3.mp3')
 button2 = pygame.mixer.Sound('Resources/Sound-effects/cbutton4.mp3')
-
-salt = "5gz"
-
-# saves files
-savesFile = open("saveFile.txt", "a+")
-savesFile.close()
 
 for sounds in [button1, button2]:
     sounds.set_volume(0.5)
@@ -244,9 +235,16 @@ def checkNewPassword(password1, password2, matchError, characterError):
 
         return False
 
+def hashing(password):
+    password = password.encode('utf-8')
+    sha3_256 = hashlib.sha3_256
+    hashedPassword = sha3_256(password).hexdigest()
+    return hashedPassword
+
 def mainmenu_loop():
 
     running = True
+
     # creation of objects
     titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "THE Farm Game")
 
@@ -350,6 +348,10 @@ def newgame1_loop():
     pygame.quit()
 
 def newgame2_loop():
+
+    FEMALE_MC = pygame.transform.scale(pygame.image.load('Resources/Images/girlMC.png'), (96, 144))
+    MALE_MC = pygame.transform.scale(pygame.image.load('Resources/Images/maleMC.png'), (96, 144))
+    ERROR = pygame.transform.scale(pygame.image.load('Resources/Images/error-icon.png'), (55, 48))
 
     running = True
     name = ""
@@ -461,9 +463,7 @@ def newgame2_loop():
                     if correctPassword:
                         print("passwords are good to go")
                     #if correctPassword and chosenCharacter != "" and validName:
-                        dataBase_password = password1+salt
-                        hashedPass = hashlib.md5(dataBase_password.encode())
-                        print(hashedPass)
+                        print(hashing(password1))
 
             
             if event.type == pygame.KEYDOWN: 
@@ -642,9 +642,8 @@ def instructions_loop():
 def settings_loop():
 
     running = True
-    global musicVal
-    global sfxVal
 
+    global musicVal, sfxVal
 
     # creation of objects
     titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "Settings")
