@@ -31,8 +31,12 @@ def create_tables():
             
             conn.commit()
             print("save table made")
+            
     except sqlite3.Error as e:
         print(e)
+    finally:
+        if conn:
+            conn.close()
 
 def initialise_empty_saves():
     sql = """ INSERT INTO save (USERNAME, PASSWORD_HASH)
@@ -47,20 +51,45 @@ def initialise_empty_saves():
                 SAVE_ID =  cur.lastrowid
                 print(f"created a project with the id {SAVE_ID}")
     except sqlite3.Error as e:
-            print(e)
+        print(e)
+    finally:
+        if conn:
+            conn.close()
 
-
-
-def main():
+def view_table():
+    sql = """ SELECT * FROM save"""
     try:
         with sqlite3.connect('farmsave.db') as conn:
-            save = ("Amina", "Password1")
-            SAVE_ID = initialise_empty_saves(conn, save)
-            print(f"created a project with the id {SAVE_ID}")
+            cur = conn.cursor()
+            cur.execute(sql)
+            conn.commit()
     except sqlite3.Error as e:
         print(e)
+    finally:
+        if conn:
+            conn.close()
+
+
+def create_newsave(username, passwordHash, saveChoice):
+    sql = """ UPDATE save
+                SET USERNAME = ?, PASSWORD_HASH = ?
+                WHERE id = ? """
+    data = (username, passwordHash, saveChoice)
+
+    try:
+        with sqlite3.connect('farmsave.db') as conn:
+            cur = conn.cursor()
+            cur.execute(sql, data)
+            conn.commit()
+    except sqlite3.Error as e:
+        print(e)
+    finally:
+        if conn:
+            conn.close()
+
 
 if __name__ == "__main__":
     create_database()
     create_tables()
     initialise_empty_saves()
+    view_table()
