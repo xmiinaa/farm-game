@@ -19,14 +19,7 @@ def create_tables():
         """CREATE TABLE IF NOT EXISTS save (
                 SAVE_ID INTEGER PRIMARY KEY, 
                 USERNAME TEXT, 
-                PASSWORD_HASH TEXT, 
-                NPC_REL INTEGER,
-                PLAYER_ID INTEGER,
-                PET_OWNED_ID INTEGER,
-                ANIMAL_OWNED_ID INTEGER,
-                WEATHER_ID INTEGER,
-                TILE_ID INTEGER,
-                INVENTORY_ID INTEGER
+                PASSWORD_HASH TEXT
         );"""]
 
     # create a database connection
@@ -44,11 +37,12 @@ def create_tables():
 def initialise_empty_saves():
     sql = """ INSERT INTO save (USERNAME, PASSWORD_HASH)
                 VALUES (?, ?) """
+    emptySave = ("NULL", "NULL")
     try:
         with sqlite3.connect('farmsave.db') as conn:
             for x in range(3):
                 cur = conn.cursor()
-                cur.execute(sql, "NULL, NULL")
+                cur.execute(sql, emptySave)
                 conn.commit()
                 SAVE_ID =  cur.lastrowid
                 print(f"created a project with the id {SAVE_ID}")
