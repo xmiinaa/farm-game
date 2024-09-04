@@ -61,12 +61,11 @@ def initialise_empty_saves():
             conn.close()
 
 def view_table():
-    sql = """ SELECT * FROM save"""
     try:
         with sqlite3.connect('farmsave.db') as conn:
             cur = conn.cursor()
-            cur.execute(sql)
-            conn.commit()
+            cur.execute("SELECT * FROM save;")
+            print(cur.fetchall())
     except sqlite3.Error as e:
         print(e)
     finally:
