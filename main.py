@@ -282,6 +282,7 @@ def mainmenu_loop():
                 pygame.display.flip()
             else:
                 pygame.quit()
+                break
 
 def newgame1_loop():
 
