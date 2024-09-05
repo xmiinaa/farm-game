@@ -298,9 +298,11 @@ def newgame1_loop():
     save2Label = TextBox(220, 370, 280, 80, OCR_TEXT, "Save 2:")
     save3Label = TextBox(220, 490, 280, 80, OCR_TEXT, "Save 3:")
 
-    save1Content = Button(560, 250, 280, 80, OCR_TEXT, "no save")
-    save2Content = Button(560, 370, 280, 80, OCR_TEXT, "no save")
-    save3Content = Button(560, 490, 280, 80, OCR_TEXT, "no save")
+    save = ["", "", ""]
+
+    save1Content = Button(560, 250, 280, 80, OCR_TEXT, save[0])
+    save2Content = Button(560, 370, 280, 80, OCR_TEXT, save[1])
+    save3Content = Button(560, 490, 280, 80, OCR_TEXT, save[2])
 
     # user's save choice
     saveChoice = -1
@@ -331,12 +333,7 @@ def newgame1_loop():
             if event.type == pygame.MOUSEBUTTONDOWN:
 
                 if backButton.onClick(mouse):
-                    mainmenu_loop()
-
-                #for choice in [save1Content, save2Content, save3Content]:
-                 #   if choice.onClick(mouse):
-                  #      saveChoice = choice
-                   #     saveChoice.choiceClick()         
+                    mainmenu_loop()        
 
                 if save1Content.onClick(mouse):
                     saveChoice = save1Content
@@ -492,7 +489,6 @@ def newgame2_loop(saveChoice):
                         usernameError.activate()
 
                     if correctPassword and chosenCharacter != "" and validName:
-                        print("All good")
                         passwordHash = hashing(password1)
                         database.create_newsave(username, passwordHash, saveChoice)
 

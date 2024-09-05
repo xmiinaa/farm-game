@@ -130,12 +130,35 @@ def checkPassword(choice, passwordHash):
 
     return match
 
+def getUsernames():
+    sql = """ SELECT USERNAME
+                FROM save
+                WHERE SAVE_ID = ? """
+    names = []
+
+    try:
+        with sqlite3.connect('farmsave.db') as conn:
+            cur = conn.cursor()
+            for x in range(1,4):
+                cur.execute(sql, (x,))
+                username = cur.fetchone()
+                names.append(username)
+                conn.commit()
+                
+    except sqlite3.Error as e:
+        print(e)
+    finally:
+        print(names)
+        if conn:
+            conn.close()
+    
+    return names
+
 if __name__ == "__main__":
     create_database()
     create_tables()
     initialise_empty_saves()
     view_table()
-    print(checkPassword(3, "7833dc6e82e9378117bcb03128ac8fdd95d9073161ebc963783b3010dd847ff3"))
     #create_newsave("Amina", "7833dc6e82e9378117bcb03128ac8fdd95d9073161ebc963783b3010dd847ff3", 1)
     #create_newsave("Kalam", "8d71292c2d52e804d6e43412655bf3ec8020354446913b30e0813baaf675651e", 2)
     
