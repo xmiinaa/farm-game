@@ -90,7 +90,7 @@ def checkUsername(name):
     sql = """ SELECT USERNAME
                 FROM save
                 WHERE SAVE_ID = ? """
-    Found = False
+    valid = True
 
     try:
         with sqlite3.connect('farmsave.db') as conn:
@@ -101,14 +101,14 @@ def checkUsername(name):
                 conn.commit()
                 print(username)
                 if username[0] == name:
-                    Found = True
+                    valid = False
     except sqlite3.Error as e:
         print(e)
     finally:
         if conn:
             conn.close()
     
-    return Found
+    return valid
 
 def checkPassword(choice, passwordHash):
     sql = """ SELECT PASSWORD_HASH

@@ -383,9 +383,10 @@ def newgame2_loop():
     femaleCharacter = ImageButton(FEMALE_MC, 240, 610, 96, 144)
     maleCharacter = ImageButton(MALE_MC, 340, 610, 96, 144)
 
-    usernameError = Error(ERROR, 890, 265, "Username already exists", 275, 34, 750, 205)
-    matchError = Error(ERROR, 890, 365, "Passwords do not match", 265, 34, 750, 305)
-    characterError = Error(ERROR, 890, 470, "Password must be over 8 characters and must include lowercase, uppercase and a number", 970, 34, 100, 405)
+    usernameError = Error(ERROR, 900, 265, "Username already exists", 275, 34, 750, 205)
+    matchError = Error(ERROR, 900, 365, "Passwords do not match", 265, 34, 750, 305)
+    characterError = Error(ERROR, 900, 470, "Password must be over 8 characters and must include lowercase, uppercase and a number", 970, 34, 100, 405)
+    noNameError = Error(ERROR, 900, 265, "You must enter a name", 275, 34, 750, 205)
 
     while running:
 
@@ -463,7 +464,6 @@ def newgame2_loop():
                 if startButton.onClick(mouse):
                     correctPassword = checkNewPassword(password1, password2, matchError, characterError)
                     username = nameInputBox.getText()
-                    print(username)
                     validName = database.checkUsername(str(username))
                     print(validName)
                     if correctPassword:
