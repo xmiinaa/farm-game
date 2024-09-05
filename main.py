@@ -304,6 +304,7 @@ def newgame1_loop():
 
     # user's save choice
     saveChoice = -1
+    userChoice = -1
 
     while running:
 
@@ -332,14 +333,27 @@ def newgame1_loop():
                 if backButton.onClick(mouse):
                     mainmenu_loop()
 
-                for choice in [save1Content, save2Content, save3Content]:
-                    if choice.onClick(mouse):
-                        saveChoice = choice
-                        saveChoice.choiceClick() 
+                #for choice in [save1Content, save2Content, save3Content]:
+                 #   if choice.onClick(mouse):
+                  #      saveChoice = choice
+                   #     saveChoice.choiceClick()         
+
+                if save1Content.onClick(mouse):
+                    saveChoice = save1Content
+                    saveChoice.choiceClick()    
+                    userChoice = 1
+                if save2Content.onClick(mouse):
+                    saveChoice = save2Content
+                    saveChoice.choiceClick()    
+                    userChoice = 2
+                if save3Content.onClick(mouse):
+                    saveChoice = save3Content
+                    saveChoice.choiceClick()    
+                    userChoice = 3
 
                 if tickButton.onClick(mouse):
                     if saveChoice != -1:
-                        newgame2_loop(saveChoice)
+                        newgame2_loop(userChoice)
                 
             #  ends program
             if event.type == pygame.QUIT:
@@ -473,12 +487,12 @@ def newgame2_loop(saveChoice):
                     
 
                     if validName:
-                        print("valid name")
                         usernameError.deactivate()
                     else:
                         usernameError.activate()
 
                     if correctPassword and chosenCharacter != "" and validName:
+                        print("All good")
                         passwordHash = hashing(password1)
                         database.create_newsave(username, passwordHash, saveChoice)
 
