@@ -1,6 +1,7 @@
 # imports and initialise the pygame library, and oher libraries used and needed in program
 
 import re, sqlite3, hashlib, pygame, json
+import database
 pygame.init()
 
 # dimensions of screen
@@ -461,8 +462,17 @@ def newgame2_loop():
 
                 if startButton.onClick(mouse):
                     correctPassword = checkNewPassword(password1, password2, matchError, characterError)
+                    username = nameInputBox.getText()
+                    print(username)
+                    validName = database.checkUsername(str(username))
+                    print(validName)
                     if correctPassword:
                         print("passwords are good to go")
+                    if validName:
+                        print("Username is good")
+                        usernameError.deactivate()
+                    else:
+                        usernameError.activate()
                     #if correctPassword and chosenCharacter != "" and validName:
                         print(hashing(password1))
 
@@ -719,6 +729,6 @@ def settings_loop():
 
 
 if __name__ == "__main__":
-    mainmenu_loop()
+    newgame2_loop()
 
 pygame.quit()
