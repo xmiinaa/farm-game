@@ -99,10 +99,12 @@ def checkUsername(name):
         with sqlite3.connect('farmsave.db') as conn:
             cur = conn.cursor()
             for x in range(1,4):
-                username = cur.execute(sql, (x))
+                cur.execute(sql, (x))
+                username = cur.fetchone()
+                conn.commit()
+                print(username)
                 if str(username) == name:
                     Found = True
-                conn.commit()
     except sqlite3.Error as e:
         print(e)
     finally:
