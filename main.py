@@ -339,7 +339,7 @@ def newgame1_loop():
 
                 if tickButton.onClick(mouse):
                     if saveChoice != -1:
-                        newgame2_loop()
+                        newgame2_loop(saveChoice)
                 
             #  ends program
             if event.type == pygame.QUIT:
@@ -349,7 +349,7 @@ def newgame1_loop():
 
     pygame.quit()
 
-def newgame2_loop():
+def newgame2_loop(saveChoice):
 
     FEMALE_MC = pygame.transform.scale(pygame.image.load('Resources/Images/girlMC.png'), (96, 144))
     MALE_MC = pygame.transform.scale(pygame.image.load('Resources/Images/maleMC.png'), (96, 144))
@@ -414,7 +414,7 @@ def newgame2_loop():
                 character.checkHover(mouse)
                 character.draw()
         
-        for error in [usernameError, matchError, characterError]:
+        for error in [usernameError, matchError, characterError, noNameError]:
             if error.checkActive() == True:
                 error.checkHover(mouse)
                 error.draw()
@@ -464,17 +464,23 @@ def newgame2_loop():
                 if startButton.onClick(mouse):
                     correctPassword = checkNewPassword(password1, password2, matchError, characterError)
                     username = nameInputBox.getText()
-                    validName = database.checkUsername(str(username))
-                    print(validName)
-                    if correctPassword:
-                        print("passwords are good to go")
+
+                    if username == "":
+                        noNameError.activate()
+                    else:
+                        noNameError.deactivate()
+                        validName = database.checkUsername(str(username))
+                    
+
                     if validName:
-                        print("Username is good")
+                        print("valid name")
                         usernameError.deactivate()
                     else:
                         usernameError.activate()
-                    #if correctPassword and chosenCharacter != "" and validName:
-                        print(hashing(password1))
+
+                    if correctPassword and chosenCharacter != "" and validName:
+                        passwordHash = hashing(password1)
+                        database.create_newsave(username, passwordHash, saveChoice)
 
             
             if event.type == pygame.KEYDOWN: 
@@ -729,6 +735,6 @@ def settings_loop():
 
 
 if __name__ == "__main__":
-    newgame2_loop()
+    newgame1_loop()
 
 pygame.quit()

@@ -5,7 +5,6 @@ def create_database():
     conn = None
     try:
         conn = sqlite3.connect("farmsave.db")
-        print(conn)
     except sqlite3.Error as e:
         print(e)
     finally:
@@ -28,7 +27,6 @@ def create_tables():
                 cursor.execute(statement)
             
             conn.commit()
-            print("save table made")
             
     except sqlite3.Error as e:
         print(e)
@@ -85,6 +83,7 @@ def create_newsave(username, passwordHash, saveChoice):
     finally:
         if conn:
             conn.close()
+        view_table()
 
 def checkUsername(name):
     sql = """ SELECT USERNAME
@@ -99,7 +98,6 @@ def checkUsername(name):
                 cur.execute(sql, (x,))
                 username = cur.fetchone()
                 conn.commit()
-                print(username)
                 if username[0] == name:
                     valid = False
     except sqlite3.Error as e:
