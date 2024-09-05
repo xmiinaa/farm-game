@@ -12,8 +12,6 @@ def create_database():
         if conn:
             conn.close()
 
-import sqlite3
-
 def create_tables():
     sql_statements = [ 
         """CREATE TABLE IF NOT EXISTS save (
@@ -71,7 +69,6 @@ def view_table():
         if conn:
             conn.close()
 
-
 def create_newsave(username, passwordHash, saveChoice):
     sql = """ UPDATE save
                 SET USERNAME = ?, PASSWORD_HASH = ?
@@ -99,11 +96,11 @@ def checkUsername(name):
         with sqlite3.connect('farmsave.db') as conn:
             cur = conn.cursor()
             for x in range(1,4):
-                cur.execute(sql, (x))
+                cur.execute(sql, (x,))
                 username = cur.fetchone()
                 conn.commit()
                 print(username)
-                if str(username) == name:
+                if username[0] == name:
                     Found = True
     except sqlite3.Error as e:
         print(e)
@@ -121,4 +118,4 @@ if __name__ == "__main__":
     print(checkUsername("Amina"))
     #create_newsave("Amina", "7833dc6e82e9378117bcb03128ac8fdd95d9073161ebc963783b3010dd847ff3", 1)
     #create_newsave("Kalam", "8d71292c2d52e804d6e43412655bf3ec8020354446913b30e0813baaf675651e", 2)
-    #view_table()
+    
