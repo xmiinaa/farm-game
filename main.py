@@ -1,80 +1,52 @@
 # imports and initialise the pygame library, and oher libraries used and needed in program
 
-import re, sqlite3, hashlib, pygame, json
-import database
+import re, sqlite3, hashlib, pygame
+import database, config
 pygame.init()
-
-# dimensions of screen
-WIDTH = 1080
-HEIGHT = 720
-
-TITLE_WIDTH = 450
-TITLE_HEIGHT = 90
-
-# colours
-BOX_OUTLINE = (91,164,211)
-WHITE = (255,255,255)
-BOX_FILL = (211, 245, 253)
-FONT_COLOUR = (2, 100, 106)
-ERROR_FONT_COLOUR = (255, 45, 45)
-
-# text font
-OCR_TITLE = pygame.font.Font('Resources/OCR.ttf', 48)
-OCR_TEXT = pygame.font.Font('Resources/OCR.ttf', 38)
-OCR_ERROR = pygame.font.Font('Resources/OCR.ttf', 20)
 
 # set up window
 CLOCK = pygame.time.Clock()
-SCREEN = pygame.display.set_mode([WIDTH,HEIGHT])
 pygame.display.set_caption('THE Farm Game')
-
-# images 
-MENU_BG = pygame.transform.scale(pygame.image.load('Resources/Images/menu-background.png'), (WIDTH, HEIGHT))
-
-# music
-musicVal = 0 # todo: set this to 5
-sfxVal = 5
 
 pygame.mixer.music.load('Resources/Music/music1.mp3')
 pygame.mixer.music.play(-1)
-pygame.mixer.music.set_volume(0) # todo: set to 5 cause im gonna get sick of music when testing it 
+pygame.mixer.music.set_volume(0) # todo: set to 5
 
 button1 = pygame.mixer.Sound('Resources/Sound-effects/cbutton3.mp3')
 button2 = pygame.mixer.Sound('Resources/Sound-effects/cbutton4.mp3')
 
 for sounds in [button1, button2]:
     sounds.set_volume(0.5)
-
-
+    
 class Box:
     def __init__(self, x, y, width, height):
         self.x = x
         self.y = y
-        self.colourFill = BOX_FILL
-        self.colourBorder = BOX_OUTLINE
+        self.colourFill = config.BOX_FILL
+        self.colourBorder = config.BOX_OUTLINE
         self.width = width
         self.height = height
 
     # displays box onto screen
     def draw(self):
-        pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 3)
-        pygame.draw.rect(SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 2, 3)
+        pygame.draw.rect(config.SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 3)
+        pygame.draw.rect(config.SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 2, 3)
 
 class TextBox(Box):
     def __init__(self, x, y,  width, height, font, content):
        super().__init__(x, y, width, height) 
        self.font = font
        self.content = content
-       self.fontColour = FONT_COLOUR
+       self.fontColour = config.FONT_COLOUR
        self.text = font.render(self.content, True, self.fontColour)
        self.textRect = self.text.get_rect(center = (self.width // 2 + self.x, self.height // 2 + self.y))
 
     # displays text box onto screen
     def draw(self): 
-        pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 10)
-        pygame.draw.rect(SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 3, 10)
+        pygame.draw.rect(config.SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 10)
+        pygame.draw.rect(config.SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 3, 10)
 
-        SCREEN.blit(self.text, (self.textRect) )   
+        config.SCREEN.blit(self.text, (self.textRect) )   
 
     # getter method to access text inside text box
     def getText(self):
@@ -101,20 +73,20 @@ class Button(TextBox):
     
     # dispalys button onto screen
     def draw(self):
-        pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 10)
-        pygame.draw.rect(SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 3, 10)
-        SCREEN.blit(self.text, self.textRect )
+        pygame.draw.rect(config.SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 10)
+        pygame.draw.rect(config.SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 3, 10)
+        config.SCREEN.blit(self.text, self.textRect )
 
     # changes colour of button border if user is hovering over it with the cursor
     def checkHover(self, position):
         if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
-            self.colourBorder = WHITE
+            self.colourBorder = config.WHITE
         else:
-            self.colourBorder = BOX_OUTLINE
+            self.colourBorder = config.BOX_OUTLINE
 
     # changes colour of button border (used when choice is made)    
     def choiceClick(self):
-        self.colourBorder = WHITE
+        self.colourBorder = config.WHITE
 
 class InputBox(Button):
     def __init__(self, x, y,  width, height, font, text):
@@ -133,12 +105,12 @@ class InputBox(Button):
     # changes colour of box border depending on if the user is hovering over the box or if they have clicked it
     def checkHoverOrClick(self, position):
         if self.active:
-            self.colourBorder = WHITE
+            self.colourBorder = config.WHITE
         else:
             if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
-                self.colourBorder = WHITE
+                self.colourBorder = config.WHITE
             else:
-                self.colourBorder = BOX_OUTLINE
+                self.colourBorder = config.BOX_OUTLINE
 
 class Error():
     def __init__(self, image, imageX, imageY, text, width, height, textX, textY):
@@ -152,11 +124,11 @@ class Error():
         self.textX = textX
         self.textY = textY
         self.content = str(text)
-        self.fontColour = ERROR_FONT_COLOUR
+        self.fontColour = config.ERROR_FONT_COLOUR
         self.colourBorder = (190,0, 0)
-        font = OCR_ERROR
+        font = config.OCR_ERROR
         self.text = font.render(self.content, True, self.fontColour)
-        self.colourFill = WHITE
+        self.colourFill = config.WHITE
         self.textRect = self.text.get_rect(center = (self.width // 2 + self.textX, self.height // 2 + self.textY))
         
     def activate(self):
@@ -169,13 +141,13 @@ class Error():
         return self.active
     
     def draw(self):
-        SCREEN.blit(self.image, (self.rect))
+        config.SCREEN.blit(self.image, (self.rect))
 
     def checkHover(self, position):
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-            pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.textX, self.textY , self.width, self.height))
-            pygame.draw.rect(SCREEN, self.colourBorder, pygame.Rect(self.textX, self.textY , self.width, self.height), 1, 0)
-            SCREEN.blit(self.text, self.textRect)
+            pygame.draw.rect(config.SCREEN, self.colourFill, pygame.Rect(self.textX, self.textY , self.width, self.height))
+            pygame.draw.rect(config.SCREEN, self.colourBorder, pygame.Rect(self.textX, self.textY , self.width, self.height), 1, 0)
+            config.SCREEN.blit(self.text, self.textRect)
 
 class ImageButton():
     def __init__(self, image, x, y, width, height):
@@ -199,10 +171,10 @@ class ImageButton():
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
             self.drawBox()
         else:
-            SCREEN.blit(self.image, self.rect)
+            config.SCREEN.blit(self.image, self.rect)
 
     def draw(self):
-        SCREEN.blit(self.image, self.rect)
+        config.SCREEN.blit(self.image, self.rect)
     
     def activate(self):
         self.active = True
@@ -214,7 +186,7 @@ class ImageButton():
         return self.active
     
     def drawBox(self):
-        pygame.draw.rect(SCREEN, (255,255,255, 0), pygame.Rect(self.rect.left, self.rect.top, self.width, self.height), 2, 3)
+        pygame.draw.rect(config.SCREEN, (255,255,255, 0), pygame.Rect(self.rect.left, self.rect.top, self.width, self.height), 2, 3)
 
 def checkNewPassword(password1, password2, matchError, characterError):
     required = r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$"
@@ -247,16 +219,16 @@ def mainmenu_loop():
     running = True
 
     # creation of objects
-    titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "THE Farm Game")
+    titleBox = TextBox(config.WIDTH // 2 - (config.TITLE_WIDTH // 2), 100, config.TITLE_WIDTH, config.TITLE_HEIGHT, config.OCR_TITLE, "THE Farm Game")
 
-    newGameButton = Button(WIDTH // 2 - 140, 220, 280, 70, OCR_TEXT, "New Game")
-    loadGameButton = Button(WIDTH // 2 - 140, 320, 280, 70, OCR_TEXT, "Load Game")
-    instructionsButton = Button(WIDTH // 2 - 140, 420, 280, 70, OCR_TEXT, "How To Play")
-    settingsButton = Button(WIDTH // 2 - 140, 520, 280, 70, OCR_TEXT, "Settings")
+    newGameButton = Button(config.WIDTH // 2 - 140, 220, 280, 70, config.OCR_TEXT, "New Game")
+    loadGameButton = Button(config.WIDTH // 2 - 140, 320, 280, 70, config.OCR_TEXT, "Load Game")
+    instructionsButton = Button(config.WIDTH // 2 - 140, 420, 280, 70, config.OCR_TEXT, "How To Play")
+    settingsButton = Button(config.WIDTH // 2 - 140, 520, 280, 70, config.OCR_TEXT, "Settings")
 
     while running:
 
-        SCREEN.blit(MENU_BG, (0, 0))
+        config.SCREEN.blit(config.MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
 
         # displays all elements
@@ -289,20 +261,20 @@ def newgame1_loop():
 
     running = True
     # creation of objects
-    titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "New Game")
+    titleBox = TextBox(config.WIDTH // 2 - (config.TITLE_WIDTH // 2), 100, config.TITLE_WIDTH, config.TITLE_HEIGHT, config.OCR_TITLE, "New Game")
 
-    backButton = Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
-    tickButton = Button( (WIDTH-30-90) , (HEIGHT-30-70) , 90, 70, OCR_TITLE, "->")
+    backButton = Button(30, 30, 90, 70, config.OCR_TITLE, "<-"  )
+    tickButton = Button( (config.WIDTH-30-90) , (config.HEIGHT-30-70) , 90, 70, config.OCR_TITLE, "->")
 
-    save1Label = TextBox(220, 250, 280, 80, OCR_TEXT, "Save 1:")
-    save2Label = TextBox(220, 370, 280, 80, OCR_TEXT, "Save 2:")
-    save3Label = TextBox(220, 490, 280, 80, OCR_TEXT, "Save 3:")
+    save1Label = TextBox(220, 250, 280, 80, config.OCR_TEXT, "Save 1:")
+    save2Label = TextBox(220, 370, 280, 80, config.OCR_TEXT, "Save 2:")
+    save3Label = TextBox(220, 490, 280, 80, config.OCR_TEXT, "Save 3:")
 
-    save = ["", "", ""]
+    save = database.getUsernames()
 
-    save1Content = Button(560, 250, 280, 80, OCR_TEXT, save[0])
-    save2Content = Button(560, 370, 280, 80, OCR_TEXT, save[1])
-    save3Content = Button(560, 490, 280, 80, OCR_TEXT, save[2])
+    save1Content = Button(560, 250, 280, 80, config.OCR_TEXT, save[0][0])
+    save2Content = Button(560, 370, 280, 80, config.OCR_TEXT, save[1][0])
+    save3Content = Button(560, 490, 280, 80, config.OCR_TEXT, save[2][0])
 
     # user's save choice
     saveChoice = -1
@@ -310,7 +282,7 @@ def newgame1_loop():
 
     while running:
 
-        SCREEN.blit(MENU_BG, (0, 0))
+        config.SCREEN.blit(config.MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
 
         # displays all elements
@@ -377,19 +349,19 @@ def newgame2_loop(saveChoice):
     validName = False
 
     # creation of objects 
-    titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "New Game")
+    titleBox = TextBox(config.WIDTH // 2 - (config.TITLE_WIDTH // 2), 100, config.TITLE_WIDTH, config.TITLE_HEIGHT, config.OCR_TITLE, "New Game")
 
-    backButton = Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
-    startButton = Button(WIDTH // 2 - (240 // 2), 580, 240, 80, OCR_TEXT, "Start")
-    speedButton = Button(690, 590, 170, 60, OCR_TEXT, "Slow")
+    backButton = Button(30, 30, 90, 70, config.OCR_TITLE, "<-"  )
+    startButton = Button(config.WIDTH // 2 - (240 // 2), 580, 240, 80, config.OCR_TEXT, "Start")
+    speedButton = Button(690, 590, 170, 60, config.OCR_TEXT, "Slow")
 
-    nameLabel = TextBox(205, 230, 300, 80, OCR_TEXT, "Name:")
-    passwordLabel = TextBox(205, 330, 300, 80, OCR_TEXT, "Password:")
-    save3Label = TextBox(205, 430, 300, 80, OCR_TEXT, "Password:")
+    nameLabel = TextBox(205, 230, 300, 80, config.OCR_TEXT, "Name:")
+    passwordLabel = TextBox(205, 330, 300, 80, config.OCR_TEXT, "Password:")
+    save3Label = TextBox(205, 430, 300, 80, config.OCR_TEXT, "Password:")
 
-    nameInputBox = InputBox(565, 230, 300, 80, OCR_TEXT, name)
-    password1InputBox = InputBox(565, 330, 300, 80, OCR_TEXT, password1Display)
-    password2InputBox = InputBox(565, 430, 300, 80, OCR_TEXT, password2Display)
+    nameInputBox = InputBox(565, 230, 300, 80, config.OCR_TEXT, name)
+    password1InputBox = InputBox(565, 330, 300, 80, config.OCR_TEXT, password1Display)
+    password2InputBox = InputBox(565, 430, 300, 80, config.OCR_TEXT, password2Display)
 
     femaleCharacter = ImageButton(FEMALE_MC, 240, 610, 96, 144)
     maleCharacter = ImageButton(MALE_MC, 340, 610, 96, 144)
@@ -401,7 +373,7 @@ def newgame2_loop(saveChoice):
 
     while running:
 
-        SCREEN.blit(MENU_BG, (0, 0))
+        config.SCREEN.blit(config.MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
 
         # dislpays all elements
@@ -554,24 +526,24 @@ def loadgame_loop():
     passwordDisplay = ""
 
     # creation of objects
-    titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "Load Game")
+    titleBox = TextBox(config.WIDTH // 2 - (config.TITLE_WIDTH // 2), 100, config.TITLE_WIDTH, config.TITLE_HEIGHT, config.OCR_TITLE, "Load Game")
 
-    backButton = Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
-    tickButton = Button( (WIDTH-30-90) , (HEIGHT-30-70) , 90, 70, OCR_TITLE, "->")
+    backButton = Button(30, 30, 90, 70, config.OCR_TITLE, "<-"  )
+    tickButton = Button( (config.WIDTH-30-90) , (config.HEIGHT-30-70) , 90, 70, config.OCR_TITLE, "->")
 
-    save1Label = TextBox(230, 240, 280, 80, OCR_TEXT, "Save 1:")
-    save2Label = TextBox(230, 350, 280, 80, OCR_TEXT, "Save 2:")
-    save3Label = TextBox(230, 460, 280, 80, OCR_TEXT, "Save 3:")
+    save1Label = TextBox(230, 240, 280, 80, config.OCR_TEXT, "Save 1:")
+    save2Label = TextBox(230, 350, 280, 80, config.OCR_TEXT, "Save 2:")
+    save3Label = TextBox(230, 460, 280, 80, config.OCR_TEXT, "Save 3:")
 
-    save1Content = Button(570, 240, 280, 80, OCR_TEXT, "no save")
-    save2Content = Button(570, 350, 280, 80, OCR_TEXT, "no save")
-    save3Content = Button(570, 460, 280, 80, OCR_TEXT, "no save")
+    save1Content = Button(570, 240, 280, 80, config.OCR_TEXT, "no save")
+    save2Content = Button(570, 350, 280, 80, config.OCR_TEXT, "no save")
+    save3Content = Button(570, 460, 280, 80, config.OCR_TEXT, "no save")
 
-    passwordInputBox = InputBox(WIDTH // 2 - (320 // 2), 580, 320, 80, OCR_TEXT, passwordDisplay)
+    passwordInputBox = InputBox(config.WIDTH // 2 - (320 // 2), 580, 320, 80, config.OCR_TEXT, passwordDisplay)
     
 
     while running:
-        SCREEN.blit(MENU_BG, (0, 0))
+        config.SCREEN.blit(config.MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
 
         # dislpays all elements
@@ -637,11 +609,11 @@ def instructions_loop():
 
     running = True
     # creation of objects
-    titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "How to Play")
-    backButton = Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
+    titleBox = TextBox(config.WIDTH // 2 - (config.TITLE_WIDTH // 2), 100, config.TITLE_WIDTH, config.TITLE_HEIGHT, config.OCR_TITLE, "How to Play")
+    backButton = Button(30, 30, 90, 70, config.OCR_TITLE, "<-"  )
     
     while running:
-        SCREEN.blit(MENU_BG, (0, 0))
+        config.SCREEN.blit(config.MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
 
         # displays all elements
@@ -670,26 +642,24 @@ def settings_loop():
 
     running = True
 
-    global musicVal, sfxVal
-
     # creation of objects
-    titleBox = TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "Settings")
+    titleBox = TextBox(config.WIDTH // 2 - (config.TITLE_WIDTH // 2), 100, config.TITLE_WIDTH, config.TITLE_HEIGHT, config.OCR_TITLE, "Settings")
 
-    backButton = Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
+    backButton = Button(30, 30, 90, 70, config.OCR_TITLE, "<-"  )
 
-    musicLabel = TextBox(160, 250, 320, 70, OCR_TEXT, "Music")
-    sfxLabel = TextBox(160, 390, 320, 70, OCR_TEXT, "Sound Effects")
+    musicLabel = TextBox(160, 250, 320, 70, config.OCR_TEXT, "Music")
+    sfxLabel = TextBox(160, 390, 320, 70, config.OCR_TEXT, "Sound Effects")
 
-    minusMusicButton = Button(570, 250, 90, 70, OCR_TITLE, "-"  )
-    addMusicButton = Button(850, 250, 90, 70, OCR_TITLE, "+"  )
-    minusSfxButton = Button(570, 390, 90, 70, OCR_TITLE, "-"  )
-    addSfxButton = Button(850, 390, 90, 70, OCR_TITLE, "+"  )
+    minusMusicButton = Button(570, 250, 90, 70, config.OCR_TITLE, "-"  )
+    addMusicButton = Button(850, 250, 90, 70, config.OCR_TITLE, "+"  )
+    minusSfxButton = Button(570, 390, 90, 70, config.OCR_TITLE, "-"  )
+    addSfxButton = Button(850, 390, 90, 70, config.OCR_TITLE, "+"  )
 
-    musicNum = TextBox(710, 250, 90, 70, OCR_TITLE, str(musicVal)  )
-    sfxNum = TextBox(710, 390, 90, 70, OCR_TITLE, str(sfxVal)  )
+    musicNum = TextBox(710, 250, 90, 70, config.OCR_TITLE, str(config.musicVal)  )
+    sfxNum = TextBox(710, 390, 90, 70, config.OCR_TITLE, str(config.sfxVal)  )
 
     while running:
-        SCREEN.blit(MENU_BG, (0, 0))
+        config.SCREEN.blit(config.MENU_BG, (0, 0))
         mouse = pygame.mouse.get_pos()
 
         # displays all elements
@@ -707,34 +677,34 @@ def settings_loop():
                 if backButton.onClick(mouse):
                     mainmenu_loop()
                 if minusMusicButton.onClick(mouse):
-                    musicVal = int(musicNum.getText())
-                    if musicVal > 0:
-                        musicVal -= 1
-                        pygame.mixer.music.set_volume(musicVal / 10)
-                        musicNum.changeText(musicVal)
+                    config.musicVal = int(musicNum.getText())
+                    if config.musicVal > 0:
+                        config.musicVal -= 1
+                        pygame.mixer.music.set_volume(config.musicVal / 10)
+                        musicNum.changeText(config.musicVal)
                 
                 if addMusicButton.onClick(mouse):
-                    musicVal = int(musicNum.getText())
-                    if musicVal < 10:
-                        musicVal += 1
-                        pygame.mixer.music.set_volume(musicVal / 10)
-                        musicNum.changeText(musicVal)
+                    config.musicVal = int(musicNum.getText())
+                    if config.musicVal < 10:
+                        config.musicVal += 1
+                        pygame.mixer.music.set_volume(config.musicVal / 10)
+                        musicNum.changeText(config.musicVal)
                     
                 if minusSfxButton.onClick(mouse):
-                    sfxVal = int(sfxNum.getText())
-                    if sfxVal > 0:
-                        sfxVal -= 1
+                    config.sfxVal = int(sfxNum.getText())
+                    if config.sfxVal > 0:
+                        config.sfxVal -= 1
                         for effect in [button1, button2]:
-                            effect.set_volume(sfxVal / 10)
-                        sfxNum.changeText(sfxVal)
+                            effect.set_volume(config.sfxVal / 10)
+                        sfxNum.changeText(config.sfxVal)
                     
                 if addSfxButton.onClick(mouse):
-                    sfxVal = int(sfxNum.getText())
-                    if sfxVal < 10:
-                        sfxVal += 1
+                    config.sfxVal = int(sfxNum.getText())
+                    if config.sfxVal < 10:
+                        config.sfxVal += 1
                         for effect in [button1, button2]:
-                            effect.set_volume(sfxVal / 10)
-                        sfxNum.changeText(sfxVal)
+                            effect.set_volume(config.sfxVal / 10)
+                        sfxNum.changeText(config.sfxVal)
 
             # ends program
             if event.type == pygame.QUIT:
@@ -743,8 +713,7 @@ def settings_loop():
         pygame.display.flip()
     pygame.quit()
 
-
 if __name__ == "__main__":
-    newgame1_loop()
-
+    mainmenu_loop()
+    
 pygame.quit()
