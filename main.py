@@ -1,6 +1,6 @@
 # imports and initialise the pygame library, and oher libraries used and needed in program
 
-import re, sqlite3, hashlib, pygame
+import re, hashlib, pygame
 import database, config
 pygame.init()
 
@@ -522,8 +522,11 @@ def loadgame_loop():
 
     running = True
     saveChoice = -1
+    userChoice = -1
     password = ""
     passwordDisplay = ""
+    
+    save = database.getUsernames()
 
     # creation of objects
     titleBox = TextBox(config.WIDTH // 2 - (config.TITLE_WIDTH // 2), 100, config.TITLE_WIDTH, config.TITLE_HEIGHT, config.OCR_TITLE, "Load Game")
@@ -535,9 +538,9 @@ def loadgame_loop():
     save2Label = TextBox(230, 350, 280, 80, config.OCR_TEXT, "Save 2:")
     save3Label = TextBox(230, 460, 280, 80, config.OCR_TEXT, "Save 3:")
 
-    save1Content = Button(570, 240, 280, 80, config.OCR_TEXT, "no save")
-    save2Content = Button(570, 350, 280, 80, config.OCR_TEXT, "no save")
-    save3Content = Button(570, 460, 280, 80, config.OCR_TEXT, "no save")
+    save1Content = Button(570, 240, 280, 80, config.OCR_TEXT, save[0][0])
+    save2Content = Button(570, 350, 280, 80, config.OCR_TEXT, save[1][0])
+    save3Content = Button(570, 460, 280, 80, config.OCR_TEXT, save[2][0])
 
     passwordInputBox = InputBox(config.WIDTH // 2 - (320 // 2), 580, 320, 80, config.OCR_TEXT, passwordDisplay)
     
@@ -569,10 +572,18 @@ def loadgame_loop():
                 if backButton.onClick(mouse):
                     mainmenu_loop()
 
-                for choice in [save1Content, save2Content, save3Content]:
-                    if choice.onClick(mouse):
-                        saveChoice = choice
-                        saveChoice.choiceClick() 
+                if save1Content.onClick(mouse):
+                    saveChoice = save1Content
+                    saveChoice.choiceClick()    
+                    userChoice = 1
+                if save2Content.onClick(mouse):
+                    saveChoice = save2Content
+                    saveChoice.choiceClick()    
+                    userChoice = 2
+                if save3Content.onClick(mouse):
+                    saveChoice = save3Content
+                    saveChoice.choiceClick()    
+                    userChoice = 3 
                 
                 if passwordInputBox.onClick(mouse):
                     passwordInputBox.activate()

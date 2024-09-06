@@ -158,6 +158,4 @@ if __name__ == "__main__":
     create_tables()
     initialise_empty_saves()
     view_table()
-    #create_newsave("Amina", "7833dc6e82e9378117bcb03128ac8fdd95d9073161ebc963783b3010dd847ff3", 1)
-    #create_newsave("Kalam", "8d71292c2d52e804d6e43412655bf3ec8020354446913b30e0813baaf675651e", 2)
     
