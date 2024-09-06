@@ -157,5 +157,5 @@ if __name__ == "__main__":
     create_database()
     create_tables()
     initialise_empty_saves()
-    view_table()
+    #view_table()
     
