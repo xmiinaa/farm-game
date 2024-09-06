@@ -420,7 +420,8 @@ def loadgame_loop():
 
                 if tickButton.onClick(mouse):
                     if passwordInputBox.getText() != "":
-                        correct = database.checkPassword(userChoice, password)
+                        passwordHash = hashing(password)
+                        correct = database.checkPassword(userChoice, passwordHash)
                         if correct:
                             game.main()
                 
