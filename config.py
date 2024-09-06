@@ -36,3 +36,16 @@ button2 = pygame.mixer.Sound('Resources/Sound-effects/cbutton4.mp3')
 
 # screen
 SCREEN = pygame.display.set_mode([WIDTH,HEIGHT])
+
+CLOCK = pygame.time.Clock()
+
+def initialise():
+    # set up window
+    pygame.display.set_caption('THE Farm Game')
+
+    pygame.mixer.music.load('Resources/Music/music1.mp3')
+    pygame.mixer.music.play(-1)
+    pygame.mixer.music.set_volume(0) # todo: set to 5
+
+    for sounds in [button1, button2]:
+        sounds.set_volume(0.5)

@@ -4,17 +4,6 @@ import re, hashlib, pygame
 import database, config, game, box
 pygame.init()
 
-# set up window
-CLOCK = pygame.time.Clock()
-pygame.display.set_caption('THE Farm Game')
-
-pygame.mixer.music.load('Resources/Music/music1.mp3')
-pygame.mixer.music.play(-1)
-pygame.mixer.music.set_volume(0) # todo: set to 5
-
-for sounds in [config.button1, config.button2]:
-    sounds.set_volume(0.5)
-
 def checkNewPassword(password1, password2, matchError, characterError):
     required = r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$"
 
@@ -83,6 +72,7 @@ def mainmenu_loop():
             else:
                 pygame.quit()
                 break
+    config.CLOCK.tick(60)
 
 def newgame1_loop():
 
@@ -160,6 +150,7 @@ def newgame1_loop():
                 running = False
             
         pygame.display.flip()
+        config.CLOCK.tick(60)
 
     pygame.quit()
 
@@ -352,6 +343,7 @@ def newgame2_loop(saveChoice):
         
             
         pygame.display.flip()
+        config.CLOCK.tick(60)
     
     pygame.quit()
             
@@ -457,6 +449,7 @@ def loadgame_loop():
                 pygame.quit()
         
         pygame.display.flip()
+        config.CLOCK.tick(60)
     
     pygame.quit()
 
@@ -491,6 +484,7 @@ def instructions_loop():
                 running = False
             
         pygame.display.flip()
+        config.CLOCK.tick(60)
     pygame.quit()
 
 def settings_loop():
@@ -566,9 +560,12 @@ def settings_loop():
                 running = False
             
         pygame.display.flip()
+        config.CLOCK.tick(60)
+
     pygame.quit()
 
 if __name__ == "__main__":
+    config.initialise()
     mainmenu_loop()
     
 pygame.quit()
