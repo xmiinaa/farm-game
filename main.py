@@ -186,16 +186,19 @@ def newgame2_loop(saveChoice):
     startButton = box.Button(config.WIDTH // 2 - (240 // 2), 580, 240, 80, config.OCR_TEXT, "Start")
     speedButton = box.Button(690, 590, 170, 60, config.OCR_TEXT, "Slow")
 
-    nameLabel = box.TextBox(205, 230, 300, 80, config.OCR_TEXT, "Name:")
-    passwordLabel = box.TextBox(205, 330, 300, 80, config.OCR_TEXT, "Password:")
-    save3Label = box.TextBox(205, 430, 300, 80, config.OCR_TEXT, "Password:")
+    nameLabel = box.TextBox(205, 220, 300, 80, config.OCR_TEXT, "Name:")
+    passwordLabel = box.TextBox(205, 320, 300, 80, config.OCR_TEXT, "Password:")
+    save3Label = box.TextBox(205, 420, 300, 80, config.OCR_TEXT, "Password:")
 
-    nameInputBox = box.InputBox(565, 230, 300, 80, config.OCR_TEXT, name)
-    password1InputBox = box.InputBox(565, 330, 300, 80, config.OCR_TEXT, password1Display)
-    password2InputBox = box.InputBox(565, 430, 300, 80, config.OCR_TEXT, password2Display)
+    modeLabel = box.Text("Mode:", config.OCR_TEXT, config.BOX_FILL, 720, 540)
+    characterLabel = box.Text("Character:", config.OCR_TEXT, config.BOX_FILL, 180, 510)
 
-    femaleCharacter = box.ImageButton(FEMALE_MC, 240, 610, 96, 144)
-    maleCharacter = box.ImageButton(MALE_MC, 340, 610, 96, 144)
+    nameInputBox = box.InputBox(565, 220, 300, 80, config.OCR_TEXT, name)
+    password1InputBox = box.InputBox(565, 320, 300, 80, config.OCR_TEXT, password1Display)
+    password2InputBox = box.InputBox(565, 420, 300, 80, config.OCR_TEXT, password2Display)
+
+    femaleCharacter = box.ImageButton(FEMALE_MC, 240, 630, 96, 144)
+    maleCharacter = box.ImageButton(MALE_MC, 340, 630, 96, 144)
 
     usernameError = box.Error(ERROR, 900, 265, "Username already exists", 275, 34, 750, 205)
     matchError = box.Error(ERROR, 900, 365, "Passwords do not match", 265, 34, 750, 305)
@@ -233,6 +236,8 @@ def newgame2_loop(saveChoice):
                 error.checkHover(mouse)
                 error.draw()
         
+        for label in [modeLabel, characterLabel]:
+            label.draw()
 
         # handles user interaction
         for event in pygame.event.get():
