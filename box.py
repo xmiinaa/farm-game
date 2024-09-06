@@ -83,6 +83,11 @@ class InputBox(Button):
     
     def checkActive(self):
         return self.active
+    
+    def changeColour(self, newcolour):
+        self.fontColour = newcolour
+        self.text = self.font.render(self.content, True, self.fontColour)
+        self.textRect = self.text.get_rect(center = (self.width // 2 + self.x, self.height // 2 + self.y))
 
     # changes colour of box border depending on if the user is hovering over the box or if they have clicked it
     def checkHoverOrClick(self, position):

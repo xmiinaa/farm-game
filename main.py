@@ -356,7 +356,7 @@ def loadgame_loop():
     saveChoice = -1
     userChoice = -1
     password = ""
-    passwordDisplay = ""
+    passwordDisplay = "Enter Password"
     
     save = database.getUsernames()
 
@@ -374,8 +374,9 @@ def loadgame_loop():
     save2Content = box.Button(570, 350, 280, 80, config.OCR_TEXT, save[1][0])
     save3Content = box.Button(570, 460, 280, 80, config.OCR_TEXT, save[2][0])
 
-    passwordInputBox = box.InputBox(config.WIDTH // 2 - (320 // 2), 580, 320, 80, config.OCR_TEXT, passwordDisplay)
+    passwordInputBox = box.InputBox(config.WIDTH // 2 - (320 // 2), 580, 340, 80, config.OCR_TEXT, passwordDisplay)
     
+    passwordInputBox.changeColour(config.GREY)
 
     while running:
         config.SCREEN.blit(config.MENU_BG, (0, 0))
@@ -432,6 +433,8 @@ def loadgame_loop():
             if event.type == pygame.KEYDOWN: 
                 
                 if passwordInputBox.checkActive():
+
+                    passwordInputBox.changeColour(config.FONT_COLOUR)
 
                     if event.key == pygame.K_BACKSPACE: 
         
