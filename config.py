@@ -29,5 +29,9 @@ MENU_BG = pygame.transform.scale(pygame.image.load('Resources/Images/menu-backgr
 musicVal = 0 # todo: set this to 5
 sfxVal = 5
 
+# sound effects
+button1 = pygame.mixer.Sound('Resources/Sound-effects/cbutton3.mp3')
+button2 = pygame.mixer.Sound('Resources/Sound-effects/cbutton4.mp3')
+
 # screen
 SCREEN = pygame.display.set_mode([WIDTH,HEIGHT])
