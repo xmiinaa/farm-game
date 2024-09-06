@@ -90,18 +90,20 @@ def newgame1_loop():
     # creation of objects
     titleBox = box.TextBox(config.WIDTH // 2 - (config.TITLE_WIDTH // 2), 100, config.TITLE_WIDTH, config.TITLE_HEIGHT, config.OCR_TITLE, "New Game")
 
+    instruction = box.Text("Choose a save:", config.OCR_TEXT, config.BOX_FILL, 390, 220)
+
     backButton = box.Button(30, 30, 90, 70, config.OCR_TITLE, "<-"  )
     tickButton = box.Button( (config.WIDTH-30-90) , (config.HEIGHT-30-70) , 90, 70, config.OCR_TITLE, "->")
 
-    save1Label = box.TextBox(220, 250, 280, 80, config.OCR_TEXT, "Save 1:")
-    save2Label = box.TextBox(220, 370, 280, 80, config.OCR_TEXT, "Save 2:")
-    save3Label = box.TextBox(220, 490, 280, 80, config.OCR_TEXT, "Save 3:")
+    save1Label = box.TextBox(220, 290, 280, 80, config.OCR_TEXT, "Save 1:")
+    save2Label = box.TextBox(220, 400, 280, 80, config.OCR_TEXT, "Save 2:")
+    save3Label = box.TextBox(220, 520, 280, 80, config.OCR_TEXT, "Save 3:")
 
     save = database.getUsernames()
 
-    save1Content = box.Button(560, 250, 280, 80, config.OCR_TEXT, save[0][0])
-    save2Content = box.Button(560, 370, 280, 80, config.OCR_TEXT, save[1][0])
-    save3Content = box.Button(560, 490, 280, 80, config.OCR_TEXT, save[2][0])
+    save1Content = box.Button(560, 290, 280, 80, config.OCR_TEXT, save[0][0])
+    save2Content = box.Button(560, 400, 280, 80, config.OCR_TEXT, save[1][0])
+    save3Content = box.Button(560, 520, 280, 80, config.OCR_TEXT, save[2][0])
 
     # user's save choice
     saveChoice = -1
@@ -125,6 +127,8 @@ def newgame1_loop():
 
         for inputbox in []:
             inputbox.draw()
+
+        instruction.draw()
 
         # handles user interaction
         for event in pygame.event.get():

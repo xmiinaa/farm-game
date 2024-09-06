@@ -169,3 +169,15 @@ class ImageButton():
     
     def drawBox(self):
         pygame.draw.rect(config.SCREEN, (255,255,255, 0), pygame.Rect(self.rect.left, self.rect.top, self.width, self.height), 2, 3)
+
+class Text():
+    def __init__(self, content, font, colour, x, y):
+        self.content = content
+        self.font = font
+        self.colour = colour
+        self.x = x
+        self.y = y
+        self.text = font.render(self.content, True, self.colour)
+    
+    def draw(self):
+        config.SCREEN.blit(self.text, (self.x, self.y))
