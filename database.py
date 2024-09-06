@@ -148,7 +148,6 @@ def getUsernames():
     except sqlite3.Error as e:
         print(e)
     finally:
-        print(names)
         if conn:
             conn.close()
     
