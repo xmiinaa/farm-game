@@ -153,9 +153,8 @@ def getUsernames():
     
     return names
 
-if __name__ == "__main__":
+def startupDatabase():
     create_database()
     create_tables()
     initialise_empty_saves()
-    #view_table()
     

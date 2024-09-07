@@ -4,6 +4,8 @@ import re, hashlib, pygame
 import database, config, game, box
 pygame.init()
 
+database.startupDatabase()
+
 def checkNewPassword(password1, password2, matchError, characterError):
     required = r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$"
 
@@ -90,6 +92,8 @@ def newgame1_loop():
     save3Label = box.TextBox(220, 520, 280, 80, config.OCR_TEXT, "Save 3:")
 
     save = database.getUsernames()
+
+    save = [('no save',) if save[0] == 'NULL' else save for save in save]
 
     save1Content = box.Button(560, 290, 280, 80, config.OCR_TEXT, save[0][0])
     save2Content = box.Button(560, 400, 280, 80, config.OCR_TEXT, save[1][0])
@@ -356,6 +360,7 @@ def loadgame_loop():
     passwordDisplay = "Enter Password"
     
     save = database.getUsernames()
+    save = [('no save',) if save[0] == 'NULL' else save for save in save]
 
     # creation of objects
     titleBox = box.TextBox(config.WIDTH // 2 - (config.TITLE_WIDTH // 2), 100, config.TITLE_WIDTH, config.TITLE_HEIGHT, config.OCR_TITLE, "Load Game")
