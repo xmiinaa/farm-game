@@ -1,12 +1,17 @@
-# imports and initialise the pygame library, and oher libraries used and needed in program
+# imports the pygame library, and oher libraries used and needed in program
+import pygame, database, config, menu
 
-import re, hashlib, pygame
-import database, config, game, Classes.box as box, menu
+# initiailses the pygame library so it can be used
 pygame.init()
 
 if __name__ == "__main__":
+    # sets up and creates the database if it has not yet been created
     database.startupDatabase()
+
+    # sets up sound / music
     config.initialise()
+
+    # calls the loops that displays the first screen loop
     menu.mainmenu_loop()
-    
+
 pygame.quit()

@@ -1,19 +1,31 @@
+# importing all libraries needed in this module, including other python files
 import pygame, config, database, Classes.box as box, re, hashlib, game
 pygame.init()
 
+# checks to see if the password entered fits the requiremens and is valid
 def checkNewPassword(password1, password2, matchError, characterError):
+
+    # the re squence for the password string requirement
     required = r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$"
 
+    # checks if the passwords match, is over 8 characters, and fulfills the string requirements
     if password1 == password2 and len(password1) >= 8 and bool(re.fullmatch(required, password1)):
+
+        # deactivates all the error messages and returns the value True
         matchError.deactivate()
         characterError.deactivate()
+
         return True
+    
     else:
+
+        # checks if the password matches, and changes the activation status of the corresponding error
         if password1 == password2:
             matchError.deactivate()
         else:
             matchError.activate()
 
+        # checks to see if password matches length and string requirements, and changes the activation status of the corresponding error
         if len(password1) >= 8 and bool(re.fullmatch(required, password1)):
             characterError.deactivate()
         else:
@@ -21,12 +33,19 @@ def checkNewPassword(password1, password2, matchError, characterError):
 
         return False
 
+# hashes the password that has been passed into the function
 def hashing(password):
+
+    # the string is encoded into byres, which is needed for the algorithm to work
     password = password.encode('utf-8')
+
+    # the password is then hashed into a hex string using the SHA-256 function
     sha3_256 = hashlib.sha3_256
     hashedPassword = sha3_256(password).hexdigest()
+
     return hashedPassword
 
+# handles the initial screen loaded when opening the game
 def mainmenu_loop():
 
     running = True
@@ -41,18 +60,25 @@ def mainmenu_loop():
 
     while running:
 
+        # displays menu image background
         config.SCREEN.blit(config.MENU_BG, (0, 0))
+
+        # the current position of the mouse is saved to a variable, mouse
         mouse = pygame.mouse.get_pos()
 
         # displays all elements
         titleBox.draw()
+
         for button in [newGameButton, loadGameButton, instructionsButton, settingsButton]:
+
+            # checks to see if the user's mouse is hovering over the button, which will draw the object differently
             button.checkHover(mouse)
             button.draw()
 
         # handling user interaction
         for event in pygame.event.get():
 
+            # checks to see if user clicks with the mosue, and calls the corresponding loop depending on the button clicked
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if newGameButton.onClick(mouse):
                     newgame1_loop()
@@ -63,18 +89,30 @@ def mainmenu_loop():
                 if settingsButton.onClick(mouse):
                     settings_loop()
             
-            # exits program
-            if event.type != pygame.QUIT:
-                pygame.display.flip()
-            else:
-                pygame.quit()
-                break
-    config.CLOCK.tick(60)
+            #  stops the loop if user clicks quit
+            if event.type == pygame.QUIT:
+                exit()
+        
+        # updates the display
+        pygame.display.flip()
 
+        # controls the frame rate
+        config.CLOCK.tick(60)
+    
+    # cleanly exits the program
+    pygame.quit()
+
+# handles the first screen that is displayed when the user clicks on new game
 def newgame1_loop():
 
     running = True
-    # creation of objects
+    # gets the usernames of all 3 saves and stores it in a list called save
+    save = database.getUsernames()
+
+    # replaces all "Null" saves with "no save" for displaying
+    save = [('no save',) if save[0] == 'NULL' else save for save in save]
+
+    # creation of objects 
     titleBox = box.TextBox(config.WIDTH // 2 - (config.TITLE_WIDTH // 2), 100, config.TITLE_WIDTH, config.TITLE_HEIGHT, config.OCR_TITLE, "New Game")
 
     instruction = box.Text("Choose a save:", config.OCR_TEXT, config.BOX_FILL, 390, 220)
@@ -86,21 +124,20 @@ def newgame1_loop():
     save2Label = box.TextBox(220, 400, 280, 80, config.OCR_TEXT, "Save 2:")
     save3Label = box.TextBox(220, 520, 280, 80, config.OCR_TEXT, "Save 3:")
 
-    save = database.getUsernames()
-
-    save = [('no save',) if save[0] == 'NULL' else save for save in save]
-
     save1Content = box.Button(560, 290, 280, 80, config.OCR_TEXT, save[0][0])
     save2Content = box.Button(560, 400, 280, 80, config.OCR_TEXT, save[1][0])
     save3Content = box.Button(560, 520, 280, 80, config.OCR_TEXT, save[2][0])
 
-    # user's save choice
+    # save choice stores the save as an object and user choice stores the save as an integer
     saveChoice = -1
     userChoice = -1
 
     while running:
 
+        # displays menu image background
         config.SCREEN.blit(config.MENU_BG, (0, 0))
+
+        # the current position of the mouse is saved to a variable, mouse
         mouse = pygame.mouse.get_pos()
 
         # displays all elements
@@ -108,6 +145,7 @@ def newgame1_loop():
             if button == saveChoice:
                 button.draw()
             else:
+                # checks to see if the user's mouse is hovering over the button, which changes the way the button is drawn
                 button.checkHover(mouse)
                 button.draw()
 
@@ -121,12 +159,15 @@ def newgame1_loop():
 
         # handles user interaction
         for event in pygame.event.get():
-
+            
+            # checks to see if user clicks with the mouse, and checks to see if a specific button is clicked
             if event.type == pygame.MOUSEBUTTONDOWN:
 
+                # this goes back to the previous screen
                 if backButton.onClick(mouse):
                     mainmenu_loop()        
 
+                # checks to see if any of the 3 saves have been clicked one, and assigns the savechoice and userchoice to that specific save, displaying it differently
                 if save1Content.onClick(mouse):
                     saveChoice = save1Content
                     saveChoice.choiceClick()    
@@ -140,33 +181,56 @@ def newgame1_loop():
                     saveChoice.choiceClick()    
                     userChoice = 3
 
+                # checks to see if user clicks on the tick button
                 if tickButton.onClick(mouse):
+
+                    # checks to see if the user has clicked on a save to overwrite
                     if saveChoice != -1:
+
+                        # calls the next screen loop 
                         newgame2_loop(userChoice)
                 
-            #  ends program
+            #  stops the loop if user clicks quit
             if event.type == pygame.QUIT:
                 running = False
             
+        # updates the display
         pygame.display.flip()
-        config.CLOCK.tick(60)
 
+        # controls the frame rate
+        config.CLOCK.tick(60)
+    
+    # exits the program
     pygame.quit()
 
+# handles the second screen needed to start a new game 
 def newgame2_loop(saveChoice):
 
+    # loads the required images and scales them to the correct dimensions needed to display on this screen
     FEMALE_MC = pygame.transform.scale(pygame.image.load('Resources/Images/girlMC.png'), (96, 144))
     MALE_MC = pygame.transform.scale(pygame.image.load('Resources/Images/maleMC.png'), (96, 144))
     ERROR = pygame.transform.scale(pygame.image.load('Resources/Images/error-icon.png'), (55, 48))
 
     running = True
+
+    # stores the user's input for the name in a variable
     name = ""
+
+    # stores the user's input for the passwords in different variables
     password1 = ""
-    password1Display = ""
     password2 = ""
+
+    # stores the passwords that will be displayed to the user (only *)
+    password1Display = ""
     password2Display = ""
+
+    # stores the user's character choice
     chosenCharacter = ""
+
+    # stores the user's mode choice
     speed = "slow"
+
+    # automatically set to False and only turns to true if username entered does not exist yet
     validName = False
 
     # creation of objects 
