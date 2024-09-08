@@ -7,6 +7,7 @@ pygame.init()
 WIDTH = 1080
 HEIGHT = 720
 
+# dimensions of the box
 TITLE_WIDTH = 450
 TITLE_HEIGHT = 90
 
@@ -39,13 +40,17 @@ SCREEN = pygame.display.set_mode([WIDTH,HEIGHT])
 
 CLOCK = pygame.time.Clock()
 
+# needed when starting up program
 def initialise():
+
     # set up window
     pygame.display.set_caption('THE Farm Game')
 
+    # loads up music and plays it
     pygame.mixer.music.load('Resources/Music/music1.mp3')
     pygame.mixer.music.play(-1)
     pygame.mixer.music.set_volume(0) # todo: set to 5
 
+    # sets up sound effects
     for sounds in [button1, button2]:
         sounds.set_volume(0.5)

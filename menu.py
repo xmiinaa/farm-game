@@ -172,10 +172,12 @@ def newgame1_loop():
                     saveChoice = save1Content
                     saveChoice.choiceClick()    
                     userChoice = 1
+
                 if save2Content.onClick(mouse):
                     saveChoice = save2Content
                     saveChoice.choiceClick()    
                     userChoice = 2
+
                 if save3Content.onClick(mouse):
                     saveChoice = save3Content
                     saveChoice.choiceClick()    
@@ -261,12 +263,16 @@ def newgame2_loop(saveChoice):
 
     while running:
 
+        # displays menu image background
         config.SCREEN.blit(config.MENU_BG, (0, 0))
+
+        # the current position of the mouse is saved to a variable, mouse
         mouse = pygame.mouse.get_pos()
 
         # dislpays all elements
-
         for button in [backButton, startButton, speedButton]:
+
+            # checks to see if the user is hovering over a button, which will change how it is drawn
             button.checkHover(mouse)
             button.draw()
 
@@ -274,10 +280,14 @@ def newgame2_loop(saveChoice):
             textbox.draw()
 
         for inputbox in [nameInputBox, password1InputBox, password2InputBox]:
+
+            # checks to see if the user is hovering over a box or has clicked on it, which will change how it is drawn
             inputbox.checkHoverOrClick(mouse)
             inputbox.draw()
         
         for character in [femaleCharacter, maleCharacter]:
+
+            # checks to see if the character image has been clicked on, and draws it differently depending on it
             if character.checkActive() == True:
                 character.draw()
                 character.drawBox()
@@ -286,6 +296,8 @@ def newgame2_loop(saveChoice):
                 character.draw()
         
         for error in [usernameError, matchError, characterError, noNameError]:
+
+            # checks to see if each error has been activated so it can be displayed
             if error.checkActive() == True:
                 error.checkHover(mouse)
                 error.draw()
@@ -296,11 +308,13 @@ def newgame2_loop(saveChoice):
         # handles user interaction
         for event in pygame.event.get():
 
+            # checks to see if the user has clicked on the mouse
             if event.type == pygame.MOUSEBUTTONDOWN:
 
                 if backButton.onClick(mouse):
                         newgame1_loop()
                 
+                # checks to see if an input box has been clicked, and draws it differently depending on it
                 if nameInputBox.onClick(mouse):
                     nameInputBox.activate()
                 else:
@@ -316,6 +330,7 @@ def newgame2_loop(saveChoice):
                 else:
                     password2InputBox.deactivate()
                 
+                # checks to see if a character image has been clicked, and draws it differently depending on it
                 if femaleCharacter.onClick(mouse):
                     chosenCharacter = "female"
                     femaleCharacter.activate()
@@ -326,6 +341,7 @@ def newgame2_loop(saveChoice):
                     maleCharacter.activate()
                     femaleCharacter.deactivate()
                 
+                # changes the speed between fast and slow when the user clicks on the button
                 if speedButton.onClick(mouse):
                     if speedButton.getText() == "Slow":
                         speed = "Fast"
@@ -334,14 +350,22 @@ def newgame2_loop(saveChoice):
                         speed = "Slow"
                         speedButton.changeText("Slow")
 
+                # checks if the user clicks on the start button
                 if startButton.onClick(mouse):
+                    
+                    # sends the 2 passwords inputted into a function, along with the errors, and checks to see if it is valid
                     correctPassword = checkNewPassword(password1, password2, matchError, characterError)
+
+                    # this gets the user's input in the name input box
                     username = nameInputBox.getText()
 
+                    # checks to see if the user has inputted a name, and activates an error message if not
                     if username == "":
                         noNameError.activate()
                     else:
                         noNameError.deactivate()
+
+                        #  checks to see if the name inputted already exists
                         validName = database.checkUsername(str(username))
                     
 
@@ -350,75 +374,101 @@ def newgame2_loop(saveChoice):
                     else:
                         usernameError.activate()
 
+                    # this happens when all the conditions needed to create a new save has been fulfilled
                     if correctPassword and chosenCharacter != "" and validName:
+
+                        # applies the hashing function on the user's password
                         passwordHash = hashing(password1)
+
+                        # this creates a new save in the database using the information inputted
                         database.create_newsave(username, passwordHash, saveChoice)
+
                         game.main()
 
-            
+            # checks to see if the user has pressed a key
             if event.type == pygame.KEYDOWN: 
                 
+                # checks to see if any of the input boxes are active to type in
                 if nameInputBox.checkActive():
 
                     if event.key == pygame.K_BACKSPACE: 
         
-                        # get text input from 0 to -1 i.e. end. 
+                        # deletes the last character in the variable
                         name = name[:-1] 
 
+                    # checks to see if the length of the variable does not exceed the boundary
                     elif len(name) <= 11: 
                         name += event.unicode
                     
+                    # updates the text that is displayed in the input box on the screen
                     nameInputBox.changeText(name)
                 
+                # checks to see if any of the input boxes are active to type in
                 if password1InputBox.checkActive():
 
                     if event.key == pygame.K_BACKSPACE: 
         
-                        # get text input from 0 to -1 i.e. end. 
+                        # deletes the last character in the variables
                         password1 = password1[:-1] 
                         password1Display = password1Display[:-1]
 
+                    # checks to see if the length of the variable does not exceed the boundary
                     elif len(password1) <= 11: 
                         password1 += event.unicode
                         
-                    
+                    # updates the text that is displayed in the input box on the screen
                     password1Display = "*" * len(password1)
                     password1InputBox.changeText(password1Display)
                 
+                # checks to see if any of the input boxes are active to type in
                 if password2InputBox.checkActive():
 
                     if event.key == pygame.K_BACKSPACE: 
         
-                        # get text input from 0 to -1 i.e. end. 
+                        # deletes the last character in the variables 
                         password2 = password2[:-1] 
                         password2Display = password2Display[:-1]
 
-
+                    # checks to see if the length of the variable does not exceed the boundary
                     elif len(password2) <= 11: 
                         password2 += event.unicode
                     
+                    # updates the text that is displayed in the input box on the screen
                     password2Display = "*" * len(password2)
                     password2InputBox.changeText(password2Display)
                             
-            # ends program
+            # exits program if user clicks on exit button (pygame.QUIT)
             if event.type == pygame.QUIT:
                 running = False
-        
-            
+
+        # update the display
         pygame.display.flip()
+        
+        # control frame rate
         config.CLOCK.tick(60)
-    
+
+    # Cleanly exit the program
     pygame.quit()
-            
+
+# handles the first screen that is displayed when the user clicks on new game        
 def loadgame_loop():
 
     running = True
+
+    # save choice stores the save as an object and user choice stores the save as an integer
     saveChoice = -1
     userChoice = -1
+
+    # stores the user's input for the password in a variable
     password = ""
+
+    # this is the placeholder text that is displayed on the input box as a prompt for the user
     passwordDisplay = "Enter Password"
     
+    # gets the usernames of all 3 saves and stores it in a list called save
     save = database.getUsernames()
+
+    # replaces all "Null" saves with "no save" for displaying
     save = [('no save',) if save[0] == 'NULL' else save for save in save]
 
     # creation of objects
@@ -437,10 +487,15 @@ def loadgame_loop():
 
     passwordInputBox = box.InputBox(config.WIDTH // 2 - (320 // 2), 580, 340, 80, config.OCR_TEXT, passwordDisplay)
     
+    # this sets the placeholder text in the box to grey from the original green
     passwordInputBox.changeColour(config.GREY)
 
     while running:
+
+        # displays menu image background
         config.SCREEN.blit(config.MENU_BG, (0, 0))
+
+        # the current position of the mouse is saved to a variable, mouse
         mouse = pygame.mouse.get_pos()
 
         # dislpays all elements
@@ -448,84 +503,121 @@ def loadgame_loop():
             textbox.draw()
 
         for button in [backButton, tickButton, save1Content, save2Content, save3Content]:
+
+            # checks to see if the button drawn is the chosen save, and draws it differently depending on it
             if button == saveChoice:
                 button.draw()
             else:
+                
+                # checks to see if the user is hovering over the buttton before drawing it
                 button.checkHover(mouse)
                 button.draw()
 
         for inputbox in [passwordInputBox]:
+            
+            # checks to see if the user has clicked or is hovering over a box before displaying it
             inputbox.checkHoverOrClick(mouse)
             inputbox.draw()
 
         # handles user interaction
         for event in pygame.event.get():
 
+            # checks to see if the user clicks on a button on the mouse
             if event.type == pygame.MOUSEBUTTONDOWN:
 
+                # this will bring the user back to the initial screen
                 if backButton.onClick(mouse):
                     mainmenu_loop()
 
+                # checks to see if any of the 3 saves have been clicked one, and assigns the savechoice and userchoice to that specific save, displaying it differently
                 if save1Content.onClick(mouse):
                     saveChoice = save1Content
                     saveChoice.choiceClick()    
                     userChoice = 1
+
                 if save2Content.onClick(mouse):
                     saveChoice = save2Content
                     saveChoice.choiceClick()    
                     userChoice = 2
+
                 if save3Content.onClick(mouse):
                     saveChoice = save3Content
                     saveChoice.choiceClick()    
                     userChoice = 3 
-                
+
+                # checks to see if the user has clicked on the inputbox or not
                 if passwordInputBox.onClick(mouse):
                     passwordInputBox.activate()
                 else:
                     passwordInputBox.deactivate()
 
+                # this checks to see if the password matches the password hash saved in the database for that particular save
                 if tickButton.onClick(mouse):
+
+                    # this checks to see if the user has entered a password
                     if passwordInputBox.getText() != "":
+
+                        # hashes the password
                         passwordHash = hashing(password)
+
+                        # checks to see if the password matches the hashed one save
                         correct = database.checkPassword(userChoice, passwordHash)
+
                         if correct:
                             game.main()
-                
+            
+            # checks if the user has pressed a key down
             if event.type == pygame.KEYDOWN: 
                 
+                # checks to see if the input box has been clicked on for the user to type on
                 if passwordInputBox.checkActive():
 
+                    # changes the colour of the text in the input box from grey to green
                     passwordInputBox.changeColour(config.FONT_COLOUR)
 
                     if event.key == pygame.K_BACKSPACE: 
         
-                        # get text input from 0 to -1 i.e. end. 
+                        # deletes the last character in the variable password 
                         password = password[:-1] 
 
+                    # checks to see if the password inputted has reached the character limit
                     elif len(password) <= 11: 
+
+                        # stores the characters entered
                         password += event.unicode
                     
+                    # this creates the censored version of the password that is displayed to the user
                     passwordDisplay = "*" * len(password)
                     passwordInputBox.changeText(passwordDisplay)
 
-            # ends program
+            # exits program if user clicks on exit button (pygame.QUIT)
             if event.type == pygame.QUIT:
-                pygame.quit()
-        
+                running = False
+
+        # update the display
         pygame.display.flip()
+        
+        # control frame rate
         config.CLOCK.tick(60)
-    
+
+    # Cleanly exit the program
     pygame.quit()
 
+# handles the instructions screen 
 def instructions_loop():
 
     running = True
+
     # creation of objects
     titleBox = box.TextBox(config.WIDTH // 2 - (config.TITLE_WIDTH // 2), 100, config.TITLE_WIDTH, config.TITLE_HEIGHT, config.OCR_TITLE, "How to Play")
     backButton = box.Button(30, 30, 90, 70, config.OCR_TITLE, "<-"  )
     
     while running:
+
+        # displays menu image background
         config.SCREEN.blit(config.MENU_BG, (0, 0))
+
+        # the current position of the mouse is saved to a variable, mouse
         mouse = pygame.mouse.get_pos()
 
         # displays all elements
@@ -533,24 +625,35 @@ def instructions_loop():
           textBox.draw()
 
         for button in [backButton]:
+
+            # checks to see if the user's mouse is hovering over the button
             button.checkHover(mouse)
             button.draw()
         
         # handles user interaction
         for event in pygame.event.get():
 
+            # checks to see if the user has clicked on the mouse
             if event.type == pygame.MOUSEBUTTONDOWN:
+
+                # this goes back to the main menu screen if the back button is clicked on
                 if backButton.onClick(mouse):
                     mainmenu_loop()
 
-            # ends program
+            # exits program if user clicks on exit button (pygame.QUIT)
             if event.type == pygame.QUIT:
                 running = False
-            
+
+        # update the display
         pygame.display.flip()
+        
+        # control frame rate
         config.CLOCK.tick(60)
+
+    # Cleanly exit the program
     pygame.quit()
 
+# handles the settings screen and the functions within
 def settings_loop():
 
     running = True
@@ -572,11 +675,17 @@ def settings_loop():
     sfxNum = box.TextBox(710, 390, 90, 70, config.OCR_TITLE, str(config.sfxVal)  )
 
     while running:
+
+        # displays menu image background
         config.SCREEN.blit(config.MENU_BG, (0, 0))
+
+        # the current position of the mouse is saved to a variable, mouse
         mouse = pygame.mouse.get_pos()
 
         # displays all elements
         for button in [backButton, minusMusicButton, addMusicButton, minusSfxButton, addSfxButton ]:
+
+            # checks to see if the user's mouse is hovering over a button, which will draw it differently
             button.checkHover(mouse)
             button.draw()
         
@@ -586,44 +695,88 @@ def settings_loop():
         # handles user interaction
         for event in pygame.event.get():
 
+            # checks to see if the user has clicked on the mouse
             if event.type == pygame.MOUSEBUTTONDOWN:
+
+                # this goes back to the main menu screen if the back button is clicked on
                 if backButton.onClick(mouse):
                     mainmenu_loop()
+
+                # checks to see if the user clicked on the minus music button
                 if minusMusicButton.onClick(mouse):
+
+                    # this gets the current sound volume of the music
                     config.musicVal = int(musicNum.getText())
+
+                    # ensures the lowest music volume is 0
                     if config.musicVal > 0:
+
+                        # decreases the volume of the music
                         config.musicVal -= 1
                         pygame.mixer.music.set_volume(config.musicVal / 10)
+
+                        # changes the volume value displayed
                         musicNum.changeText(config.musicVal)
                 
+                # checks to see if the user clicked on the add music button
                 if addMusicButton.onClick(mouse):
+
+                    # this gets the current sound volume of the music
                     config.musicVal = int(musicNum.getText())
+
+                    # ensures the music volume does not exceed 10
                     if config.musicVal < 10:
+
+                        # increases the volume of the music
                         config.musicVal += 1
                         pygame.mixer.music.set_volume(config.musicVal / 10)
+
+                        # changes the volume value displayed
                         musicNum.changeText(config.musicVal)
-                    
+                
+                # checks to see if the user clicked on the minus sound effects button
                 if minusSfxButton.onClick(mouse):
+
+                    # this gets the current sound volume of the music
                     config.sfxVal = int(sfxNum.getText())
+
+                    # ensures the sound effects volume is not lower than 0
                     if config.sfxVal > 0:
+
+                        # decreases the volume of the sound effects
                         config.sfxVal -= 1
                         for effect in [config.button1, config.button2]:
                             effect.set_volume(config.sfxVal / 10)
+
+                        # changes the volume value displayed
                         sfxNum.changeText(config.sfxVal)
                     
+                # checks to see if the user clicked on the add sound effects button
                 if addSfxButton.onClick(mouse):
+
+                    # this gets the current sound volume of the music
                     config.sfxVal = int(sfxNum.getText())
+
+                    # ensures the volume of the sound effects does not exceed 10
                     if config.sfxVal < 10:
+
+                        # increases the volume of the sound effects
                         config.sfxVal += 1
                         for effect in [config.button1, config.button2]:
                             effect.set_volume(config.sfxVal / 10)
+                        
+                        # changes the volume value displayed
                         sfxNum.changeText(config.sfxVal)
 
-            # ends program
+            # exits program if user clicks on exit button (pygame.QUIT)
             if event.type == pygame.QUIT:
                 running = False
-            
+
+        # update the display
         pygame.display.flip()
+        
+        # control frame rate
         config.CLOCK.tick(60)
 
+    # Cleanly exit the program
     pygame.quit()

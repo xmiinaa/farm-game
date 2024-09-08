@@ -1,6 +1,8 @@
 import pygame, config
 
 class Box:
+
+    # instance method
     def __init__(self, x, y, width, height):
         self.x = x
         self.y = y
@@ -15,6 +17,8 @@ class Box:
         pygame.draw.rect(config.SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 2, 3)
 
 class TextBox(Box):
+
+    # instance method
     def __init__(self, x, y,  width, height, font, content):
        super().__init__(x, y, width, height) 
        self.font = font
@@ -25,9 +29,12 @@ class TextBox(Box):
 
     # displays text box onto screen
     def draw(self): 
+
+        # displays the box
         pygame.draw.rect(config.SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 10)
         pygame.draw.rect(config.SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 3, 10)
 
+        # displays the text
         config.SCREEN.blit(self.text, (self.textRect) )   
 
     # getter method to access text inside text box
@@ -42,11 +49,15 @@ class TextBox(Box):
         self.textRect = self.text.get_rect(center = (self.width // 2 + self.x, self.height // 2 + self.y))
     
 class Button(TextBox):
+
+    # instance method
     def __init__(self, x, y,  width, height, font, text):
         super().__init__(x, y, width, height, font, text)
 
     # checks to see if mouse click was on button, and returns True if so
     def onClick(self, position):
+
+        # checks if mouse position is in range of the button
         if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
             config.button1.play()
             return True
@@ -55,12 +66,18 @@ class Button(TextBox):
     
     # dispalys button onto screen
     def draw(self):
+
+        # displays box
         pygame.draw.rect(config.SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 10)
         pygame.draw.rect(config.SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 3, 10)
+        
+        # displays text
         config.SCREEN.blit(self.text, self.textRect )
 
     # changes colour of button border if user is hovering over it with the cursor
     def checkHover(self, position):
+
+        # checks if mouse position is in range of the button
         if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
             self.colourBorder = config.WHITE
         else:
@@ -71,6 +88,8 @@ class Button(TextBox):
         self.colourBorder = config.WHITE
 
 class InputBox(Button):
+
+    # instance method
     def __init__(self, x, y,  width, height, font, text):
         super().__init__(x, y, width, height, font, text)
         self.active = False
@@ -81,9 +100,11 @@ class InputBox(Button):
     def deactivate(self):
         self.active = False
     
+    # getter method to access the activation status of the input box
     def checkActive(self):
         return self.active
     
+    # changes colour of the text
     def changeColour(self, newcolour):
         self.fontColour = newcolour
         self.text = self.font.render(self.content, True, self.fontColour)
@@ -94,12 +115,15 @@ class InputBox(Button):
         if self.active:
             self.colourBorder = config.WHITE
         else:
+            # checks if mouse position is in range of the input box
             if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
                 self.colourBorder = config.WHITE
             else:
                 self.colourBorder = config.BOX_OUTLINE
 
 class Error():
+
+    # instance method
     def __init__(self, image, imageX, imageY, text, width, height, textX, textY):
         self.image = image
         self.imageX = imageX
@@ -124,6 +148,7 @@ class Error():
     def deactivate(self):
         self.active = False
     
+    # getter method to access the activation status
     def checkActive(self):
         return self.active
     
@@ -131,12 +156,20 @@ class Error():
         config.SCREEN.blit(self.image, (self.rect))
 
     def checkHover(self, position):
+
+        # checks if mouse position is in range of the button
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
+
+            # displays box
             pygame.draw.rect(config.SCREEN, self.colourFill, pygame.Rect(self.textX, self.textY , self.width, self.height))
             pygame.draw.rect(config.SCREEN, self.colourBorder, pygame.Rect(self.textX, self.textY , self.width, self.height), 1, 0)
+            
+            # displays text
             config.SCREEN.blit(self.text, self.textRect)
 
 class ImageButton():
+
+    # instance method
     def __init__(self, image, x, y, width, height):
         self.image = image
         self.x = x
@@ -146,20 +179,26 @@ class ImageButton():
         self.rect = self.image.get_rect(center = (self.x, self.y))
         self.active = False
     
+    # changes colour of button border if user has clicked on the box
     def onClick(self, position):
+
+        # checks if mouse position is in range of the button
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
             config.button1.play()
             self.activate()
             return True
         else:
             return False
-        
+    
+    # changes colour of button border if user is hovering over it with the cursor
     def checkHover(self, position):
+        # checks if mouse position is in range of the button
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
             self.drawBox()
         else:
             config.SCREEN.blit(self.image, self.rect)
 
+    # displays the error image
     def draw(self):
         config.SCREEN.blit(self.image, self.rect)
     
@@ -169,13 +208,17 @@ class ImageButton():
     def deactivate(self):
         self.active = False
     
+    # getter method to access the activation status of the box
     def checkActive(self):
         return self.active
     
+    # displays the text box with the error message
     def drawBox(self):
         pygame.draw.rect(config.SCREEN, (255,255,255, 0), pygame.Rect(self.rect.left, self.rect.top, self.width, self.height), 2, 3)
 
 class Text():
+
+    # instance method
     def __init__(self, content, font, colour, x, y):
         self.content = content
         self.font = font
@@ -184,5 +227,6 @@ class Text():
         self.y = y
         self.text = font.render(self.content, True, self.colour)
     
+    # displays text on screen
     def draw(self):
         config.SCREEN.blit(self.text, (self.x, self.y))
