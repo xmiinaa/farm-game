@@ -455,6 +455,9 @@ def loadgame_loop():
 
     running = True
 
+    # loads the error image 
+    ERROR = pygame.transform.scale(pygame.image.load('Resources/Images/error-icon.png'), (55, 48))
+
     # save choice stores the save as an object and user choice stores the save as an integer
     saveChoice = -1
     userChoice = -1
@@ -486,6 +489,8 @@ def loadgame_loop():
     save3Content = box.Button(570, 460, 280, 80, config.OCR_TEXT, save[2][0])
 
     passwordInputBox = box.InputBox(config.WIDTH // 2 - (320 // 2), 580, 340, 80, config.OCR_TEXT, passwordDisplay)
+
+    passwordError = box.Error(ERROR, 320, 620, "Password is incorrect", 275, 34, 190, 560)
     
     # this sets the placeholder text in the box to grey from the original green
     passwordInputBox.changeColour(config.GREY)
@@ -518,6 +523,11 @@ def loadgame_loop():
             # checks to see if the user has clicked or is hovering over a box before displaying it
             inputbox.checkHoverOrClick(mouse)
             inputbox.draw()
+        
+        # checks to see if there is an error in the users password
+        if passwordError.checkActive() == True:
+            passwordError.checkHover(mouse)
+            passwordError.draw()
 
         # handles user interaction
         for event in pygame.event.get():
@@ -555,7 +565,7 @@ def loadgame_loop():
                 if tickButton.onClick(mouse):
 
                     # this checks to see if the user has entered a password
-                    if passwordInputBox.getText() != "":
+                    if password != "" and userChoice != "-1":
 
                         # hashes the password
                         passwordHash = hashing(password)
@@ -565,6 +575,8 @@ def loadgame_loop():
 
                         if correct:
                             game.main()
+                        else:
+                            passwordError.activate()
             
             # checks if the user has pressed a key down
             if event.type == pygame.KEYDOWN: 
