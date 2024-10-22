@@ -260,6 +260,7 @@ def newgame2_loop(saveChoice):
     matchError = box.Error(ERROR, 900, 365, "Passwords do not match", 265, 34, 750, 305)
     characterError = box.Error(ERROR, 900, 470, "Password must be over 8 characters and must include lowercase, uppercase and a number", 970, 34, 100, 405)
     noNameError = box.Error(ERROR, 900, 265, "You must enter a name", 275, 34, 750, 205)
+    chosenCharacterError = box.Error(ERROR, 150, 630, "You must choose a character", 310, 34, 20, 570)
 
     while running:
 
@@ -295,7 +296,7 @@ def newgame2_loop(saveChoice):
                 character.checkHover(mouse)
                 character.draw()
         
-        for error in [usernameError, matchError, characterError, noNameError]:
+        for error in [usernameError, matchError, characterError, noNameError, chosenCharacterError]:
 
             # checks to see if each error has been activated so it can be displayed
             if error.checkActive() == True:
@@ -358,6 +359,12 @@ def newgame2_loop(saveChoice):
 
                     # this gets the user's input in the name input box
                     username = nameInputBox.getText()
+
+                    # checks to see if the user has chosen a character, and displays an error message if not
+                    if chosenCharacter == "":
+                        chosenCharacterError.activate()
+                    else:
+                        chosenCharacterError.deactivate()
 
                     # checks to see if the user has inputted a name, and activates an error message if not
                     if username == "":
