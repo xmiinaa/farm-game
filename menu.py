@@ -491,6 +491,7 @@ def loadgame_loop():
     passwordInputBox = box.InputBox(config.WIDTH // 2 - (320 // 2), 580, 340, 80, config.OCR_TEXT, passwordDisplay)
 
     passwordError = box.Error(ERROR, 320, 620, "Password is incorrect", 275, 34, 190, 560)
+    noNameError = box.Error(ERROR, 320, 620, "No existing save", 205, 34, 220, 560)
     
     # this sets the placeholder text in the box to grey from the original green
     passwordInputBox.changeColour(config.GREY)
@@ -524,10 +525,12 @@ def loadgame_loop():
             inputbox.checkHoverOrClick(mouse)
             inputbox.draw()
         
-        # checks to see if there is an error in the users password
-        if passwordError.checkActive() == True:
-            passwordError.checkHover(mouse)
-            passwordError.draw()
+        for error in [passwordError, noNameError]:
+
+            # checks to see if there is an error in the users password
+            if error.checkActive() == True:
+                error.checkHover(mouse)
+                error.draw()
 
         # handles user interaction
         for event in pygame.event.get():
@@ -565,18 +568,27 @@ def loadgame_loop():
                 if tickButton.onClick(mouse):
 
                     # this checks to see if the user has entered a password
-                    if password != "" and userChoice != "-1":
+                    if password != "" and userChoice != -1:
 
-                        # hashes the password
-                        passwordHash = hashing(password)
+                        # checks to see if the save the user chose has a save stored in it or not
+                        if save[userChoice-1][0] == "no save":
 
-                        # checks to see if the password matches the hashed one save
-                        correct = database.checkPassword(userChoice, passwordHash)
+                            # displays different error on screen
+                            passwordError.deactivate()
+                            noNameError.activate()
 
-                        if correct:
-                            game.main()
                         else:
-                            passwordError.activate()
+
+                            # hashes the password
+                            passwordHash = hashing(password)
+
+                            # checks to see if the password matches the hashed one save
+                            correct = database.checkPassword(userChoice, passwordHash)
+
+                            if correct:
+                                game.main()
+                            else:
+                                passwordError.activate()
             
             # checks if the user has pressed a key down
             if event.type == pygame.KEYDOWN: 
