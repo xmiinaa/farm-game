@@ -113,9 +113,7 @@ def newgame1_loop():
     save = [('no save',) if save[0] == 'NULL' else save for save in save]
 
     # creation of objects 
-    titleBox = box.TextBox(config.WIDTH // 2 - (config.TITLE_WIDTH // 2), 100, config.TITLE_WIDTH, config.TITLE_HEIGHT, config.OCR_TITLE, "New Game")
-
-    instruction = box.Text("Choose a save:", config.OCR_TEXT, config.BOX_FILL, 390, 220)
+    titleBox = box.TextBox(config.WIDTH // 2 - (config.TITLE_WIDTH // 2), 100, config.TITLE_WIDTH, config.TITLE_HEIGHT, config.OCR_TITLE, "Choose a save")
 
     backButton = box.Button(30, 30, 90, 70, config.OCR_TITLE, "<-"  )
     tickButton = box.Button( (config.WIDTH-30-90) , (config.HEIGHT-30-70) , 90, 70, config.OCR_TITLE, "->")
@@ -154,8 +152,6 @@ def newgame1_loop():
 
         for inputbox in []:
             inputbox.draw()
-
-        instruction.draw()
 
         # handles user interaction
         for event in pygame.event.get():
