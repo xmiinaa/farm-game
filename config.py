@@ -32,6 +32,13 @@ TL_TILE = pygame.transform.rotate(pygame.image.load('Resources/Images/tiles/gras
 BR_TILE = pygame.transform.rotate(pygame.image.load('Resources/Images/tiles/grass corner.png'), 90)
 TR_TILE = pygame.transform.rotate(pygame.image.load('Resources/Images/tiles/grass corner.png'), 180)
 
+TE_TILE = pygame.transform.rotate(pygame.image.load('Resources/Images/tiles/grass edge.png'), 90)
+BE_TILE = pygame.transform.rotate(pygame.image.load('Resources/Images/tiles/grass edge.png'), 270)
+LE_TILE = pygame.transform.rotate(pygame.image.load('Resources/Images/tiles/grass edge.png'), 0)
+RE_TILE = pygame.transform.rotate(pygame.image.load('Resources/Images/tiles/grass edge.png'), 180) 
+
+GM_TILE = pygame.image.load('Resources/Images/tiles/grass middle.png') 
+
 # music
 musicVal = 0 # todo: set this to 5
 sfxVal = 5
