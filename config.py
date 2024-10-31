@@ -27,6 +27,11 @@ OCR_ERROR = pygame.font.Font('Resources/OCR.ttf', 20)
 # images 
 MENU_BG = pygame.transform.scale(pygame.image.load('Resources/Images/menu-background.png'), (WIDTH, HEIGHT))
 
+BL_TILE = pygame.transform.rotate(pygame.image.load('Resources/Images/tiles/grass corner.png'), 0)
+TL_TILE = pygame.transform.rotate(pygame.image.load('Resources/Images/tiles/grass corner.png'), 270)
+BR_TILE = pygame.transform.rotate(pygame.image.load('Resources/Images/tiles/grass corner.png'), 90)
+TR_TILE = pygame.transform.rotate(pygame.image.load('Resources/Images/tiles/grass corner.png'), 180)
+
 # music
 musicVal = 0 # todo: set this to 5
 sfxVal = 5
