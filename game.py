@@ -20,20 +20,50 @@ tileMap = [
 lastUpdate = pygame.time.get_ticks()
 
 # how long each frame lasts
-animation_cooldown = 100
+animationCooldown = 100
 
 frame = 0
 
-# loads the sprite sheet into program 
-playerWalkUpSheetImage = pygame.image.load("Resources/Images/player-walking-up.png").convert_alpha()
+def createSpriteFrameList(numFrames, row):
 
-# creates an object of the sprite sheet
-playerWUSheet = Player.SpriteSheet(playerWalkUpSheetImage)
+    # creates an object of the sprite sheet image
+    spritesheet = Player.SpriteSheet(pygame.image.load("Resources/Images/sprites/maleMC-spritesheet.png").convert_alpha())
 
-# creates a list to hold the different frames of the sprite 
-playerWU = []
-for x in range(8):
-    playerWU.append(playerWUSheet.getImage(x+1, 64, 64, 1.5))
+    # creates a list to hold the different frames of the sprite 
+    list = []
+    for x in range(numFrames):
+        list.append(spritesheet.getImage(x+1, row, 64, 64, 1.5))
+
+    return list
+
+def animatePlayer(action, x, y):
+    frame = 0
+
+    global animationCooldown, lastUpdate
+
+    # update animation
+    currentTime = pygame.time.get_ticks()
+
+    # checks to see if time last updated has exeeded animation cooldown time
+    if currentTime - lastUpdate >= animationCooldown:
+
+        # updates frame and sets new last updated time to current time
+        frame = frame + 1
+        lastUpdate = currentTime
+
+        # ensures the frames loops back to the first frame if it reaches the end
+        if frame >= len(action):
+            frame = 0
+
+    # show frame image
+    config.SCREEN.blit(action[frame], (x,y))
+
+playerWalkUp = createSpriteFrameList(8, 8)
+playerWalkLeft = createSpriteFrameList(8, 9)
+playerWalkDown = createSpriteFrameList(8, 10)
+playerWalkRight = createSpriteFrameList(8, 11)
+
+playerIDK = createSpriteFrameList(7, 6)
 
 def main():
     running = True
@@ -49,19 +79,36 @@ def main():
                 tile = tileMap[row][col]
                 config.SCREEN.blit(tile, (col*72, row*72))
         
+        animatePlayer(playerWalkLeft, 500, 600)
+
+        """
         # update animation
         currentTime = pygame.time.get_ticks()
+
+        # checks to see if time last updated has exeeded animation cooldown time
         if currentTime - lastUpdate >= animation_cooldown:
+
+            # updates frame and sets new last updated time to current time
             frame = frame + 1
             lastUpdate = currentTime
-            if frame >= len(playerWU):
+
+            # ensures the frames loops back to the first frame if it reaches the end
+            if frame >= len(playerWalkUp):
                 frame = 0
 
         # show frame image
-        config.SCREEN.blit(playerWU[frame], (100,500))
+        config.SCREEN.blit(playerWalkUp[frame], (100,500))
+        config.SCREEN.blit(playerWalkDown[frame], (300,500))
+        config.SCREEN.blit(playerWalkLeft[frame], (500,500))
+        config.SCREEN.blit(playerWalkRight[frame], (700,500))
 
+        config.SCREEN.blit(playerIDK[frame], (400,200))
+"""
         for event in pygame.event.get():
 
+            if event.type == pygame.KEYDOWN:
+                print("a")
+                
             # handles the exit of the game
             if event.type == pygame.QUIT:
                 running  = False
