@@ -20,14 +20,14 @@ tileMap = [
 lastUpdate = pygame.time.get_ticks()
 
 # how long each frame lasts
-animationCooldown = 100
+animationCooldown = 500
 
 frame = 0
 
-def createSpriteFrameList(numFrames, row):
+def createSpriteFrameList(img, numFrames, row):
 
     # creates an object of the sprite sheet image
-    spritesheet = Player.SpriteSheet(pygame.image.load("Resources/Images/sprites/maleMC-spritesheet.png").convert_alpha())
+    spritesheet = Player.SpriteSheet(img)
 
     # creates a list to hold the different frames of the sprite 
     list = []
@@ -58,28 +58,35 @@ def animatePlayer(action, x, y):
     # show frame image
     config.SCREEN.blit(action[frame], (x,y))
 
-playerWalkUp = createSpriteFrameList(8, 8)
-playerWalkLeft = createSpriteFrameList(8, 9)
-playerWalkDown = createSpriteFrameList(8, 10)
-playerWalkRight = createSpriteFrameList(8, 11)
+# load player sprite sheet
+maleMCSpriteSheet = pygame.image.load("Resources/Images/sprites/maleMC-spritesheet.png").convert_alpha()
 
-playerIDK = createSpriteFrameList(7, 6)
+# creates a list of sprite animation frames
+playerWalkUp = createSpriteFrameList(maleMCSpriteSheet, 8, 8)
+playerWalkLeft = createSpriteFrameList(maleMCSpriteSheet, 8, 9)
+playerWalkDown = createSpriteFrameList(maleMCSpriteSheet, 8, 10)
+playerWalkRight = createSpriteFrameList(maleMCSpriteSheet, 8, 11)
+playerIDK = createSpriteFrameList(maleMCSpriteSheet, 7, 6)
 
 def main():
     running = True
+    flag = False
 
     global lastUpdate, frame
 
     while running:
         
         # displays the tiles 
-
         for row in range(len(tileMap)):
             for col in range(len(tileMap[row])):
                 tile = tileMap[row][col]
                 config.SCREEN.blit(tile, (col*72, row*72))
         
-        animatePlayer(playerWalkLeft, 500, 600)
+        # checks to see if user has pressed key down
+        if flag:
+
+            # animates player moving left
+            animatePlayer(playerWalkLeft, 500, 600)
 
         """
         # update animation
@@ -106,8 +113,11 @@ def main():
 """
         for event in pygame.event.get():
 
+            # checks if player presses down a key
             if event.type == pygame.KEYDOWN:
-                print("a")
+                
+                # sets a flag to true indicating character has moved
+                flag = True
                 
             # handles the exit of the game
             if event.type == pygame.QUIT:

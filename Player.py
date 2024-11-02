@@ -23,36 +23,52 @@ class SpriteSheet():
         return image
 
 
-"""
-class allSprites(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__(group)
-        self.allSprites = pygame.sprite.Group()
-    
-    def run(self):
-        self.allSprites.draw(config.SCREEN)
-        self.allSprites.update()
-    
+class Player():
 
-class Player(allSprites):
+    def __init__(self, image, x, y):
 
-    def __init__(self, pos, group):
-        super().__init__(group)
+        self.x = x
+        self.y = y
 
-        self.image = pygame.Surface((32, 64))
-        self.image.fill(config.WHITE)
-        self.rect = self.image.get_rect(center = pos)
+        self.vel = 5
 
-    def input(Self):
+        self.left = False
+        self.right = False
+
+        self.up = False
+        self.Down = False
+
+        self.action = "idle"
+
+        self.image = image
+        self.rect = self.image.get_rect(center = (self.x, self.y))
+
+
+    def input(self):
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_UP]:
-            print("Up")
-        elif keys[pygame.K_DOWN]:
-            print("Down")
-        
+        if keys[pygame.K_UP] and self.y > self.vel:
+            self.y -= self.vel
+            self.up = True
+            self.down = False
+
+        elif keys[pygame.K_DOWN] and self.y < config.WIDTH - self.vel:
+            self.y += self.vel
+            self.down = True
+            self.up = False
+
         if keys[pygame.K_RIGHT]:
-            print("Right")
+            self.x -= self.vel
+            self.left = True
+            self.right = False
+
         elif keys[pygame.K_LEFT]:
-            print("Left")
-        """
+            self.y += self.vel
+            self.right = True
+            self.left = False
+        
+        else:
+            self.up = False
+            self.down = False
+            self.left = False
+            self.right = False
