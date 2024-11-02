@@ -13,5 +13,3 @@ if __name__ == "__main__":
 
     # calls the loops that displays the first screen loop
     game.main()
-
-pygame.quit()

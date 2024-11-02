@@ -39,6 +39,9 @@ RE_TILE = pygame.transform.rotate(pygame.image.load('Resources/Images/tiles/gras
 
 GM_TILE = pygame.image.load('Resources/Images/tiles/grass middle.png') 
 
+TD_TILE = pygame.image.load('Resources/Images/tiles/tilled land.png') 
+WD_TILE = pygame.image.load('Resources/Images/tiles/tilled and watered land.png') 
+
 # music
 musicVal = 0 # todo: set this to 5
 sfxVal = 5
