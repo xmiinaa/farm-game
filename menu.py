@@ -1,5 +1,5 @@
 # importing all libraries needed in this module, including other python files
-import pygame, config, database, Classes.box as box, re, hashlib, game
+import pygame, config, database, Classes.box as box, re, hashlib, game, sys
 pygame.init()
 
 # checks to see if the password entered fits the requiremens and is valid
@@ -101,6 +101,7 @@ def mainmenu_loop():
     
     # cleanly exits the program
     pygame.quit()
+    sys.exit()
 
 # handles the first screen that is displayed when the user clicks on new game
 def newgame1_loop():
@@ -200,6 +201,7 @@ def newgame1_loop():
     
     # exits the program
     pygame.quit()
+    sys.exit()
 
 # handles the second screen needed to start a new game 
 def newgame2_loop(saveChoice):
@@ -452,6 +454,7 @@ def newgame2_loop(saveChoice):
 
     # Cleanly exit the program
     pygame.quit()
+    sys.exit()
 
 # handles the first screen that is displayed when the user clicks on new game        
 def loadgame_loop():
@@ -629,6 +632,7 @@ def loadgame_loop():
 
     # Cleanly exit the program
     pygame.quit()
+    sys.exit()
 
 # handles the instructions screen 
 def instructions_loop():
@@ -679,6 +683,7 @@ def instructions_loop():
 
     # Cleanly exit the program
     pygame.quit()
+    sys.exit()
 
 # handles the settings screen and the functions within
 def settings_loop():
@@ -807,3 +812,4 @@ def settings_loop():
 
     # Cleanly exit the program
     pygame.quit()
+    sys.exit()

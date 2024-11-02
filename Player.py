@@ -1,6 +1,6 @@
 import pygame, config
 
-
+"""
 class allSprites(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__(group)
@@ -32,4 +32,4 @@ class Player(allSprites):
             print("Right")
         elif keys[pygame.K_LEFT]:
             print("Left")
-        
+        """

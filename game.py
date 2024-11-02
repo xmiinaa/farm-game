@@ -1,6 +1,5 @@
 import pygame, config, Classes
 from Classes import tile
-from Player import Player
 import sys
 
 tileMap = [
@@ -24,7 +23,7 @@ for i in range(0,648, 72):
 TL_TILE = tile.tile(TL_TILE)
 """
 
-player = Player((640, 360), pygame.sprite.Group())
+#player = Player((640, 360), pygame.sprite.Group())
 
 def main():
     running = True
