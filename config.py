@@ -18,6 +18,7 @@ BOX_FILL = (211, 245, 253)
 FONT_COLOUR = (2, 100, 106)
 ERROR_FONT_COLOUR = (255, 45, 45)
 GREY = (160, 160, 160)
+BLACK = (0, 0, 0)
 
 # text font
 OCR_TITLE = pygame.font.Font('Resources/OCR.ttf', 48)

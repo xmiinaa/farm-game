@@ -16,6 +16,13 @@ tileMap = [
     [config.BL_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BR_TILE]
     ]
 
+# stores time since last frame has been updated
+lastUpdate = pygame.time.get_ticks()
+
+# how long each frame lasts
+animation_cooldown = 100
+
+frame = 0
 
 # loads the sprite sheet into program 
 playerWalkUpSheetImage = pygame.image.load("Resources/Images/player-walking-up.png").convert_alpha()
@@ -23,13 +30,16 @@ playerWalkUpSheetImage = pygame.image.load("Resources/Images/player-walking-up.p
 # creates an object of the sprite sheet
 playerWUSheet = Player.SpriteSheet(playerWalkUpSheetImage)
 
-# creates an array to hold the different frames of the sprite 
+# creates a list to hold the different frames of the sprite 
 playerWU = []
-for x in range(9):
-    playerWU.append(playerWUSheet.getImage(x, 64, 64, 1))
+for x in range(8):
+    playerWU.append(playerWUSheet.getImage(x+1, 64, 64, 1.5))
 
 def main():
     running = True
+
+    global lastUpdate, frame
+
     while running:
         
         # displays the tiles 
@@ -39,15 +49,26 @@ def main():
                 tile = tileMap[row][col]
                 config.SCREEN.blit(tile, (col*72, row*72))
         
+        # update animation
+        currentTime = pygame.time.get_ticks()
+        if currentTime - lastUpdate >= animation_cooldown:
+            frame = frame + 1
+            lastUpdate = currentTime
+            if frame >= len(playerWU):
+                frame = 0
 
-        for x in range(len(playerWU)):
-            config.SCREEN.blit(playerWU[x], (x*100,500))
+        # show frame image
+        config.SCREEN.blit(playerWU[frame], (100,500))
 
         for event in pygame.event.get():
-            if event.type != pygame.QUIT:
-                pygame.display.flip()
-            else:
+
+            # handles the exit of the game
+            if event.type == pygame.QUIT:
                 running  = False
+
+                # exits the game
                 pygame.quit()
                 sys.exit() 
+        
+        pygame.display.update()
                 

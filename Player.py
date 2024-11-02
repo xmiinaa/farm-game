@@ -18,6 +18,8 @@ class SpriteSheet():
         # scales image accordingly
         image = pygame.transform.scale(image, (width * scale, height * scale))
 
+        image.set_colorkey(config.BLACK)
+
         return image
 
 
