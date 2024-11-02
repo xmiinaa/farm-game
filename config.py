@@ -56,6 +56,9 @@ SCREEN = pygame.display.set_mode([WIDTH,HEIGHT])
 
 CLOCK = pygame.time.Clock()
 
+# how long each frame lasts
+ANIMATION_COOLDOWN = 100
+
 # needed when starting up program
 def initialise():
 

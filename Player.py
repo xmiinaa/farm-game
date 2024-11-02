@@ -1,4 +1,4 @@
-import pygame, config
+import pygame, config, game
 
 class SpriteSheet():
 
@@ -21,30 +21,72 @@ class SpriteSheet():
         image.set_colorkey(config.BLACK)
 
         return image
-
-
-class Player():
-
-    def __init__(self, image, x, y):
-
+    
+class Entity():
+    def __init__(self, x, y, image):
         self.x = x
         self.y = y
 
-        self.vel = 5
-
-        self.left = False
-        self.right = False
-
-        self.up = False
-        self.Down = False
-
-        self.action = "idle"
-
         self.image = image
         self.rect = self.image.get_rect(center = (self.x, self.y))
+    
+    def getPosition(self):
+        return self.x, self.y
+    
+    def changePosition(self, x, y):
+        self.x = x
+        self.y =y
 
+    def animateEntity(action, x, y):
+
+        # update animation
+        currentTime = pygame.time.get_ticks()
+
+        # checks to see if time last updated has exeeded animation cooldown time
+        if currentTime - lastUpdate >= config.ANIMATION_COOLDOWN:
+
+            # updates frame and sets new last updated time to current time
+            frame = frame + 1
+            lastUpdate = currentTime
+
+            # ensures the frames loops back to the first frame if it reaches the end
+            if frame >= len(action):
+                frame = 0
+
+        # show frame image
+        config.SCREEN.blit(action[frame], (x,y))
+
+class Character(Entity):
+
+    def __init__(self, name, spritesheet, x, y, image):
+        super().__init__(x, y, image)
+
+        self.name = name
+        
+        # creates a list of sprite animation frames
+        self.playerWalkUp = game.createSpriteFrameList(spritesheet, 8, 8)
+        self.playerWalkLeft = game.createSpriteFrameList(spritesheet, 8, 9)
+        self.playerWalkDown = game.createSpriteFrameList(spritesheet, 8, 10)
+        self.playerWalkRight = game.createSpriteFrameList(spritesheet, 8, 11)
+        self.vel = 5
+
+        self.moving = False
+        self.direction = "Right"
+    
+    
+
+class Player(Character):
+        
+    def __init__(self, name, spritesheet, x, y, image):
+        super().__init__(name, spritesheet, x, y, image)
+        self.stamina = 100
+        self.inventory = [[] for _ in range(20)]
+        self.item = ""
+        self.money = 0
+        self.action = "idle"
 
     def input(self):
+
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_UP] and self.y > self.vel:
