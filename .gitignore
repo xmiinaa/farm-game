@@ -4,8 +4,9 @@ env/
 .vscode/
 
 # Byte-compiled / optimized / DLL files
-__pycache__/
+\__pycache__\
 *.py[cod]
+.cpython-312.pyc
 
 # C extensions
 *.so
