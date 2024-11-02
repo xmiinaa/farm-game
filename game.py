@@ -16,20 +16,17 @@ tileMap = [
     [config.BL_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BR_TILE]
     ]
 
-"""
-for i in range(0,648, 72):
-    for j in range(0,1008, 72):
-        tileMap[i][j] = tile.tile(TL_TILE, (i*72, j*72))
 
-TL_TILE = tile.tile(TL_TILE)
-"""
 # loads the sprite sheet into program 
 playerWalkUpSheetImage = pygame.image.load("Resources/Images/player-walking-up.png").convert_alpha()
+
+# creates an object of the sprite sheet
 playerWUSheet = Player.SpriteSheet(playerWalkUpSheetImage)
 
-playerWU_0 = playerWUSheet.getImage(0, 64, 64, 1) 
-
-#player = Player((640, 360), pygame.sprite.Group())
+# creates an array to hold the different frames of the sprite 
+playerWU = []
+for x in range(9):
+    playerWU.append(playerWUSheet.getImage(x, 64, 64, 1))
 
 def main():
     running = True
@@ -41,8 +38,10 @@ def main():
             for col in range(len(tileMap[row])):
                 tile = tileMap[row][col]
                 config.SCREEN.blit(tile, (col*72, row*72))
-                
-        config.SCREEN.blit(playerWU_0, (500,500))
+        
+
+        for x in range(len(playerWU)):
+            config.SCREEN.blit(playerWU[x], (x*100,500))
 
         for event in pygame.event.get():
             if event.type != pygame.QUIT:
