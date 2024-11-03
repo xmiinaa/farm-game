@@ -16,6 +16,9 @@ tileMap = [
     [config.BL_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BR_TILE]
     ]
 
+# this would not be set in real game, but rather obtained from database or previous screen
+chosenCharacter = "female"
+
 # how long each frame lasts
 ANIMATION_COOLDOWN = 100
 
@@ -26,7 +29,7 @@ frame = 0
 
 # load player sprite sheet
 maleMCSpriteSheet = pygame.image.load("Resources/Images/sprites/maleMC-spritesheet.png").convert_alpha()
-femaleMCSpriteSheet = pygame.image.load("Resources/Images/sprites/maleMC-spritesheet.png").convert_alpha()
+femaleMCSpriteSheet = pygame.image.load("Resources/Images/sprites/femaleMC-spritesheet.png").convert_alpha()
 
 # creates a list of different sprite images
 def createSpriteFrameList(img, numFrames, row):
@@ -62,11 +65,6 @@ def animatePlayer(action, x, y):
     # show frame image
     config.SCREEN.blit(action[frame], (x,y))
                        
-
-# creates a list of sprite animation frames
-animationList = []
-animationSteps = 9
-
 def createActionAnimationList(spritesheet):
 
     playerWalkUp = createSpriteFrameList(spritesheet, 8, 8)
@@ -92,8 +90,10 @@ def createActionAnimationList(spritesheet):
 
     return playerWalkList, playerTillWaterList, playerPlantList
 
-createActionAnimationList(maleMCSpriteSheet)
-createActionAnimationList(femaleMCSpriteSheet)
+if chosenCharacter == "male":
+    walk, tillWater, plant = createActionAnimationList(maleMCSpriteSheet)
+else:
+    walk, tillWater, plant = createActionAnimationList(femaleMCSpriteSheet)
 
 def main():
     running = True
@@ -110,7 +110,7 @@ def main():
                 config.SCREEN.blit(tile, (col*72, row*72))
 
         # animates player moving left
-        animatePlayer(
+        animatePlayer(tillWater[3], 500, 300)
         
 
         for event in pygame.event.get():
