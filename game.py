@@ -2,6 +2,7 @@ import pygame, config
 from Classes import tile
 import sys
 from spritesheet import SpriteSheet
+import Player
 
 tileMap = [
     [config.TL_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TR_TILE],
@@ -39,9 +40,27 @@ def createSpriteFrameList(img, numFrames, row):
 
     list = []
 
+    # repeats for each frame
     for x in range(numFrames):
+
+        # adds that frame image to list
         list.append(spritesheet.getImage(x+1, row, 64, 64, 1.5))
 
+    return list
+
+def createIdleList(img):
+
+    # creates an object of the sprite sheet image
+    spritesheet = SpriteSheet(img)
+
+    list = []
+
+    # repeats for 4 directions
+    for x in range(4):
+
+        # adds that frame image to list
+        list.append(spritesheet.getImage(0, x, 64, 64, 1.5))
+    
     return list
 
 def animatePlayer(action, x, y):
@@ -91,15 +110,31 @@ def createActionAnimationList(spritesheet):
     return playerWalkList, playerTillWaterList, playerPlantList
 
 if chosenCharacter == "male":
-    walk, tillWater, plant = createActionAnimationList(maleMCSpriteSheet)
+    walkList, tillWaterList, plantList = createActionAnimationList(maleMCSpriteSheet)
+    idleList = createIdleList(maleMCSpriteSheet)
+    player = Player.Player("Bob", 300, 500, maleMCSpriteSheet, idleList)
 else:
-    walk, tillWater, plant = createActionAnimationList(femaleMCSpriteSheet)
+    walkList, tillWaterList, plantList = createActionAnimationList(femaleMCSpriteSheet)
+    idleList = createIdleList(femaleMCSpriteSheet)
 
 def main():
     running = True
-    flag = False
 
-    global lastUpdate, frame
+    # stores time since last frame has been updated
+    lastUpdate = pygame.time.get_ticks()
+
+    frame = 0
+
+    global chosenCharacter
+
+    if chosenCharacter == "male":
+        walkList, tillWaterList, plantList = createActionAnimationList(maleMCSpriteSheet)
+        idleList = createIdleList(maleMCSpriteSheet)
+    else:
+        walkList, tillWaterList, plantList = createActionAnimationList(femaleMCSpriteSheet)
+        idleList = createIdleList(femaleMCSpriteSheet)
+
+    player = Player.Player(300, 500, maleMCSpriteSheet, idleList, "Bob")
 
     while running:
         
@@ -109,8 +144,15 @@ def main():
                 tile = tileMap[row][col]
                 config.SCREEN.blit(tile, (col*72, row*72))
 
-        # animates player moving left
-        animatePlayer(tillWater[3], 500, 300)
+        # gets player direction and co-ordinates
+        direction = player.whichDirection()
+        x, y = player.getPosition()
+        print("the",  x, "and", y)
+
+        if player.isMoving():
+            animatePlayer(walkList[direction], x, y)
+        else:
+            config.SCREEN.blit(idleList[direction], (200, y))
         
 
         for event in pygame.event.get():
@@ -118,8 +160,29 @@ def main():
             # checks if player presses down a key
             if event.type == pygame.KEYDOWN:
                 
-                # sets a flag to true indicating character has moved
-                flag = True
+                # collects all keys Boolean value of whether it has been pressed or not and stores in list
+                keys = pygame.key.get_pressed()
+    
+                if keys[pygame.K_a]:
+                    player.setMoving(True)
+                    player.changeDirection(1)
+
+                elif keys[pygame.K_d]:
+                    player.setMoving(True)
+                    player.changeDirection(3)
+
+                if keys[pygame.K_w]:
+                    player.setMoving(True)
+                    player.changeDirection(0)
+
+                elif keys[pygame.K_s]:
+                    player.setMoving(True)
+                    player.changeDirection(2)
+                
+
+
+
+                    
                 
             # handles the exit of the game
             if event.type == pygame.QUIT:
