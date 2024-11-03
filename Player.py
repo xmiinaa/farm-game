@@ -23,12 +23,21 @@ class SpriteSheet():
         return image
     
 class Entity():
-    def __init__(self, x, y, image):
+    def __init__(self, x, y, spritesheet, image):
         self.x = x
         self.y = y
 
         self.image = image
-        self.rect = self.image.get_rect(center = (self.x, self.y))
+        try:
+            self.rect = self.image.get_rect(center = (self.x, self.y))
+        except TypeError as e:
+            print(e)
+
+        # creates a list of sprite animation frames
+        self.playerWalkUp = game.createSpriteFrameList(spritesheet, 8, 8)
+        self.playerWalkLeft = game.createSpriteFrameList(spritesheet, 8, 9)
+        self.playerWalkDown = game.createSpriteFrameList(spritesheet, 8, 10)
+        self.playerWalkRight = game.createSpriteFrameList(spritesheet, 8, 11)
     
     def getPosition(self):
         return self.x, self.y
@@ -39,35 +48,31 @@ class Entity():
 
     def animateEntity(action, x, y):
 
-        # update animation
-        currentTime = pygame.time.get_ticks()
+        if action == "WL":
+            # update animation
+            currentTime = pygame.time.get_ticks()
 
-        # checks to see if time last updated has exeeded animation cooldown time
-        if currentTime - lastUpdate >= config.ANIMATION_COOLDOWN:
+            # checks to see if time last updated has exeeded animation cooldown time
+            if currentTime - lastUpdate >= config.ANIMATION_COOLDOWN:
 
-            # updates frame and sets new last updated time to current time
-            frame = frame + 1
-            lastUpdate = currentTime
+                # updates frame and sets new last updated time to current time
+                frame = frame + 1
+                lastUpdate = currentTime
 
-            # ensures the frames loops back to the first frame if it reaches the end
-            if frame >= len(action):
-                frame = 0
+                # ensures the frames loops back to the first frame if it reaches the end
+                if frame >= len(action):
+                    frame = 0
 
-        # show frame image
-        config.SCREEN.blit(action[frame], (x,y))
+            # show frame image
+            config.SCREEN.blit(action[frame], (x,y))
 
 class Character(Entity):
 
-    def __init__(self, name, spritesheet, x, y, image):
-        super().__init__(x, y, image)
+    def __init__(self, name, x, y, spritesheet, image):
+        super().__init__(x, y, spritesheet, image)
 
         self.name = name
-        
-        # creates a list of sprite animation frames
-        self.playerWalkUp = game.createSpriteFrameList(spritesheet, 8, 8)
-        self.playerWalkLeft = game.createSpriteFrameList(spritesheet, 8, 9)
-        self.playerWalkDown = game.createSpriteFrameList(spritesheet, 8, 10)
-        self.playerWalkRight = game.createSpriteFrameList(spritesheet, 8, 11)
+    
         self.vel = 5
 
         self.moving = False
@@ -77,7 +82,7 @@ class Character(Entity):
 
 class Player(Character):
         
-    def __init__(self, name, spritesheet, x, y, image):
+    def __init__(self, name, x, y, spritesheet, image):
         super().__init__(name, spritesheet, x, y, image)
         self.stamina = 100
         self.inventory = [[] for _ in range(20)]
