@@ -1,6 +1,7 @@
-import pygame, config, Classes
+import pygame, config
 from Classes import tile
 import sys
+from spritesheet import SpriteSheet
 
 tileMap = [
     [config.TL_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TR_TILE],
@@ -18,151 +19,81 @@ tileMap = [
 # how long each frame lasts
 ANIMATION_COOLDOWN = 100
 
-class SpriteSheet():
-
-    # initialises sprite sheet
-    def __init__(self, image):
-        self.sheet = image
-
-    # gets and returns a specific image frame from spritesheet
-    def getImage(self, frame, row, width, height, scale):
-
-        # creates a surface for image to draw on
-        image = pygame.Surface((width, height)).convert_alpha()
-
-        # draws on part of spritesheet that has been requested
-        image.blit(self.sheet, (0,0), ((frame*width), (row*height), width, height))
-
-        # scales image accordingly
-        image = pygame.transform.scale(image, (width * scale, height * scale))
-
-        image.set_colorkey(config.BLACK)
-
-        return image
-    
-class Entity():
-    def __init__(self, x, y, spritesheet, image):
-        self.x = x
-        self.y = y
-
-        self.image = image
-        try:
-            self.rect = self.image.get_rect(center = (self.x, self.y))
-        except TypeError as e:
-            print(e)
-
-        # creates a list of sprite animation frames
-        self.playerWalkUp = createSpriteFrameList(spritesheet, 8, 8)
-        self.playerWalkLeft = createSpriteFrameList(spritesheet, 8, 9)
-        self.playerWalkDown = createSpriteFrameList(spritesheet, 8, 10)
-        self.playerWalkRight = createSpriteFrameList(spritesheet, 8, 11)
-    
-    def getPosition(self):
-        return self.x, self.y
-    
-    def changePosition(self, x, y):
-        self.x = x
-        self.y =y
-
-    def animateEntity(action, x, y):
-
-        if action == "WL":
-            # update animation
-            currentTime = pygame.time.get_ticks()
-
-            # checks to see if time last updated has exeeded animation cooldown time
-            if currentTime - lastUpdate >= config.ANIMATION_COOLDOWN:
-
-                # updates frame and sets new last updated time to current time
-                frame = frame + 1
-                lastUpdate = currentTime
-
-                # ensures the frames loops back to the first frame if it reaches the end
-                if frame >= len(action):
-                    frame = 0
-
-            # show frame image
-            config.SCREEN.blit(action[frame], (x,y))
-
-class Character(Entity):
-
-    def __init__(self, name, x, y, spritesheet, image):
-        super().__init__(x, y, spritesheet, image)
-
-        self.name = name
-    
-        self.vel = 5
-
-        self.moving = False
-        self.direction = "Right"
-    
-    
-
-class Player(Character):
-        
-    def __init__(self, name, x, y, spritesheet, image):
-        super().__init__(name, spritesheet, x, y, image)
-        self.stamina = 100
-        self.inventory = [[] for _ in range(20)]
-        self.item = ""
-        self.money = 0
-        self.action = "idle"
-
-    def input(self):
-
-        keys = pygame.key.get_pressed()
-
-        if keys[pygame.K_UP] and self.y > self.vel:
-            self.y -= self.vel
-            self.up = True
-            self.down = False
-
-        elif keys[pygame.K_DOWN] and self.y < config.WIDTH - self.vel:
-            self.y += self.vel
-            self.down = True
-            self.up = False
-
-        if keys[pygame.K_RIGHT]:
-            self.x -= self.vel
-            self.left = True
-            self.right = False
-
-        elif keys[pygame.K_LEFT]:
-            self.y += self.vel
-            self.right = True
-            self.left = False
-        
-        else:
-            self.up = False
-            self.down = False
-            self.left = False
-            self.right = False
-
 # stores time since last frame has been updated
 lastUpdate = pygame.time.get_ticks()
 
-# how long each frame lasts
-animationCooldown = 100
-
 frame = 0
 
+# load player sprite sheet
+maleMCSpriteSheet = pygame.image.load("Resources/Images/sprites/maleMC-spritesheet.png").convert_alpha()
+femaleMCSpriteSheet = pygame.image.load("Resources/Images/sprites/maleMC-spritesheet.png").convert_alpha()
 
+# creates a list of different sprite images
 def createSpriteFrameList(img, numFrames, row):
 
     # creates an object of the sprite sheet image
-    spritesheet = Player.SpriteSheet(img)
+    spritesheet = SpriteSheet(img)
 
-    # creates a list to hold the different frames of the sprite 
     list = []
+
     for x in range(numFrames):
         list.append(spritesheet.getImage(x+1, row, 64, 64, 1.5))
 
     return list
 
-# load player sprite sheet
-maleMCSpriteSheet = pygame.image.load("Resources/Images/sprites/maleMC-spritesheet.png").convert_alpha()
+def animatePlayer(action, x, y):
 
-maleMC = Player("Bob", 500, 400, maleMCSpriteSheet, maleMCSpriteSheet)
+    global ANIMATION_COOLDOWN, lastUpdate, frame
+
+    # update animation
+    currentTime = pygame.time.get_ticks()
+
+    # checks to see if time last updated has exeeded animation cooldown time
+    if currentTime - lastUpdate >= ANIMATION_COOLDOWN:
+
+        # updates frame and sets new last updated time to current time
+        frame = frame + 1
+        lastUpdate = currentTime
+
+        # ensures the frames loops back to the first frame if it reaches the end
+        if frame >= len(action):
+            frame = 0
+
+    # show frame image
+    config.SCREEN.blit(action[frame], (x,y))
+                       
+
+# creates a list of sprite animation frames
+animationList = []
+animationSteps = 9
+
+def createActionAnimationList(spritesheet):
+
+    playerWalkUp = createSpriteFrameList(spritesheet, 8, 8)
+    playerWalkLeft = createSpriteFrameList(spritesheet, 8, 9)
+    playerWalkDown = createSpriteFrameList(spritesheet, 8, 10)
+    playerWalkRight = createSpriteFrameList(spritesheet, 8, 11)
+
+    playerWalkList = [playerWalkUp, playerWalkLeft, playerWalkDown, playerWalkRight]
+
+    playerTillWaterUp = createSpriteFrameList(spritesheet, 7, 4)
+    playerTillWaterLeft = createSpriteFrameList(spritesheet, 7, 5)
+    playerTillWaterDown = createSpriteFrameList(spritesheet, 7, 6)
+    playerTillWaterRight = createSpriteFrameList(spritesheet, 7, 7)
+
+    playerTillWaterList = [playerTillWaterUp, playerTillWaterLeft, playerTillWaterDown, playerTillWaterRight]
+
+    playerPlantUp = createSpriteFrameList(spritesheet, 5, 12)
+    playerPlantLeft = createSpriteFrameList(spritesheet, 5, 13)
+    playerPlantDown = createSpriteFrameList(spritesheet, 5, 14)
+    playerPlantRight = createSpriteFrameList(spritesheet, 5, 15)
+
+    playerPlantList = [playerPlantUp, playerPlantLeft, playerPlantDown, playerPlantRight]
+
+    return playerWalkList, playerTillWaterList, playerPlantList
+
+createActionAnimationList(maleMCSpriteSheet)
+createActionAnimationList(femaleMCSpriteSheet)
 
 def main():
     running = True
@@ -179,7 +110,8 @@ def main():
                 config.SCREEN.blit(tile, (col*72, row*72))
 
         # animates player moving left
-        maleMC.animatePlayer("WL", 500, 600)
+        animatePlayer(
+        
 
         for event in pygame.event.get():
 
