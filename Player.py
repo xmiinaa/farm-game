@@ -69,8 +69,6 @@ class Character(Entity):
 
     def animateWalk(self):
 
-
-
         # update animation
         currentTime = pygame.time.get_ticks()
 
@@ -87,6 +85,7 @@ class Character(Entity):
 
         # show frame image
         config.SCREEN.blit(self.walkList[self.direction][self.frame], (self.x,self.y))
+    
 
 class Player(Character):
         
@@ -98,3 +97,25 @@ class Player(Character):
         self.item = ""
         self.money = 0
 
+    def animateTillWater(self):
+
+        flag = False
+
+        if not flag:
+            # update animation
+            currentTime = pygame.time.get_ticks()
+
+            # checks to see if time last updated has exeeded animation cooldown time
+            if currentTime - self.lastUpdate >= self.animationCooldown:
+
+                # updates frame and sets new last updated time to current time
+                self.frame = self.frame + 1 
+                self.lastUpdate = currentTime
+
+                # ensures the frames loops back to the first frame if it reaches the end
+                if self.frame >= len(self.tillWaterList[self.direction]):
+                    self.frame = len(self.tillWaterList[self.direction]) - 1
+                    flag = True
+
+        # show frame image
+        config.SCREEN.blit(self.tillWaterList[self.direction][self.frame], (self.x,self.y))

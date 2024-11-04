@@ -116,7 +116,9 @@ def main():
 
         if player.isMoving():
 
-            player.animateWalk()
+            #player.animateWalk()
+
+            player.animateTillWater()
 
         else:
             player.drawIdle()
