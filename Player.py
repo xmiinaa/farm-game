@@ -43,7 +43,7 @@ class Character(Entity):
 class Player(Character):
         
     def __init__(self, x, y, spritesheet, image, name):
-        super().__init__(spritesheet, x, y, image, name)
+        super().__init__(x, y,spritesheet, image, name)
 
         self.stamina = 100
         self.inventory = [[] for _ in range(20)]

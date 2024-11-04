@@ -120,11 +120,6 @@ else:
 def main():
     running = True
 
-    # stores time since last frame has been updated
-    lastUpdate = pygame.time.get_ticks()
-
-    frame = 0
-
     global chosenCharacter
 
     if chosenCharacter == "male":
@@ -147,12 +142,11 @@ def main():
         # gets player direction and co-ordinates
         direction = player.whichDirection()
         x, y = player.getPosition()
-        print("the",  x, "and", y)
 
         if player.isMoving():
             animatePlayer(walkList[direction], x, y)
         else:
-            config.SCREEN.blit(idleList[direction], (200, y))
+            config.SCREEN.blit(idleList[direction], (x, y))
         
 
         for event in pygame.event.get():
@@ -166,23 +160,31 @@ def main():
                 if keys[pygame.K_a]:
                     player.setMoving(True)
                     player.changeDirection(1)
+                    player.changePosition(x-5, y)
+                else:
+                    player.setMoving(False)
 
-                elif keys[pygame.K_d]:
+                if keys[pygame.K_d]:
                     player.setMoving(True)
                     player.changeDirection(3)
+                    player.changePosition(x+5, y)
+                else:
+                    player.setMoving(False)
 
                 if keys[pygame.K_w]:
                     player.setMoving(True)
                     player.changeDirection(0)
+                    player.changePosition(x, y-5)
+                else:
+                    player.setMoving(False)
 
-                elif keys[pygame.K_s]:
+                if keys[pygame.K_s]:
                     player.setMoving(True)
                     player.changeDirection(2)
+                    player.changePosition(x, y+5)
+                else:
+                    player.setMoving(False)
                 
-
-
-
-                    
                 
             # handles the exit of the game
             if event.type == pygame.QUIT:
