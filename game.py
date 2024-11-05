@@ -57,6 +57,7 @@ def main():
         if player.isMoving():
 
             player.animateWalk()
+            player.move()
 
         else:
             player.drawIdle()
@@ -71,34 +72,31 @@ def main():
 
                 if keys[pygame.K_a] or keys[pygame.K_d] or keys[pygame.K_w] or keys[pygame.K_s]:
                     player.setMoving(True)
-                else:
-                    player.setMoving(False)
     
                 if keys[pygame.K_a]:
-                    #player.setMoving(True)
                     player.changeDirection(1)
-                    player.changePosition(x-5, y)
-                    print("a")
-                else:
-                    print("na")
 
                 if keys[pygame.K_d]:
-                    #player.setMoving(True)
                     player.changeDirection(3)
-                    player.changePosition(x+5, y)
 
                 if keys[pygame.K_w]:
-                    #player.setMoving(True)
                     player.changeDirection(0)
-                    player.changePosition(x, y-5)
 
                 if keys[pygame.K_s]:
-                    #player.setMoving(True)
                     player.changeDirection(2)
-                    player.changePosition(x, y+5)
 
                 if keys[pygame.K_e]:
                     player.animateTillWater()
+
+            # checks if player is not pressing down a key
+            if event.type == pygame.KEYUP:
+                
+                # collects all keys Boolean value of whether it has been pressed or not and stores in list
+                keys = pygame.key.get_pressed()
+
+                if not keys[pygame.K_a] and not keys[pygame.K_d] and not keys[pygame.K_w] and not keys[pygame.K_s]:
+                    player.setMoving(False)
+    
 
                 
             # handles the exit of the game

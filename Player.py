@@ -6,23 +6,47 @@ class Entity():
         self.x = x
         self.y = y
 
+        # the speed of the entity
+        self.vel = 3
+
+        # the direction the entitiy first is shown. 2 is facing down.
+        self.direction = 2
+
+        # the time between each animation frame in ms
         self.animationCooldown = 100
+
+        # the time at which the last update for the animation is made
         self.lastUpdate = pygame.time.get_ticks()
+
+        # the current frame
         self.frame = 0
 
+        # creates an object of the image and stores it as an attribute
         self.spritesheet = SpriteSheet(spritesheet)
 
     
     def getPosition(self):
         return self.x, self.y
     
-    def changePosition(self, x, y):
-        self.x = x
-        self.y = y
+    # moves the position of the entity in the direction it is facing
+    def move(self):
+        if self.direction == 0: # facing up
+            self.y -= self.vel
 
+        if self.direction == 1: # facing left
+            self.x -= self.vel
+
+        if self.direction == 2: # facing down
+            self.y += self.vel
+
+        if self.direction == 3: # facing right
+            self.x += self.vel
+
+    # sets frame back to 0 so other animations begin from the start
     def resetAnimation(self):
         self.frame = 0
     
+    # animates the player
     def animate(self,action):
 
         # update animation
@@ -43,15 +67,15 @@ class Character(Entity):
     def __init__(self, x, y, spritesheet, name):
         super().__init__(x, y, spritesheet)
 
+        # the players name is the username made by the user
         self.name = name
-    
-        self.vel = 5
 
+        # creates animation list using methods in spritesheet and storing as attrbutes in player
         self.idleList = self.spritesheet.createIdleList()
         self.walkList, self.tillWaterList, self.plantList = self.spritesheet.createAnimationList()
 
+        # player is not moving at first
         self.moving = False
-        self.direction = 2
     
     def isMoving(self):
         return self.moving
@@ -65,9 +89,11 @@ class Character(Entity):
     def changeDirection(self, direction):
         self.direction = direction
 
+    # displays character image in direction it is facing
     def drawIdle(self):
         config.SCREEN.blit(self.idleList[self.direction], (self.x, self.y))
 
+    # animates character moving in direction it is facing 
     def animateWalk(self):
 
         # update animation
