@@ -20,14 +20,6 @@ tileMap = [
 # this would not be set in real game, but rather obtained from database or previous screen
 chosenCharacter = "female"
 
-# how long each frame lasts
-ANIMATION_COOLDOWN = 100
-
-# stores time since last frame has been updated
-lastUpdate = pygame.time.get_ticks()
-
-frame = 0
-
 # load player sprite sheet
 maleMCSpriteSheet = pygame.image.load("Resources/Images/sprites/maleMC-spritesheet.png").convert_alpha()
 femaleMCSpriteSheet = pygame.image.load("Resources/Images/sprites/femaleMC-spritesheet.png").convert_alpha()
@@ -65,7 +57,6 @@ def main():
         # checks to see if the player is currently doing an action
         elif player.getAction() != "idle":
     
-            player.resetAnimation()
             player.animateTillWater()
 
         # displays the player in its idle state
@@ -106,7 +97,9 @@ def main():
                     player.setMoving(False)
     
             # checks if he player has clicked on the mouse
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if pygame.mouse.get_pressed()[0]:
+
+                player.resetAnimation()
 
                 # changes the attribute as appropiate
                 player.changeAction("tillWater")

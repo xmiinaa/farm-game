@@ -140,8 +140,6 @@ class Player(Character):
     # animates the player tilling or watering
     def animateTillWater(self):
 
-        self.resetAnimation()
-
         if self.action == "tillWater" and not self.animationFinished:
 
             # update animation
@@ -151,11 +149,12 @@ class Player(Character):
             if currentTime - self.lastUpdate >= self.animationCooldown:
 
                 # updates frame and sets new last updated time to current time
-                self.frame = self.frame + 1 
+                self.frame += 1 
+                print(self.frame)
                 self.lastUpdate = currentTime
 
                 # handles the ending of the animation to stop at the last frame
-                if self.frame <= len(self.tillWaterList[self.direction]):
+                if self.frame >= len(self.tillWaterList[self.direction]):
 
                     self.frame = len(self.tillWaterList[self.direction]) -1 # stays on last frame
 
