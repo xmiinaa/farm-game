@@ -56,8 +56,10 @@ def main():
 
         # checks to see if the player is currently doing an action
         elif player.getAction() != "idle":
+
+            if player.isActive():
     
-            player.animateTillWater()
+                player.animateTillWater()
 
         # displays the player in its idle state
         else:
@@ -100,6 +102,7 @@ def main():
             if pygame.mouse.get_pressed()[0]:
 
                 player.resetAnimation()
+                player.activate()
 
                 # changes the attribute as appropiate
                 player.changeAction("tillWater")

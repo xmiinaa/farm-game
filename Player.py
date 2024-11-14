@@ -130,12 +130,22 @@ class Player(Character):
 
         # stores what action the player is currently doing
         self.action = "idle"
+        self.active = False
     
     def changeAction(self, action):
         self.action = action
     
     def getAction(self):
         return self.action
+    
+    def isActive(self):
+        return self.active
+    
+    def activate(self):
+        self.active = True
+
+    def deactivate(self):
+        self.active = False
 
     # animates the player tilling or watering
     def animateTillWater(self):
@@ -150,7 +160,6 @@ class Player(Character):
 
                 # updates frame and sets new last updated time to current time
                 self.frame += 1 
-                print(self.frame)
                 self.lastUpdate = currentTime
 
                 # handles the ending of the animation to stop at the last frame
@@ -159,6 +168,7 @@ class Player(Character):
                     self.frame = len(self.tillWaterList[self.direction]) -1 # stays on last frame
 
                     self.animationFinished = True # stops further animation updates
+                    self.deactivate()
 
             # show frame image
             config.SCREEN.blit(self.tillWaterList[self.direction][self.frame], (self.x,self.y))
