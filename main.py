@@ -5,6 +5,7 @@ import pygame, database, config, menu, game
 pygame.init()
 
 if __name__ == "__main__":
+    
     # sets up and creates the database if it has not yet been created
     database.startupDatabase()
 

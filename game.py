@@ -37,9 +37,11 @@ def main():
 
     global chosenCharacter
 
+    # creates player object depending on the variable, chosenCharacter
     if chosenCharacter == "male":
         player = Player.Player(300, 500, maleMCSpriteSheet, "Bob")
-    else:
+
+    else: # creates female player
         player = Player.Player(300, 500, femaleMCSpriteSheet, "Yue")
 
 
@@ -54,13 +56,22 @@ def main():
         # gets player direction and co-ordinates
         x, y = player.getPosition()
 
+        # checks if the player is moving, and displays it appropiately if they are
         if player.isMoving():
 
             player.animateWalk()
             player.move()
 
+        # checks to see if the player is currently doing an action
+        elif player.getAction() != "idle":
+    
+            player.resetAnimation()
+            player.animateTillWater()
+
+        # displays the player in its idle state
         else:
             player.drawIdle()
+    
         
         for event in pygame.event.get():
 
@@ -85,9 +96,6 @@ def main():
                 if keys[pygame.K_s]:
                     player.changeDirection(2)
 
-                if keys[pygame.K_e]:
-                    player.animateTillWater()
-
             # checks if player is not pressing down a key
             if event.type == pygame.KEYUP:
                 
@@ -97,7 +105,15 @@ def main():
                 if not keys[pygame.K_a] and not keys[pygame.K_d] and not keys[pygame.K_w] and not keys[pygame.K_s]:
                     player.setMoving(False)
     
+            # checks if he player has clicked on the mouse
+            if event.type == pygame.MOUSEBUTTONDOWN:
 
+                # changes the attribute as appropiate
+                player.changeAction("tillWater")
+            
+            else:
+
+                player.changeAction("idle")
                 
             # handles the exit of the game
             if event.type == pygame.QUIT:

@@ -24,6 +24,9 @@ class Entity():
         # creates an object of the image and stores it as an attribute
         self.spritesheet = SpriteSheet(spritesheet)
 
+        # used to make sure animations play once
+        self.animationFinished = True
+
     
     def getPosition(self):
         return self.x, self.y
@@ -45,6 +48,7 @@ class Entity():
     # sets frame back to 0 so other animations begin from the start
     def resetAnimation(self):
         self.frame = 0
+        self.animationFinished = False
     
     # animates the player
     def animate(self,action):
@@ -124,11 +128,21 @@ class Player(Character):
         self.item = ""
         self.money = 0
 
+        # stores what action the player is currently doing
+        self.action = "idle"
+    
+    def changeAction(self, action):
+        self.action = action
+    
+    def getAction(self):
+        return self.action
+
+    # animates the player tilling or watering
     def animateTillWater(self):
 
-        flag = False
+        self.resetAnimation()
 
-        while not flag:
+        if self.action == "tillWater" and not self.animationFinished:
 
             # update animation
             currentTime = pygame.time.get_ticks()
@@ -142,7 +156,11 @@ class Player(Character):
 
                 # handles the ending of the animation to stop at the last frame
                 if self.frame <= len(self.tillWaterList[self.direction]):
-                    flag = True
 
-        # show frame image
-        config.SCREEN.blit(self.tillWaterList[self.direction][self.frame], (self.x,self.y))
+                    self.frame = len(self.tillWaterList[self.direction]) -1 # stays on last frame
+
+                    self.animationFinished = True # stops further animation updates
+
+            # show frame image
+            config.SCREEN.blit(self.tillWaterList[self.direction][self.frame], (self.x,self.y))
+    
