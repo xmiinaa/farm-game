@@ -1,24 +1,28 @@
-import pygame, config
+import pygame
+from config import *
 from Classes import tile
 import sys
 from spritesheet import SpriteSheet
 import Player
 
 tileMap = [
-    [config.TL_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TE_TILE, config.TR_TILE],
-    [config.LE_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.RE_TILE],
-    [config.LE_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.RE_TILE],
-    [config.LE_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.RE_TILE],
-    [config.LE_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.RE_TILE],
-    [config.LE_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.RE_TILE],
-    [config.LE_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.RE_TILE],
-    [config.LE_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.RE_TILE],
-    [config.LE_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.GM_TILE, config.RE_TILE],
-    [config.BL_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BE_TILE, config.BR_TILE]
+    [TL_TILE, TE_TILE, TE_TILE, TE_TILE, TE_TILE, TE_TILE, TE_TILE, TE_TILE, TE_TILE, TE_TILE, TE_TILE, TE_TILE, TE_TILE, TE_TILE, TR_TILE],
+    [LE_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, RE_TILE],
+    [LE_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, RE_TILE],
+    [LE_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, RE_TILE],
+    [LE_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, RE_TILE],
+    [LE_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, RE_TILE],
+    [LE_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, RE_TILE],
+    [LE_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, RE_TILE],
+    [LE_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, RE_TILE],
+    [BL_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BR_TILE]
     ]
 
 # this would not be set in real game, but rather obtained from database or previous screen
 chosenCharacter = "female"
+
+#tileMap = tile.initialiseTiles()
+#print(tileMap)
 
 # load player sprite sheet
 maleMCSpriteSheet = pygame.image.load("Resources/Images/sprites/maleMC-spritesheet.png").convert_alpha()
@@ -43,7 +47,7 @@ def main():
         for row in range(len(tileMap)):
             for col in range(len(tileMap[row])):
                 tile = tileMap[row][col]
-                config.SCREEN.blit(tile, (col*72, row*72))
+                SCREEN.blit(tile, (col*72, row*72))
 
         # gets player direction and co-ordinates
         x, y = player.getPosition()
@@ -80,13 +84,13 @@ def main():
                 if keys[pygame.K_a]:
                     player.changeDirection(1)
 
-                if keys[pygame.K_d]:
+                elif keys[pygame.K_d]:
                     player.changeDirection(3)
 
                 if keys[pygame.K_w]:
                     player.changeDirection(0)
 
-                if keys[pygame.K_s]:
+                elif keys[pygame.K_s]:
                     player.changeDirection(2)
 
             # checks if player is not pressing down a key

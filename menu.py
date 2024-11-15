@@ -1,6 +1,9 @@
 # importing all libraries needed in this module, including other python files
-import pygame, config, database, Classes.box as box, re, hashlib, game, sys
+import pygame, database, Classes.box as box, re, hashlib, game, sys
+from config import *
+
 pygame.init()
+
 
 # checks to see if the password entered fits the requiremens and is valid
 def checkNewPassword(password1, password2, matchError, characterError):
@@ -51,17 +54,17 @@ def mainmenu_loop():
     running = True
 
     # creation of objects
-    titleBox = box.TextBox(config.WIDTH // 2 - (config.TITLE_WIDTH // 2), 100, config.TITLE_WIDTH, config.TITLE_HEIGHT, config.OCR_TITLE, "THE Farm Game")
+    titleBox = box.TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "THE Farm Game")
 
-    newGameButton = box.Button(config.WIDTH // 2 - 140, 220, 280, 70, config.OCR_TEXT, "New Game")
-    loadGameButton = box.Button(config.WIDTH // 2 - 140, 320, 280, 70, config.OCR_TEXT, "Load Game")
-    instructionsButton = box.Button(config.WIDTH // 2 - 140, 420, 280, 70, config.OCR_TEXT, "How To Play")
-    settingsButton = box.Button(config.WIDTH // 2 - 140, 520, 280, 70, config.OCR_TEXT, "Settings")
+    newGameButton = box.Button(WIDTH // 2 - 140, 220, 280, 70, OCR_TEXT, "New Game")
+    loadGameButton = box.Button(WIDTH // 2 - 140, 320, 280, 70, OCR_TEXT, "Load Game")
+    instructionsButton = box.Button(WIDTH // 2 - 140, 420, 280, 70, OCR_TEXT, "How To Play")
+    settingsButton = box.Button(WIDTH // 2 - 140, 520, 280, 70, OCR_TEXT, "Settings")
 
     while running:
 
         # displays menu image background
-        config.SCREEN.blit(config.MENU_BG, (0, 0))
+        SCREEN.blit(MENU_BG, (0, 0))
 
         # the current position of the mouse is saved to a variable, mouse
         mouse = pygame.mouse.get_pos()
@@ -97,7 +100,7 @@ def mainmenu_loop():
         pygame.display.flip()
 
         # controls the frame rate
-        config.CLOCK.tick(60)
+        CLOCK.tick(60)
     
     # cleanly exits the program
     pygame.quit()
@@ -114,18 +117,18 @@ def newgame1_loop():
     save = [('no save',) if save[0] == 'NULL' else save for save in save]
 
     # creation of objects 
-    titleBox = box.TextBox(config.WIDTH // 2 - (config.TITLE_WIDTH // 2), 100, config.TITLE_WIDTH, config.TITLE_HEIGHT, config.OCR_TITLE, "Choose a save")
+    titleBox = box.TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "Choose a save")
 
-    backButton = box.Button(30, 30, 90, 70, config.OCR_TITLE, "<-"  )
-    tickButton = box.Button( (config.WIDTH-30-90) , (config.HEIGHT-30-70) , 90, 70, config.OCR_TITLE, "->")
+    backButton = box.Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
+    tickButton = box.Button( (WIDTH-30-90) , (HEIGHT-30-70) , 90, 70, OCR_TITLE, "->")
 
-    save1Label = box.TextBox(230, 260, 280, 80, config.OCR_TEXT, "Save 1:")
-    save2Label = box.TextBox(230, 380, 280, 80, config.OCR_TEXT, "Save 2:")
-    save3Label = box.TextBox(230, 500, 280, 80, config.OCR_TEXT, "Save 3:")
+    save1Label = box.TextBox(230, 260, 280, 80, OCR_TEXT, "Save 1:")
+    save2Label = box.TextBox(230, 380, 280, 80, OCR_TEXT, "Save 2:")
+    save3Label = box.TextBox(230, 500, 280, 80, OCR_TEXT, "Save 3:")
 
-    save1Content = box.Button(570, 260, 280, 80, config.OCR_TEXT, save[0][0])
-    save2Content = box.Button(570, 380, 280, 80, config.OCR_TEXT, save[1][0])
-    save3Content = box.Button(570, 500, 280, 80, config.OCR_TEXT, save[2][0])
+    save1Content = box.Button(570, 260, 280, 80, OCR_TEXT, save[0][0])
+    save2Content = box.Button(570, 380, 280, 80, OCR_TEXT, save[1][0])
+    save3Content = box.Button(570, 500, 280, 80, OCR_TEXT, save[2][0])
 
     # save choice stores the save as an object and user choice stores the save as an integer
     saveChoice = -1
@@ -134,7 +137,7 @@ def newgame1_loop():
     while running:
 
         # displays menu image background
-        config.SCREEN.blit(config.MENU_BG, (0, 0))
+        SCREEN.blit(MENU_BG, (0, 0))
 
         # the current position of the mouse is saved to a variable, mouse
         mouse = pygame.mouse.get_pos()
@@ -197,7 +200,7 @@ def newgame1_loop():
         pygame.display.flip()
 
         # controls the frame rate
-        config.CLOCK.tick(60)
+        CLOCK.tick(60)
     
     # exits the program
     pygame.quit()
@@ -234,22 +237,22 @@ def newgame2_loop(saveChoice):
     validName = False
 
     # creation of objects 
-    titleBox = box.TextBox(config.WIDTH // 2 - (config.TITLE_WIDTH // 2), 100, config.TITLE_WIDTH, config.TITLE_HEIGHT, config.OCR_TITLE, "New Game")
+    titleBox = box.TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "New Game")
 
-    backButton = box.Button(30, 30, 90, 70, config.OCR_TITLE, "<-"  )
-    startButton = box.Button(config.WIDTH // 2 - (240 // 2), 580, 240, 80, config.OCR_TEXT, "Start")
-    speedButton = box.Button(690, 590, 170, 60, config.OCR_TEXT, "Slow")
+    backButton = box.Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
+    startButton = box.Button(WIDTH // 2 - (240 // 2), 580, 240, 80, OCR_TEXT, "Start")
+    speedButton = box.Button(690, 590, 170, 60, OCR_TEXT, "Slow")
 
-    nameLabel = box.TextBox(205, 220, 300, 80, config.OCR_TEXT, "Name:")
-    passwordLabel = box.TextBox(205, 320, 300, 80, config.OCR_TEXT, "Password:")
-    save3Label = box.TextBox(205, 420, 300, 80, config.OCR_TEXT, "Password:")
+    nameLabel = box.TextBox(205, 220, 300, 80, OCR_TEXT, "Name:")
+    passwordLabel = box.TextBox(205, 320, 300, 80, OCR_TEXT, "Password:")
+    save3Label = box.TextBox(205, 420, 300, 80, OCR_TEXT, "Password:")
 
-    modeLabel = box.Text("Mode:", config.OCR_TEXT, config.BOX_FILL, 720, 540)
-    characterLabel = box.Text("Character:", config.OCR_TEXT, config.BOX_FILL, 180, 510)
+    modeLabel = box.Text("Mode:", OCR_TEXT, BOX_FILL, 720, 540)
+    characterLabel = box.Text("Character:", OCR_TEXT, BOX_FILL, 180, 510)
 
-    nameInputBox = box.InputBox(565, 220, 300, 80, config.OCR_TEXT, name)
-    password1InputBox = box.InputBox(565, 320, 300, 80, config.OCR_TEXT, password1Display)
-    password2InputBox = box.InputBox(565, 420, 300, 80, config.OCR_TEXT, password2Display)
+    nameInputBox = box.InputBox(565, 220, 300, 80, OCR_TEXT, name)
+    password1InputBox = box.InputBox(565, 320, 300, 80, OCR_TEXT, password1Display)
+    password2InputBox = box.InputBox(565, 420, 300, 80, OCR_TEXT, password2Display)
 
     femaleCharacter = box.ImageButton(FEMALE_MC, 240, 630, 96, 144)
     maleCharacter = box.ImageButton(MALE_MC, 340, 630, 96, 144)
@@ -263,7 +266,7 @@ def newgame2_loop(saveChoice):
     while running:
 
         # displays menu image background
-        config.SCREEN.blit(config.MENU_BG, (0, 0))
+        SCREEN.blit(MENU_BG, (0, 0))
 
         # the current position of the mouse is saved to a variable, mouse
         mouse = pygame.mouse.get_pos()
@@ -450,7 +453,7 @@ def newgame2_loop(saveChoice):
         pygame.display.flip()
         
         # control frame rate
-        config.CLOCK.tick(60)
+        CLOCK.tick(60)
 
     # Cleanly exit the program
     pygame.quit()
@@ -481,31 +484,31 @@ def loadgame_loop():
     save = [('no save',) if save[0] == 'NULL' else save for save in save]
 
     # creation of objects
-    titleBox = box.TextBox(config.WIDTH // 2 - (config.TITLE_WIDTH // 2), 100, config.TITLE_WIDTH, config.TITLE_HEIGHT, config.OCR_TITLE, "Load Game")
+    titleBox = box.TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "Load Game")
 
-    backButton = box.Button(30, 30, 90, 70, config.OCR_TITLE, "<-"  )
-    tickButton = box.Button( (config.WIDTH-30-90) , (config.HEIGHT-30-70) , 90, 70, config.OCR_TITLE, "->")
+    backButton = box.Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
+    tickButton = box.Button( (WIDTH-30-90) , (HEIGHT-30-70) , 90, 70, OCR_TITLE, "->")
 
-    save1Label = box.TextBox(230, 240, 280, 80, config.OCR_TEXT, "Save 1:")
-    save2Label = box.TextBox(230, 350, 280, 80, config.OCR_TEXT, "Save 2:")
-    save3Label = box.TextBox(230, 460, 280, 80, config.OCR_TEXT, "Save 3:")
+    save1Label = box.TextBox(230, 240, 280, 80, OCR_TEXT, "Save 1:")
+    save2Label = box.TextBox(230, 350, 280, 80, OCR_TEXT, "Save 2:")
+    save3Label = box.TextBox(230, 460, 280, 80, OCR_TEXT, "Save 3:")
 
-    save1Content = box.Button(570, 240, 280, 80, config.OCR_TEXT, save[0][0])
-    save2Content = box.Button(570, 350, 280, 80, config.OCR_TEXT, save[1][0])
-    save3Content = box.Button(570, 460, 280, 80, config.OCR_TEXT, save[2][0])
+    save1Content = box.Button(570, 240, 280, 80, OCR_TEXT, save[0][0])
+    save2Content = box.Button(570, 350, 280, 80, OCR_TEXT, save[1][0])
+    save3Content = box.Button(570, 460, 280, 80, OCR_TEXT, save[2][0])
 
-    passwordInputBox = box.InputBox(config.WIDTH // 2 - (320 // 2), 580, 340, 80, config.OCR_TEXT, passwordDisplay)
+    passwordInputBox = box.InputBox(WIDTH // 2 - (320 // 2), 580, 340, 80, OCR_TEXT, passwordDisplay)
 
     passwordError = box.Error(ERROR, 320, 620, "Password is incorrect", 275, 34, 190, 560)
     noNameError = box.Error(ERROR, 320, 620, "No existing save", 205, 34, 220, 560)
     
     # this sets the placeholder text in the box to grey from the original green
-    passwordInputBox.changeColour(config.GREY)
+    passwordInputBox.changeColour(GREY)
 
     while running:
 
         # displays menu image background
-        config.SCREEN.blit(config.MENU_BG, (0, 0))
+        SCREEN.blit(MENU_BG, (0, 0))
 
         # the current position of the mouse is saved to a variable, mouse
         mouse = pygame.mouse.get_pos()
@@ -603,7 +606,7 @@ def loadgame_loop():
                 if passwordInputBox.checkActive():
 
                     # changes the colour of the text in the input box from grey to green
-                    passwordInputBox.changeColour(config.FONT_COLOUR)
+                    passwordInputBox.changeColour(FONT_COLOUR)
 
                     if event.key == pygame.K_BACKSPACE: 
         
@@ -628,7 +631,7 @@ def loadgame_loop():
         pygame.display.flip()
         
         # control frame rate
-        config.CLOCK.tick(60)
+        CLOCK.tick(60)
 
     # Cleanly exit the program
     pygame.quit()
@@ -640,13 +643,13 @@ def instructions_loop():
     running = True
 
     # creation of objects
-    titleBox = box.TextBox(config.WIDTH // 2 - (config.TITLE_WIDTH // 2), 100, config.TITLE_WIDTH, config.TITLE_HEIGHT, config.OCR_TITLE, "How to Play")
-    backButton = box.Button(30, 30, 90, 70, config.OCR_TITLE, "<-"  )
+    titleBox = box.TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "How to Play")
+    backButton = box.Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
     
     while running:
 
         # displays menu image background
-        config.SCREEN.blit(config.MENU_BG, (0, 0))
+        SCREEN.blit(MENU_BG, (0, 0))
 
         # the current position of the mouse is saved to a variable, mouse
         mouse = pygame.mouse.get_pos()
@@ -679,7 +682,7 @@ def instructions_loop():
         pygame.display.flip()
         
         # control frame rate
-        config.CLOCK.tick(60)
+        CLOCK.tick(60)
 
     # Cleanly exit the program
     pygame.quit()
@@ -691,25 +694,25 @@ def settings_loop():
     running = True
 
     # creation of objects
-    titleBox = box.TextBox(config.WIDTH // 2 - (config.TITLE_WIDTH // 2), 100, config.TITLE_WIDTH, config.TITLE_HEIGHT, config.OCR_TITLE, "Settings")
+    titleBox = box.TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "Settings")
 
-    backButton = box.Button(30, 30, 90, 70, config.OCR_TITLE, "<-"  )
+    backButton = box.Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
 
-    musicLabel = box.TextBox(160, 250, 320, 70, config.OCR_TEXT, "Music")
-    sfxLabel = box.TextBox(160, 390, 320, 70, config.OCR_TEXT, "Sound Effects")
+    musicLabel = box.TextBox(160, 250, 320, 70, OCR_TEXT, "Music")
+    sfxLabel = box.TextBox(160, 390, 320, 70, OCR_TEXT, "Sound Effects")
 
-    minusMusicButton = box.Button(570, 250, 90, 70, config.OCR_TITLE, "-"  )
-    addMusicButton = box.Button(850, 250, 90, 70, config.OCR_TITLE, "+"  )
-    minusSfxButton = box.Button(570, 390, 90, 70, config.OCR_TITLE, "-"  )
-    addSfxButton = box.Button(850, 390, 90, 70, config.OCR_TITLE, "+"  )
+    minusMusicButton = box.Button(570, 250, 90, 70, OCR_TITLE, "-"  )
+    addMusicButton = box.Button(850, 250, 90, 70, OCR_TITLE, "+"  )
+    minusSfxButton = box.Button(570, 390, 90, 70, OCR_TITLE, "-"  )
+    addSfxButton = box.Button(850, 390, 90, 70, OCR_TITLE, "+"  )
 
-    musicNum = box.TextBox(710, 250, 90, 70, config.OCR_TITLE, str(config.musicVal)  )
-    sfxNum = box.TextBox(710, 390, 90, 70, config.OCR_TITLE, str(config.sfxVal)  )
+    musicNum = box.TextBox(710, 250, 90, 70, OCR_TITLE, str(musicVal)  )
+    sfxNum = box.TextBox(710, 390, 90, 70, OCR_TITLE, str(sfxVal)  )
 
     while running:
 
         # displays menu image background
-        config.SCREEN.blit(config.MENU_BG, (0, 0))
+        SCREEN.blit(MENU_BG, (0, 0))
 
         # the current position of the mouse is saved to a variable, mouse
         mouse = pygame.mouse.get_pos()
@@ -738,67 +741,67 @@ def settings_loop():
                 if minusMusicButton.onClick(mouse):
 
                     # this gets the current sound volume of the music
-                    config.musicVal = int(musicNum.getText())
+                    musicVal = int(musicNum.getText())
 
                     # ensures the lowest music volume is 0
-                    if config.musicVal > 0:
+                    if musicVal > 0:
 
                         # decreases the volume of the music
-                        config.musicVal -= 1
-                        pygame.mixer.music.set_volume(config.musicVal / 10)
+                        musicVal -= 1
+                        pygame.mixer.music.set_volume(musicVal / 10)
 
                         # changes the volume value displayed
-                        musicNum.changeText(config.musicVal)
+                        musicNum.changeText(musicVal)
                 
                 # checks to see if the user clicked on the add music button
                 if addMusicButton.onClick(mouse):
 
                     # this gets the current sound volume of the music
-                    config.musicVal = int(musicNum.getText())
+                    musicVal = int(musicNum.getText())
 
                     # ensures the music volume does not exceed 10
-                    if config.musicVal < 10:
+                    if musicVal < 10:
 
                         # increases the volume of the music
-                        config.musicVal += 1
-                        pygame.mixer.music.set_volume(config.musicVal / 10)
+                        musicVal += 1
+                        pygame.mixer.music.set_volume(musicVal / 10)
 
                         # changes the volume value displayed
-                        musicNum.changeText(config.musicVal)
+                        musicNum.changeText(musicVal)
                 
                 # checks to see if the user clicked on the minus sound effects button
                 if minusSfxButton.onClick(mouse):
 
                     # this gets the current sound volume of the music
-                    config.sfxVal = int(sfxNum.getText())
+                    sfxVal = int(sfxNum.getText())
 
                     # ensures the sound effects volume is not lower than 0
-                    if config.sfxVal > 0:
+                    if sfxVal > 0:
 
                         # decreases the volume of the sound effects
-                        config.sfxVal -= 1
-                        for effect in [config.button1, config.button2]:
-                            effect.set_volume(config.sfxVal / 10)
+                        sfxVal -= 1
+                        for effect in [button1, button2]:
+                            effect.set_volume(sfxVal / 10)
 
                         # changes the volume value displayed
-                        sfxNum.changeText(config.sfxVal)
+                        sfxNum.changeText(sfxVal)
                     
                 # checks to see if the user clicked on the add sound effects button
                 if addSfxButton.onClick(mouse):
 
                     # this gets the current sound volume of the music
-                    config.sfxVal = int(sfxNum.getText())
+                    sfxVal = int(sfxNum.getText())
 
                     # ensures the volume of the sound effects does not exceed 10
-                    if config.sfxVal < 10:
+                    if sfxVal < 10:
 
                         # increases the volume of the sound effects
-                        config.sfxVal += 1
-                        for effect in [config.button1, config.button2]:
-                            effect.set_volume(config.sfxVal / 10)
+                        sfxVal += 1
+                        for effect in [button1, button2]:
+                            effect.set_volume(sfxVal / 10)
                         
                         # changes the volume value displayed
-                        sfxNum.changeText(config.sfxVal)
+                        sfxNum.changeText(sfxVal)
 
             # exits program if user clicks on exit button (pygame.QUIT)
             if event.type == pygame.QUIT:
@@ -808,7 +811,7 @@ def settings_loop():
         pygame.display.flip()
         
         # control frame rate
-        config.CLOCK.tick(60)
+        CLOCK.tick(60)
 
     # Cleanly exit the program
     pygame.quit()
