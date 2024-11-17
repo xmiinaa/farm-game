@@ -56,6 +56,10 @@ SCREEN = pygame.display.set_mode([WIDTH,HEIGHT])
 
 CLOCK = pygame.time.Clock()
 
+# load player sprite sheet
+maleMCSpriteSheet = pygame.image.load("Resources/Images/sprites/maleMC-spritesheet.png").convert_alpha()
+femaleMCSpriteSheet = pygame.image.load("Resources/Images/sprites/femaleMC-spritesheet.png").convert_alpha()
+
 # needed when starting up program
 def initialise():
 

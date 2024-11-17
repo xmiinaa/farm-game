@@ -12,8 +12,6 @@ class Tile():
 
 def initialiseTiles():
 
-    tileMap = [["" * 20] for _ in range(20)]
-
     tileMap = [
         "AEEEEEEEEEEEEEEEEEEB",
         "F------------------G",
