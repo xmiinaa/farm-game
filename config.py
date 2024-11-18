@@ -43,6 +43,9 @@ GM_TILE = pygame.image.load('Resources/Images/tiles/grass middle.png')
 TD_TILE = pygame.image.load('Resources/Images/tiles/tilled land.png') 
 WD_TILE = pygame.image.load('Resources/Images/tiles/tilled and watered land.png') 
 
+# dictionary of tile images 
+TILE_IMAGES = { "TL": TL_TILE, "TR": TR_TILE, "BL": BL_TILE, "BR": BR_TILE, "TE": TE_TILE, "LE": LE_TILE, "RE": RE_TILE, "BE": BE_TILE, "GM": GM_TILE, "TD": TD_TILE, "WD": WD_TILE}
+
 # music
 musicVal = 0 # todo: set this to 5
 sfxVal = 5

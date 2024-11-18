@@ -1,5 +1,6 @@
-import pygame, config, game
+import pygame
 from spritesheet import SpriteSheet
+from config import *
 
 class Entity():
     def __init__(self, x, y, spritesheet):
@@ -34,16 +35,16 @@ class Entity():
     # moves the position of the entity in the direction it is facing
     def move(self):
         if self.direction == 0: # facing up
-            self.y -= self.vel
+            self.y = max(0, self.y-self.vel)
 
         if self.direction == 1: # facing left
-            self.x -= self.vel
+            self.x = max(0, self.x-self.vel)
 
         if self.direction == 2: # facing down
-            self.y += self.vel
+            self.y = min(HEIGHT-100, self.y+self.vel)
 
         if self.direction == 3: # facing right
-            self.x += self.vel
+            self.x = min(WIDTH-75, self.x+self.vel)
 
     # sets frame back to 0 so other animations begin from the start
     def resetAnimation(self):
@@ -64,7 +65,7 @@ class Entity():
             lastUpdate = currentTime
 
         # show frame image
-        config.SCREEN.blit(action[frame], (self.x,self.y))
+        SCREEN.blit(action[frame], (self.x,self.y))
 
 class Character(Entity):
 
@@ -95,7 +96,7 @@ class Character(Entity):
 
     # displays character image in direction it is facing
     def drawIdle(self):
-        config.SCREEN.blit(self.idleList[self.direction], (self.x, self.y))
+        SCREEN.blit(self.idleList[self.direction], (self.x, self.y))
 
     # animates character moving in direction it is facing 
     def animateWalk(self):
@@ -115,7 +116,7 @@ class Character(Entity):
                 self.frame = 0
 
         # show frame image
-        config.SCREEN.blit(self.walkList[self.direction][self.frame], (self.x,self.y))
+        SCREEN.blit(self.walkList[self.direction][self.frame], (self.x,self.y))
     
 
 class Player(Character):
@@ -171,5 +172,5 @@ class Player(Character):
                     self.deactivate()
 
             # show frame image
-            config.SCREEN.blit(self.tillWaterList[self.direction][self.frame], (self.x,self.y))
+            SCREEN.blit(self.tillWaterList[self.direction][self.frame], (self.x,self.y))
     

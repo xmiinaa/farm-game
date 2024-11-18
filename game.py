@@ -18,7 +18,7 @@ tileMap = [
     [BL_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BR_TILE]
     ]
 
-MAP_WIDTH, MAP_HEIGHT = 1440, 1440#
+MAP_WIDTH, MAP_HEIGHT = 20, 20
 TILE_SIZE = 72
 VIEW_WIDTH, VIEW_HEIGHT = 15, 10
 
@@ -31,6 +31,7 @@ class Tile():
     def draw(self):
         SCREEN.blit(self.image, (self.x, self.y))
 
+# 2D array storing whole tilemap status
 tilemap = [
     ["TL", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TR"],
     ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
@@ -38,48 +39,54 @@ tilemap = [
     ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
     ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
     ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
+    ["LE", "GM", "GM", "GM", "TD", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "WD", "WD", "GM", "GM", "GM", "GM", "RE" ],
+    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "TD", "GM", "GM", "GM", "GM", "RE" ],
+    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "TD", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
+    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM" ],
+    ["LE", "GM", "GM", "WD", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM" ],
     ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
     ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
+    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "TD", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
     ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
+    ["LE", "GM", "GM", "WD", "TD", "WD", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
+    ["LE", "GM", "GM", "GM", "TD", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
     ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
     ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
     ["BL", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BR"] ]
 
-for row in range(len(tilemap)):
-    for col in range(len(tilemap[row])):
+# returns tile image of from a specific index of tilemap array
+def getTileImg(tilemap, row, col):
 
-        if col == "TL":
-            tile = Tile(TL_TILE, col*72, row*72)
-        elif col == "TR":
-            tile = Tile(TR_TILE, col*72, row*72)
-        elif col == "BL":
-            tile = Tile(BL_TILE, col*72, row*72)
-        elif col == "BR":
-            tile = Tile(BR_TILE, col*72, row*72)
+    tile = tilemap[row][col] # accesses tile from array
 
-        elif col == "TE":
-            tile = Tile(TE_TILE, col*72, row*72)
-        elif col == "LE":
-            tile = Tile(LE_TILE, col*72, row*72)
-        elif col == "RE":
-            tile = Tile(RE_TILE, col*72, row*72)
-        elif col == "BE":
-            tile = Tile(BE_TILE, col*72, row*72)
+    return TILE_IMAGES.get(tile, GM_TILE) # if key is not found, grass middle tile is returned
 
-        else:
-            tile = Tile(GM_TILE, col*72, row*72)
-        
-        tilemap[row][col] = tile
+    
+def renderMap(tilemap, playerX, playerY):
 
-print(tilemap)
+    # calculates the top-left corner co-ordinates of the displayed map
+    viewPosX = max(0, playerX - VIEW_WIDTH // 2) # max ensures that the value is never below 0
+    viewPosY = max(0, playerY - VIEW_HEIGHT // 2)
+
+    # Ensure the viewport doesn't go out of bounds
+    viewPosX = min(viewPosX, len(tilemap[0]) - VIEW_WIDTH)
+    viewPosY = min(viewPosY, len(tilemap) - VIEW_HEIGHT)
+
+    # displays visible portion of the map
+    for row in range(VIEW_WIDTH):
+        for col in range(VIEW_WIDTH):
+
+            # calculates actual tile position in map
+            tileX = viewPosX + col
+            tileY = viewPosY + row
+
+            if 0 <= tileX < len(tilemap[0]) and 0 <= tileY < len(tilemap): 
+
+                # gets tile image to display
+                tileImage = getTileImg(tilemap, tileY, tileX)
+
+                SCREEN.blit(tileImage, (col * TILE_SIZE, row * TILE_SIZE))
+
 
 # this would not be set in real game, but rather obtained from database or previous screen
 chosenCharacter = "female"
@@ -91,22 +98,27 @@ def main():
 
     # creates player object depending on the variable, chosenCharacter
     if chosenCharacter == "male":
-        player = Player.Player(300, 500, maleMCSpriteSheet, "Bob")
+        player = Player.Player(540, 360, maleMCSpriteSheet, "Bob")
 
     else: # creates female player
-        player = Player.Player(300, 500, femaleMCSpriteSheet, "Yue")
+        player = Player.Player(540, 360, femaleMCSpriteSheet, "Yue")
 
 
     while running:
         
+        """
         # displays the tiles 
         for row in range(len(tileMap)):
             for col in range(len(tileMap[row])):
                 tile = tileMap[row][col]
                 SCREEN.blit(tile, (col*72, row*72))
+        """
 
         # gets player direction and co-ordinates
         x, y = player.getPosition()
+
+        # displays background tiles
+        renderMap(tilemap, x, y)
 
         # checks if the player is moving, and displays it appropiately if they are
         if player.isMoving():
@@ -125,7 +137,7 @@ def main():
         else:
             player.drawIdle()
     
-        
+        #renderMap(tilemap, x, y)
         for event in pygame.event.get():
 
             # checks if player presses down a key
