@@ -132,7 +132,7 @@ class Player(Character):
 
         self.stamina = 100
         self.inventory = [[] for _ in range(20)]
-        self.item = ""
+        self.item = "waterCan"
         self.money = 0
 
         # stores what action the player is currently doing
@@ -153,6 +153,12 @@ class Player(Character):
 
     def deactivate(self):
         self.active = False
+    
+    def getItem(self):
+        return self.item
+    
+    def changeItem(self, item):
+        self.item = item
 
     # animates the player tilling or watering
     def animateTillWater(self):
@@ -181,3 +187,33 @@ class Player(Character):
 
             # show frame image
             SCREEN.blit(self.tillWaterList[self.direction][self.frame], (self.mapPos[0],self.mapPos[1]))
+    
+    # animates the player tilling or watering
+    def animatePlanting(self):
+        
+        if self.action == "planting" and not self.animationFinished:
+
+            # update animation
+            currentTime = pygame.time.get_ticks()
+
+            # checks to see if time last updated has exeeded animation cooldown time
+            if currentTime - self.lastUpdate >= self.animationCooldown:
+
+                # updates frame and sets new last updated time to current time
+                self.frame += 1 
+                self.lastUpdate = currentTime
+
+                # handles the ending of the animation to stop at the last frame
+                if self.frame >= len(self.plantList[self.direction]):
+
+                    self.frame = len(self.plantList[self.direction]) -1 # stays on last frame
+
+                    self.animationFinished = True # stops further animation updates
+                    
+                    self.deactivate()
+                    self.action = "idle" # resets player to idle state
+
+            # show frame image
+            SCREEN.blit(self.plantList[self.direction][self.frame], (self.mapPos[0],self.mapPos[1]))
+
+        

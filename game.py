@@ -77,9 +77,16 @@ def main():
         # checks to see if the player is currently doing an action
         elif player.getAction() != "idle":
 
+            # checks to see if the player is active
             if player.isActive():
+
+                if player.getAction() == "tillWater":
     
-                player.animateTillWater()
+                    player.animateTillWater()
+                
+                elif player.getAction() == "planting":
+
+                    player.animatePlanting()
 
         # displays the player in its idle state
         else:
@@ -127,9 +134,18 @@ def main():
                     player.resetAnimation() # sets animation back to 0
                     player.activate()
 
-                    # changes the attribute as appropiate
-                    player.changeAction("tillWater")
-            
+                    # gets the item that the player is currently holding
+                    item = player.getItem()
+                
+                    if item == "hoe" or item == "waterCan":
+
+                        # changes the attribute as appropiate
+                        player.changeAction("tillWater")
+                    
+                    if item == "seed":
+
+                        # changes the attribute as appropiate
+                        player.changeAction("planting")
                 
             # handles the exit of the game
             if event.type == pygame.QUIT:
