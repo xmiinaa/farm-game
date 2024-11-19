@@ -1,58 +1,12 @@
 import pygame
 from config import *
-#from Classes import tile
 import sys
 from spritesheet import SpriteSheet
 import Player
 
-tileMap = [
-    [TL_TILE, TE_TILE, TE_TILE, TE_TILE, TE_TILE, TE_TILE, TE_TILE, TE_TILE, TE_TILE, TE_TILE, TE_TILE, TE_TILE, TE_TILE, TE_TILE, TR_TILE],
-    [LE_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, RE_TILE],
-    [LE_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, RE_TILE],
-    [LE_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, RE_TILE],
-    [LE_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, RE_TILE],
-    [LE_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, RE_TILE],
-    [LE_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, RE_TILE],
-    [LE_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, RE_TILE],
-    [LE_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, GM_TILE, RE_TILE],
-    [BL_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BE_TILE, BR_TILE]
-    ]
-
 MAP_WIDTH, MAP_HEIGHT = 20, 20
 TILE_SIZE = 72
 VIEW_WIDTH, VIEW_HEIGHT = 15, 10
-
-class Tile():
-    def __init__(self, image, x, y):
-        self.x = x
-        self.y = y
-        self.image = image
-
-    def draw(self):
-        SCREEN.blit(self.image, (self.x, self.y))
-
-# 2D array storing whole tilemap status
-tilemap = [
-    ["TL", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TR"],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
-    ["LE", "GM", "GM", "GM", "TD", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "WD", "WD", "GM", "GM", "GM", "GM", "RE" ],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "TD", "GM", "GM", "GM", "GM", "RE" ],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "TD", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM" ],
-    ["LE", "GM", "GM", "WD", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM" ],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "TD", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
-    ["LE", "GM", "GM", "WD", "TD", "WD", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
-    ["LE", "GM", "GM", "GM", "TD", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
-    ["BL", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BR"] ]
 
 # returns tile image of from a specific index of tilemap array
 def getTileImg(tilemap, row, col):
@@ -61,7 +15,7 @@ def getTileImg(tilemap, row, col):
 
     return TILE_IMAGES.get(tile, GM_TILE) # if key is not found, grass middle tile is returned
 
-    
+
 def renderMap(tilemap, playerX, playerY):
 
     # calculates the top-left corner co-ordinates of the displayed map
@@ -69,8 +23,10 @@ def renderMap(tilemap, playerX, playerY):
     viewPosY = max(0, playerY - VIEW_HEIGHT // 2)
 
     # Ensure the viewport doesn't go out of bounds
-    viewPosX = min(viewPosX, len(tilemap[0]) - VIEW_WIDTH)
+    viewPosX = min(viewPosX, len(tilemap[0]) - VIEW_WIDTH) # min ensures that the value is never to far out
     viewPosY = min(viewPosY, len(tilemap) - VIEW_HEIGHT)
+
+    #print(viewPosX, viewPosY)
 
     # displays visible portion of the map
     for row in range(VIEW_WIDTH):
@@ -105,14 +61,6 @@ def main():
 
 
     while running:
-        
-        """
-        # displays the tiles 
-        for row in range(len(tileMap)):
-            for col in range(len(tileMap[row])):
-                tile = tileMap[row][col]
-                SCREEN.blit(tile, (col*72, row*72))
-        """
 
         # gets player direction and co-ordinates
         x, y = player.getPosition()

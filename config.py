@@ -46,6 +46,28 @@ WD_TILE = pygame.image.load('Resources/Images/tiles/tilled and watered land.png'
 # dictionary of tile images 
 TILE_IMAGES = { "TL": TL_TILE, "TR": TR_TILE, "BL": BL_TILE, "BR": BR_TILE, "TE": TE_TILE, "LE": LE_TILE, "RE": RE_TILE, "BE": BE_TILE, "GM": GM_TILE, "TD": TD_TILE, "WD": WD_TILE}
 
+# 2D array storing whole tilemap status
+tilemap = [
+    ["TL", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TR"],
+    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
+    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
+    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
+    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
+    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
+    ["LE", "GM", "GM", "GM", "TD", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "WD", "WD", "GM", "GM", "GM", "GM", "RE" ],
+    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "TD", "GM", "GM", "GM", "GM", "RE" ],
+    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "TD", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
+    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM" ],
+    ["LE", "GM", "GM", "WD", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM" ],
+    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
+    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
+    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "TD", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
+    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
+    ["LE", "GM", "GM", "WD", "TD", "WD", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
+    ["LE", "GM", "GM", "GM", "TD", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
+    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
+    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
+    ["BL", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BR"] ]
 # music
 musicVal = 0 # todo: set this to 5
 sfxVal = 5
@@ -62,6 +84,11 @@ CLOCK = pygame.time.Clock()
 # load player sprite sheet
 maleMCSpriteSheet = pygame.image.load("Resources/Images/sprites/maleMC-spritesheet.png").convert_alpha()
 femaleMCSpriteSheet = pygame.image.load("Resources/Images/sprites/femaleMC-spritesheet.png").convert_alpha()
+andreSpriteSheet = pygame.image.load("Resources/Images/sprites/andre-spritesheet.png").convert_alpha()
+annabelleSpriteSheet = pygame.image.load("Resources/Images/sprites/annabelle-spritesheet.png").convert_alpha()
+rosalineSpriteSheet = pygame.image.load("Resources/Images/sprites/rosaline-spritesheet.png").convert_alpha()
+shaylaSpriteSheet = pygame.image.load("Resources/Images/sprites/shayla-spritesheet.png").convert_alpha()
+wesleySpriteSheet = pygame.image.load("Resources/Images/sprites/wesley-spritesheet.png").convert_alpha()
 
 # needed when starting up program
 def initialise():

@@ -64,17 +64,17 @@ class SpriteSheet():
         # creates list of each frame and stores in variable
         playerTillWaterUp = self.createSpriteFrameList(7, 4)
         playerTillWaterLeft = self.createSpriteFrameList(7, 5)
-        playerTillWaterDown = self.createSpriteFrameList(7, 5)
-        playerTillWaterRight = self.createSpriteFrameList(7, 6)
+        playerTillWaterDown = self.createSpriteFrameList(7, 6)
+        playerTillWaterRight = self.createSpriteFrameList(7, 7)
 
         # creates a 2d list storing 4 lists for 4 directions
         playerTillWaterList = [playerTillWaterUp, playerTillWaterLeft, playerTillWaterDown, playerTillWaterRight]
 
         # creates list of each frame and stores in variable
         playerPlantUp = self.createSpriteFrameList(5, 12)
-        playerPlantLeft = self.createSpriteFrameList(5, 12)
-        playerPlantDown = self.createSpriteFrameList(5, 12)
-        playerPlantRight = self.createSpriteFrameList(5, 12)
+        playerPlantLeft = self.createSpriteFrameList(5, 13)
+        playerPlantDown = self.createSpriteFrameList(5, 14)
+        playerPlantRight = self.createSpriteFrameList(5, 15)
         
         # creates a 2d list storing 4 lists for 4 directions
         playerPlantList = [playerPlantUp, playerPlantLeft, playerPlantDown, playerPlantRight]

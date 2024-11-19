@@ -4,8 +4,12 @@ from config import *
 
 class Entity():
     def __init__(self, x, y, spritesheet):
-        self.x = x
-        self.y = y
+        
+        # the map surfaces starting co-ordinates on the display
+        self.mapPos = [x,y]
+
+        # (lower x, lower y, upper x, upper y) boundaries
+        self.moveBox = [180, 360, 1260, 1080]
 
         # the speed of the entity
         self.vel = 3
@@ -30,21 +34,23 @@ class Entity():
 
     
     def getPosition(self):
-        return self.x, self.y
+        return self.mapPos[0], self.mapPos[1]
     
     # moves the position of the entity in the direction it is facing
     def move(self):
+
+        #if 0 <= self.mapPos[0] < len(tilemap[0]) and 0 <= self.mapPos[1] < len(tilemap):
         if self.direction == 0: # facing up
-            self.y = max(0, self.y-self.vel)
+            self.mapPos[1] = max(0, self.mapPos[1]-self.vel)
 
         if self.direction == 1: # facing left
-            self.x = max(0, self.x-self.vel)
+            self.mapPos[0] = max(0, self.mapPos[0]-self.vel)
 
         if self.direction == 2: # facing down
-            self.y = min(HEIGHT-100, self.y+self.vel)
+            self.mapPos[1] = min(HEIGHT-100, self.mapPos[1]+self.vel)
 
         if self.direction == 3: # facing right
-            self.x = min(WIDTH-75, self.x+self.vel)
+            self.mapPos[0] = min(WIDTH-75, self.mapPos[0]+self.vel)
 
     # sets frame back to 0 so other animations begin from the start
     def resetAnimation(self):
@@ -65,7 +71,7 @@ class Entity():
             lastUpdate = currentTime
 
         # show frame image
-        SCREEN.blit(action[frame], (self.x,self.y))
+        SCREEN.blit(action[frame], (self.mapPos[0],self.mapPos[1]))
 
 class Character(Entity):
 
@@ -96,7 +102,7 @@ class Character(Entity):
 
     # displays character image in direction it is facing
     def drawIdle(self):
-        SCREEN.blit(self.idleList[self.direction], (self.x, self.y))
+        SCREEN.blit(self.idleList[self.direction], (self.mapPos[0], self.mapPos[1]))
 
     # animates character moving in direction it is facing 
     def animateWalk(self):
@@ -116,7 +122,7 @@ class Character(Entity):
                 self.frame = 0
 
         # show frame image
-        SCREEN.blit(self.walkList[self.direction][self.frame], (self.x,self.y))
+        SCREEN.blit(self.walkList[self.direction][self.frame], (self.mapPos[0],self.mapPos[1]))
     
 
 class Player(Character):
@@ -151,6 +157,8 @@ class Player(Character):
     # animates the player tilling or watering
     def animateTillWater(self):
 
+        print(self.direction)
+        
         if self.action == "tillWater" and not self.animationFinished:
 
             # update animation
@@ -172,5 +180,5 @@ class Player(Character):
                     self.deactivate()
 
             # show frame image
-            SCREEN.blit(self.tillWaterList[self.direction][self.frame], (self.x,self.y))
+            SCREEN.blit(self.tillWaterList[self.direction][self.frame], (self.mapPos[0],self.mapPos[1]))
     
