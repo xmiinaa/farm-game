@@ -68,8 +68,8 @@ def main():
         # displays background tiles
         renderMap(tilemap, x, y)
 
-        # checks if the player is moving, and displays it appropiately if they are
-        if player.isMoving():
+        # checks if the player is moving and they are not in another action, and displays it appropiately if they are
+        if player.isMoving() and player.isActive() == False:
 
             player.animateWalk()
             player.move()
@@ -121,15 +121,15 @@ def main():
             # checks if he player has clicked on the mouse
             if pygame.mouse.get_pressed()[0]:
 
-                player.resetAnimation()
-                player.activate()
+                # ensures the player is not already engaged in another action
+                if player.isActive() == False:
 
-                # changes the attribute as appropiate
-                player.changeAction("tillWater")
+                    player.resetAnimation() # sets animation back to 0
+                    player.activate()
+
+                    # changes the attribute as appropiate
+                    player.changeAction("tillWater")
             
-            else:
-
-                player.changeAction("idle")
                 
             # handles the exit of the game
             if event.type == pygame.QUIT:

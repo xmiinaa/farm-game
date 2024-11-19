@@ -156,8 +156,6 @@ class Player(Character):
 
     # animates the player tilling or watering
     def animateTillWater(self):
-
-        print(self.direction)
         
         if self.action == "tillWater" and not self.animationFinished:
 
@@ -177,8 +175,9 @@ class Player(Character):
                     self.frame = len(self.tillWaterList[self.direction]) -1 # stays on last frame
 
                     self.animationFinished = True # stops further animation updates
+                    
                     self.deactivate()
+                    self.action = "idle" # resets player to idle state
 
             # show frame image
             SCREEN.blit(self.tillWaterList[self.direction][self.frame], (self.mapPos[0],self.mapPos[1]))
-    
