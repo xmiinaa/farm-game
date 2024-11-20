@@ -4,10 +4,6 @@ import sys
 from spritesheet import SpriteSheet
 import Player
 
-MAP_WIDTH, MAP_HEIGHT = 20, 20
-TILE_SIZE = 72
-VIEW_WIDTH, VIEW_HEIGHT = 15, 10
-
 # returns tile image of from a specific index of tilemap array
 def getTileImg(tilemap, row, col):
 
@@ -19,12 +15,12 @@ def getTileImg(tilemap, row, col):
 def renderMap(tilemap, playerX, playerY):
 
     # calculates the top-left corner co-ordinates of the displayed map
-    viewPosX = max(0, playerX - VIEW_WIDTH // 2) # max ensures that the value is never below 0
-    viewPosY = max(0, playerY - VIEW_HEIGHT // 2)
+    VIEW_X = max(0, playerX - VIEW_WIDTH // 2) # max ensures that the value is never below 0
+    VIEW_Y = max(0, playerY - VIEW_HEIGHT // 2)
 
     # Ensure the viewport doesn't go out of bounds
-    viewPosX = min(viewPosX, len(tilemap[0]) - VIEW_WIDTH) # min ensures that the value is never to far out
-    viewPosY = min(viewPosY, len(tilemap) - VIEW_HEIGHT)
+    VIEW_X = min(VIEW_X, len(tilemap[0]) - VIEW_WIDTH) # min ensures that the value is never to far out
+    VIEW_Y = min(VIEW_Y, len(tilemap) - VIEW_HEIGHT)
 
     #print(viewPosX, viewPosY)
 
@@ -33,8 +29,8 @@ def renderMap(tilemap, playerX, playerY):
         for col in range(VIEW_WIDTH):
 
             # calculates actual tile position in map
-            tileX = viewPosX + col
-            tileY = viewPosY + row
+            tileX = VIEW_X + col
+            tileY = VIEW_Y + row
 
             if 0 <= tileX < len(tilemap[0]) and 0 <= tileY < len(tilemap): 
 
@@ -64,6 +60,7 @@ def main():
 
         # gets player direction and co-ordinates
         x, y = player.getPosition()
+        direction = player.whichDirection()
 
         # displays background tiles
         renderMap(tilemap, x, y)
@@ -104,7 +101,7 @@ def main():
                 if keys[pygame.K_a] or keys[pygame.K_d] or keys[pygame.K_w] or keys[pygame.K_s]:
                     player.setMoving(True)
     
-                if keys[pygame.K_a]:
+                if keys[pygame.K_a] and direction != 1:
                     player.changeDirection(1)
 
                 elif keys[pygame.K_d]:

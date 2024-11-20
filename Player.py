@@ -8,9 +8,6 @@ class Entity():
         # the map surfaces starting co-ordinates on the display
         self.mapPos = [x,y]
 
-        # (lower x, lower y, upper x, upper y) boundaries
-        self.moveBox = [180, 360, 1260, 1080]
-
         # the speed of the entity
         self.vel = 3
 
@@ -32,25 +29,30 @@ class Entity():
         # used to make sure animations play once
         self.animationFinished = True
 
+        self.rect = pygame.Rect((x, y), (72, 72))
+        
+        # (lower x, lower y, upper x, upper y) boundaries
+        self.moveBox = [180, 360, 1260, 1080]
+
     
     def getPosition(self):
-        return self.mapPos[0], self.mapPos[1]
+        return self.rect.x, self.rect.y
     
     # moves the position of the entity in the direction it is facing
     def move(self):
 
-        #if 0 <= self.mapPos[0] < len(tilemap[0]) and 0 <= self.mapPos[1] < len(tilemap):
+        #if 0 <= self.rect.x < len(tilemap[0]) and 0 <= self.rect.y < len(tilemap):
         if self.direction == 0: # facing up
-            self.mapPos[1] = max(0, self.mapPos[1]-self.vel)
+            self.rect.y = max(0, self.rect.y-self.vel)
 
         if self.direction == 1: # facing left
-            self.mapPos[0] = max(0, self.mapPos[0]-self.vel)
+            self.rect.x = max(0, self.rect.x-self.vel)
 
         if self.direction == 2: # facing down
-            self.mapPos[1] = min(HEIGHT-100, self.mapPos[1]+self.vel)
+            self.rect.y = min(HEIGHT-100, self.rect.y+self.vel)
 
         if self.direction == 3: # facing right
-            self.mapPos[0] = min(WIDTH-75, self.mapPos[0]+self.vel)
+            self.rect.x = min(WIDTH-75, self.rect.x+self.vel)
 
     # sets frame back to 0 so other animations begin from the start
     def resetAnimation(self):
@@ -71,7 +73,7 @@ class Entity():
             lastUpdate = currentTime
 
         # show frame image
-        SCREEN.blit(action[frame], (self.mapPos[0],self.mapPos[1]))
+        SCREEN.blit(action[frame], (self.rect.x,self.rect.y))
 
 class Character(Entity):
 
@@ -102,7 +104,7 @@ class Character(Entity):
 
     # displays character image in direction it is facing
     def drawIdle(self):
-        SCREEN.blit(self.idleList[self.direction], (self.mapPos[0], self.mapPos[1]))
+        SCREEN.blit(self.idleList[self.direction], (self.rect.x, self.rect.y))
 
     # animates character moving in direction it is facing 
     def animateWalk(self):
@@ -122,7 +124,7 @@ class Character(Entity):
                 self.frame = 0
 
         # show frame image
-        SCREEN.blit(self.walkList[self.direction][self.frame], (self.mapPos[0],self.mapPos[1]))
+        SCREEN.blit(self.walkList[self.direction][self.frame], (self.rect.x, self.rect.y ))
     
 
 class Player(Character):
@@ -138,6 +140,11 @@ class Player(Character):
         # stores what action the player is currently doing
         self.action = "idle"
         self.active = False
+
+        self.rect = pygame.Rect((x, y), (72, 72))
+        
+        # (lower x, lower y, upper x, upper y) boundaries
+        self.moveBox = [180, 360, 1260, 1080]
     
     def changeAction(self, action):
         self.action = action
@@ -159,6 +166,34 @@ class Player(Character):
     
     def changeItem(self, item):
         self.item = item
+
+    # moves the position of the entity in the direction it is facing
+    def move(self):
+
+        if self.direction == 0: # facing up
+            if self.rect.y <= self.moveBox[1]:
+                self.mapPos[1] += self.vel
+            else:
+                self.rect.y = max(0, self.rect.y-self.vel)
+
+        if self.direction == 1: # facing left
+            if self.rect.x <= self.moveBox[0]:
+                self.mapPos[0] += self.vel
+            else:
+                self.rect.x = max(0, self.rect.x-self.vel)
+
+        if self.direction == 2: # facing down
+            if self.rect.y >= self.moveBox[3]:
+                self.mapPos[1] -= self.vel
+            else:
+                self.rect.y = min(HEIGHT-100, self.rect.y+self.vel)
+
+        if self.direction == 3: # facing right
+            if self.rect.x >= self.moveBox[2]:
+                self.mapPos[0] -= self.vel
+            else:
+                self.rect.x = min(WIDTH-75, self.rect.x+self.vel)
+
 
     # animates the player tilling or watering
     def animateTillWater(self):
@@ -186,7 +221,7 @@ class Player(Character):
                     self.action = "idle" # resets player to idle state
 
             # show frame image
-            SCREEN.blit(self.tillWaterList[self.direction][self.frame], (self.mapPos[0],self.mapPos[1]))
+            SCREEN.blit(self.tillWaterList[self.direction][self.frame], (self.rect.x,self.rect.y))
     
     # animates the player tilling or watering
     def animatePlanting(self):
@@ -214,6 +249,6 @@ class Player(Character):
                     self.action = "idle" # resets player to idle state
 
             # show frame image
-            SCREEN.blit(self.plantList[self.direction][self.frame], (self.mapPos[0],self.mapPos[1]))
+            SCREEN.blit(self.plantList[self.direction][self.frame], (self.rect.x,self.rect.y))
 
         

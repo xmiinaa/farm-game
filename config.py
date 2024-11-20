@@ -68,6 +68,12 @@ tilemap = [
     ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
     ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE" ],
     ["BL", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BR"] ]
+
+MAP_WIDTH, MAP_HEIGHT = 20, 20
+TILE_SIZE = 72
+VIEW_WIDTH, VIEW_HEIGHT = 15, 10
+VIEW_X, VIEW_Y = 2, 5
+
 # music
 musicVal = 0 # todo: set this to 5
 sfxVal = 5

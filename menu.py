@@ -693,6 +693,8 @@ def settings_loop():
 
     running = True
 
+    global musicVal, sfxVal
+
     # creation of objects
     titleBox = box.TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "Settings")
 
