@@ -6,10 +6,10 @@ class Entity():
     def __init__(self, x, y, spritesheet):
         
         # the map surfaces starting co-ordinates on the display
-        self.mapPos = [x,y]
+        self.mapPos = [0,0]
 
         # the speed of the entity
-        self.vel = 3
+        self.vel = 1
 
         # the direction the entitiy first is shown. 2 is facing down.
         self.direction = 2
@@ -29,12 +29,9 @@ class Entity():
         # used to make sure animations play once
         self.animationFinished = True
 
-        self.rect = pygame.Rect((x, y), (72, 72))
-        
-        # (lower x, lower y, upper x, upper y) boundaries
-        self.moveBox = [180, 360, 1260, 1080]
+    def getMapPos(self):
+        return self.mapPos
 
-    
     def getPosition(self):
         return self.rect.x, self.rect.y
     
@@ -134,17 +131,18 @@ class Player(Character):
 
         self.stamina = 100
         self.inventory = [[] for _ in range(20)]
-        self.item = "waterCan"
+        self.item = "seed"
         self.money = 0
 
         # stores what action the player is currently doing
         self.action = "idle"
         self.active = False
 
+        # creates a rectangle of the entity.
         self.rect = pygame.Rect((x, y), (72, 72))
         
         # (lower x, lower y, upper x, upper y) boundaries
-        self.moveBox = [180, 360, 1260, 1080]
+        self.moveBox = [90, 90, 850, 500]
     
     def changeAction(self, action):
         self.action = action
@@ -171,28 +169,36 @@ class Player(Character):
     def move(self):
 
         if self.direction == 0: # facing up
+
+            # checks if the co-ordinate is at the box border
             if self.rect.y <= self.moveBox[1]:
-                self.mapPos[1] += self.vel
+                self.mapPos[1] += self.vel # move screen up
             else:
-                self.rect.y = max(0, self.rect.y-self.vel)
+                self.rect.y = max(0, self.rect.y-self.vel) # move character up
 
         if self.direction == 1: # facing left
+
+            # checks if the co-ordinate is at the box border
             if self.rect.x <= self.moveBox[0]:
-                self.mapPos[0] += self.vel
+                self.mapPos[0] += self.vel # move screen left
             else:
-                self.rect.x = max(0, self.rect.x-self.vel)
+                self.rect.x = max(0, self.rect.x-self.vel) # move character left
 
         if self.direction == 2: # facing down
+
+            # checks if the co-ordinate is at the box border
             if self.rect.y >= self.moveBox[3]:
-                self.mapPos[1] -= self.vel
+                self.mapPos[1] -= self.vel # move screen down
             else:
-                self.rect.y = min(HEIGHT-100, self.rect.y+self.vel)
+                self.rect.y = min(HEIGHT-75, self.rect.y+self.vel) # move character down
 
         if self.direction == 3: # facing right
+
+            # checks if the co-ordinate is at the box border
             if self.rect.x >= self.moveBox[2]:
-                self.mapPos[0] -= self.vel
+                self.mapPos[0] -= self.vel # move screen right
             else:
-                self.rect.x = min(WIDTH-75, self.rect.x+self.vel)
+                self.rect.x = min(WIDTH-75, self.rect.x+self.vel) # move character right
 
 
     # animates the player tilling or watering

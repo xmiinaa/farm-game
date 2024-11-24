@@ -22,8 +22,6 @@ def renderMap(tilemap, playerX, playerY):
     VIEW_X = min(VIEW_X, len(tilemap[0]) - VIEW_WIDTH) # min ensures that the value is never to far out
     VIEW_Y = min(VIEW_Y, len(tilemap) - VIEW_HEIGHT)
 
-    #print(viewPosX, viewPosY)
-
     # displays visible portion of the map
     for row in range(VIEW_WIDTH):
         for col in range(VIEW_WIDTH):
@@ -39,6 +37,21 @@ def renderMap(tilemap, playerX, playerY):
 
                 SCREEN.blit(tileImage, (col * TILE_SIZE, row * TILE_SIZE))
 
+# creates farm map screen
+def renderFarmMap():
+
+    # creates empty surface 
+    farmMap = pygame.Surface((1800, 1440))
+
+    # displays tile images from tilemap onto surface
+    for row in range(len(tilemap)):
+        for col in range(len(tilemap[row])):
+
+            tileImg = getTileImg(tilemap, row, col) # gets image to display
+            
+            farmMap.blit(tileImg, (col*72, row*72))
+    
+    return farmMap
 
 # this would not be set in real game, but rather obtained from database or previous screen
 chosenCharacter = "female"
@@ -55,6 +68,11 @@ def main():
     else: # creates female player
         player = Player.Player(540, 360, femaleMCSpriteSheet, "Yue")
 
+    # creates the farmMap
+    farmMap = renderFarmMap()
+
+    # gets co-ordinates of camera
+    cameraPos = player.getMapPos()
 
     while running:
 
@@ -63,7 +81,7 @@ def main():
         direction = player.whichDirection()
 
         # displays background tiles
-        renderMap(tilemap, x, y)
+        SCREEN.blit(farmMap, (cameraPos[0]-180, cameraPos[1]-360))
 
         # checks if the player is moving and they are not in another action, and displays it appropiately if they are
         if player.isMoving() and player.isActive() == False:
