@@ -170,5 +170,6 @@ def main():
                 pygame.quit()
                 sys.exit() 
         
+        CLOCK.tick(60)
         pygame.display.update()
                 
