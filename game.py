@@ -11,37 +11,8 @@ def getTileImg(tilemap, row, col):
 
     return TILE_IMAGES.get(tile, GM_TILE) # if key is not found, grass middle tile is returned
 
-
-def renderMap(tilemap, playerX, playerY):
-
-    # calculates the top-left corner co-ordinates of the displayed map
-    VIEW_X = max(0, playerX - VIEW_WIDTH // 2) # max ensures that the value is never below 0
-    VIEW_Y = max(0, playerY - VIEW_HEIGHT // 2)
-
-    # Ensure the viewport doesn't go out of bounds
-    VIEW_X = min(VIEW_X, len(tilemap[0]) - VIEW_WIDTH) # min ensures that the value is never to far out
-    VIEW_Y = min(VIEW_Y, len(tilemap) - VIEW_HEIGHT)
-
-    # displays visible portion of the map
-    for row in range(VIEW_WIDTH):
-        for col in range(VIEW_WIDTH):
-
-            # calculates actual tile position in map
-            tileX = VIEW_X + col
-            tileY = VIEW_Y + row
-
-            if 0 <= tileX < len(tilemap[0]) and 0 <= tileY < len(tilemap): 
-
-                # gets tile image to display
-                tileImage = getTileImg(tilemap, tileY, tileX)
-
-                SCREEN.blit(tileImage, (col * TILE_SIZE, row * TILE_SIZE))
-
 # creates farm map screen
 def renderFarmMap():
-
-    # creates empty surface 
-    farmMap = pygame.Surface((1800, 1440))
 
     # displays tile images from tilemap onto surface
     for row in range(len(tilemap)):
@@ -53,8 +24,39 @@ def renderFarmMap():
     
     return farmMap
 
+def till(player, mousePos, playerX, playerY):
+
+    global farmMap
+
+    mouseTileX = mousePos[0] // TILE_SIZE
+    mouseTileY = mousePos[1] // TILE_SIZE
+
+    mapPos = player.getMapPos()
+
+    # checks to se
+    if mapPos[0] <= 0:
+        dx = 5
+    else:
+        dx = -2
+    if mapPos[1] <= 0:
+        dy = 6
+    else:
+        dy = -5
+
+    print(mapPos)
+
+    playerTileX = (playerX + abs(mapPos[0]) ) // TILE_SIZE
+    playerTileY = (playerY + abs(mapPos[1]) ) // TILE_SIZE
+
+    print(playerTileX+dx, playerTileY+dy)
+
+    player.animateTillWater()
+    tilemap[playerTileY+6][playerTileX+3] = "TD"
+    farmMap = renderFarmMap()
+
+
 # this would not be set in real game, but rather obtained from database or previous screen
-chosenCharacter = "female"
+chosenCharacter = "male"
 
 def main():
     running = True
@@ -68,17 +70,23 @@ def main():
     else: # creates female player
         player = Player.Player(540, 360, femaleMCSpriteSheet, "Yue")
 
-    # creates the farmMap
-    farmMap = renderFarmMap()
-
     # gets co-ordinates of camera
     cameraPos = player.getMapPos()
 
+    # creates the farmMap
+    farmMap = renderFarmMap()
+
+
     while running:
 
-        # gets player direction and co-ordinates
-        x, y = player.getPosition()
+        # gets player direction
         direction = player.whichDirection()
+
+        # gets player's co-ordinates
+        x, y = player.getPosition()
+
+        # gets co-ordinates of mouse
+        mousePos = pygame.mouse.get_pos()
 
         # displays background tiles
         SCREEN.blit(farmMap, (cameraPos[0]-180, cameraPos[1]-360))
@@ -97,7 +105,8 @@ def main():
 
                 if player.getAction() == "tillWater":
     
-                    player.animateTillWater()
+                    till(player, mousePos, x, y)
+                    #player.animateTillWater()
                 
                 elif player.getAction() == "planting":
 
@@ -107,7 +116,6 @@ def main():
         else:
             player.drawIdle()
     
-        #renderMap(tilemap, x, y)
         for event in pygame.event.get():
 
             # checks if player presses down a key
@@ -130,6 +138,27 @@ def main():
 
                 elif keys[pygame.K_s]:
                     player.changeDirection(2)
+
+                if keys[pygame.K_SPACE]:
+                    # ensures the player is not already engaged in another action
+                    if player.isActive() == False:
+
+                        player.resetAnimation() # sets animation back to 0
+                        player.activate()
+
+                        # gets the item that the player is currently holding
+                        item = player.getItem()
+                    
+                        if item == "hoe" or item == "waterCan":
+
+                            # changes the attribute as appropiate
+                            player.changeAction("tillWater")
+                        
+                        if item == "seed":
+
+                            # changes the attribute as appropiate
+                            player.changeAction("planting")
+
 
             # checks if player is not pressing down a key
             if event.type == pygame.KEYUP:

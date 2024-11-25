@@ -9,7 +9,7 @@ class Entity():
         self.mapPos = [0,0]
 
         # the speed of the entity
-        self.vel = 5
+        self.vel = 4
 
         # the direction the entitiy first is shown. 2 is facing down.
         self.direction = 2
@@ -131,7 +131,7 @@ class Player(Character):
 
         self.stamina = 100
         self.inventory = [[] for _ in range(20)]
-        self.item = "seed"
+        self.item = "hoe"
         self.money = 0
 
         # stores what action the player is currently doing
@@ -142,7 +142,7 @@ class Player(Character):
         self.rect = pygame.Rect((x, y), (72, 72))
         
         # (lower x, lower y, upper x, upper y) boundaries
-        self.moveBox = [90, 90, 850, 500]
+        self.moveBox = [100, 100, 840, 490]
     
     def changeAction(self, action):
         self.action = action
@@ -173,7 +173,7 @@ class Player(Character):
             # checks if the co-ordinate is at the box border
             if self.rect.y <= self.moveBox[1]:
 
-                # checks if the plaer is at the top edge of the screen
+                # checks if the player is at the top edge of the screen
                 if self.mapPos[1] >= 360:
                     self.rect.y = max(0, self.rect.y-self.vel) # move character up
                 else:
@@ -186,7 +186,7 @@ class Player(Character):
             # checks if the co-ordinate is at the box border
             if self.rect.x <= self.moveBox[0]:
 
-                # checks if the plaer is at the left edge of the screen
+                # checks if the player is at the left edge of the screen
                 if self.mapPos[0] >= 180:
                     self.rect.x = max(0, self.rect.x-self.vel) # move character left
                 else:
@@ -199,7 +199,7 @@ class Player(Character):
             # checks if the co-ordinate is at the box border
             if self.rect.y >= self.moveBox[3]:
 
-                # checks if the plaer is at the bottom edge of the screen
+                # checks if the player is at the bottom edge of the screen
                 if self.mapPos[1] <= -360:
                     self.rect.y = min(HEIGHT-110, self.rect.y+self.vel) # move character down
                 else:
@@ -211,7 +211,7 @@ class Player(Character):
 
             # checks if the co-ordinate is at the box border
             if self.rect.x >= self.moveBox[2]:
-                # checks if the plaer is at the right edge of the screen
+                # checks if the player is at the right edge of the screen
                 if self.mapPos[0] <= -540:
                     self.rect.x = min(WIDTH-90, self.rect.x+self.vel) # move character right
                 
@@ -219,7 +219,6 @@ class Player(Character):
                     self.mapPos[0] -= self.vel # move screen right
             else:
                 self.rect.x = min(WIDTH-90, self.rect.x+self.vel) # move character right
-
 
     # animates the player tilling or watering
     def animateTillWater(self):
@@ -249,6 +248,7 @@ class Player(Character):
             # show frame image
             SCREEN.blit(self.tillWaterList[self.direction][self.frame], (self.rect.x,self.rect.y))
     
+        
     # animates the player tilling or watering
     def animatePlanting(self):
         

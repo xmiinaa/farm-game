@@ -69,7 +69,12 @@ tilemap = [
     ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE"],
     ["BL", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BR"]]
 
-MAP_WIDTH, MAP_HEIGHT = 20, 20
+# creates empty surface 
+farmMap = pygame.Surface((1800, 1440))
+
+
+
+MAP_WIDTH, MAP_HEIGHT = 25, 20
 TILE_SIZE = 72
 VIEW_WIDTH, VIEW_HEIGHT = 15, 10
 VIEW_X, VIEW_Y = 2, 5
