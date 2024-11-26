@@ -24,6 +24,7 @@ def renderFarmMap():
     
     return farmMap
 
+
 def till(player, mousePos, playerX, playerY):
 
     global farmMap
@@ -41,17 +42,19 @@ def till(player, mousePos, playerX, playerY):
     if mapPos[1] <= 0:
         dy = 6
     else:
-        dy = -5
+        dy = -4
 
     print(mapPos)
 
-    playerTileX = (playerX + abs(mapPos[0]) ) // TILE_SIZE
-    playerTileY = (playerY + abs(mapPos[1]) ) // TILE_SIZE
+    #playerTileX = (playerX + abs(mapPos[0]) ) // TILE_SIZE
+    #playerTileY = (playerY + abs(mapPos[1]) ) // TILE_SIZE
 
-    print(playerTileX+dx, playerTileY+dy)
+    playerTileX, playerTileY = player.getTilePosition()
+
+    print(playerTileX, playerTileY)
 
     player.animateTillWater()
-    tilemap[playerTileY+6][playerTileX+3] = "TD"
+    tilemap[playerTileY+dy][playerTileX+dx] = "TD"
     farmMap = renderFarmMap()
 
 
@@ -139,7 +142,12 @@ def main():
                 elif keys[pygame.K_s]:
                     player.changeDirection(2)
 
-                if keys[pygame.K_SPACE]:
+                if keys[pygame.K_LSHIFT]:
+                    player.changeSpeed(6)
+                else:
+                    player.changeSpeed(4)
+
+                if keys[pygame.K_x]:
                     # ensures the player is not already engaged in another action
                     if player.isActive() == False:
 

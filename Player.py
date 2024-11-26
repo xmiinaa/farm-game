@@ -142,7 +142,7 @@ class Player(Character):
         self.rect = pygame.Rect((x, y), (72, 72))
         
         # (lower x, lower y, upper x, upper y) boundaries
-        self.moveBox = [100, 100, 840, 490]
+        self.moveBox = [130, 130, 820, 470]
     
     def changeAction(self, action):
         self.action = action
@@ -163,7 +163,11 @@ class Player(Character):
         return self.item
     
     def changeItem(self, item):
+
         self.item = item
+
+    def changeSpeed(self, speed):
+        self.vel= speed
 
     # moves the position of the entity in the direction it is facing
     def move(self):
@@ -277,4 +281,12 @@ class Player(Character):
             # show frame image
             SCREEN.blit(self.plantList[self.direction][self.frame], (self.rect.x,self.rect.y))
 
-        
+    def getTilePosition(self):
+
+        worldX = self.rect.x - self.mapPos[0]
+        worldY = self.rect.y - self.mapPos[1]
+
+        tileX = worldX // TILE_SIZE
+        tileY = worldY // TILE_SIZE
+
+        return tileX, tileY
