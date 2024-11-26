@@ -163,7 +163,6 @@ class Player(Character):
         return self.item
     
     def changeItem(self, item):
-
         self.item = item
 
     def changeSpeed(self, speed):
@@ -281,11 +280,14 @@ class Player(Character):
             # show frame image
             SCREEN.blit(self.plantList[self.direction][self.frame], (self.rect.x,self.rect.y))
 
+    # gets tile position of player
     def getTilePosition(self):
 
+        # gets the position of the player in relation to farmMap screen
         worldX = self.rect.x - self.mapPos[0]
         worldY = self.rect.y - self.mapPos[1]
 
+        # calculates the correlating tile position in tileMap
         tileX = worldX // TILE_SIZE
         tileY = worldY // TILE_SIZE
 

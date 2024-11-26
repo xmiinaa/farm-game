@@ -34,29 +34,21 @@ def till(player, mousePos, playerX, playerY):
 
     mapPos = player.getMapPos()
 
-    # checks to se
-    if mapPos[0] <= 0:
-        dx = 5
-    else:
-        dx = -2
-    if mapPos[1] <= 0:
-        dy = 6
-    else:
-        dy = -4
-
     print(mapPos)
-
-    #playerTileX = (playerX + abs(mapPos[0]) ) // TILE_SIZE
-    #playerTileY = (playerY + abs(mapPos[1]) ) // TILE_SIZE
 
     playerTileX, playerTileY = player.getTilePosition()
 
+    playerTileX += 3
+    playerTileY += 6
+
     print(playerTileX, playerTileY)
 
-    player.animateTillWater()
-    tilemap[playerTileY+dy][playerTileX+dx] = "TD"
-    farmMap = renderFarmMap()
+    if tilemap[playerTileY][playerTileX] == "GM":
+        flag = True
+        tilemap[playerTileY][playerTileX] = "TD"
+        farmMap = renderFarmMap()
 
+    player.animateTillWater()
 
 # this would not be set in real game, but rather obtained from database or previous screen
 chosenCharacter = "male"
