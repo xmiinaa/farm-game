@@ -3,92 +3,7 @@ from config import *
 import sys
 from spritesheet import SpriteSheet
 import Player
-
-# returns tile image of from a specific index of tilemap array
-def getTileImg(tilemap, row, col):
-
-    tile = tilemap[row][col] # accesses tile from array
-
-    return TILE_IMAGES.get(tile, GM_TILE) # if key is not found, grass middle tile is returned
-
-# creates farm map screen
-def renderFarmMap():
-
-    # displays tile images from tilemap onto surface
-    for row in range(len(tilemap)):
-        for col in range(len(tilemap[row])):
-
-            tileImg = getTileImg(tilemap, row, col) # gets image to display
-            
-            farmMap.blit(tileImg, (col*72, row*72))
-    
-    return farmMap
-
-# tills the tile
-def till(player, mousePos, key):
-
-    global farmMap
-
-    # calculates the tile that the mouse is on
-    mouseTileX = (mousePos[0] // TILE_SIZE) + 2
-    mouseTileY = (mousePos[1] // TILE_SIZE) + 5
-
-    # gets the tile position of the player
-    playerTileX, playerTileY = player.getTilePosition()
-
-    playerTileX += 3
-    playerTileY += 6
-
-    print(playerTileX, playerTileY, mouseTileX, mouseTileY)
-
-    # checks to see if the tile is "tillable"
-    if tilemap[playerTileY][playerTileX] == "GM":
-
-        #  checks if the player pressed the key x
-        if key == "x":
-
-            # changes the tile to tilled land and displays it
-            tilemap[playerTileY][playerTileX] = "TD"
-            farmMap = renderFarmMap()
-
-        # checks to see if the player clicked on the mouse
-        if key == "mouse":
-            
-            # checks to see if the user had clicked the player
-            if player.mouseOnPlayer(mousePos):
-
-                # changes the tile to tilled land and displays it
-                tilemap[playerTileY][playerTileX] = "TD"
-                farmMap = renderFarmMap()
-    
-    # animates the player
-    player.animateTillWater()
-
-# waters the tile
-def water(player, mousePos):
-
-    global farmMap
-
-    mouseTileX = mousePos[0] // TILE_SIZE
-    mouseTileY = mousePos[1] // TILE_SIZE
-
-    # gets the position of the map on the display farmMap
-    mapPos = player.getMapPos()
-
-    print(mapPos)
-
-    playerTileX, playerTileY = player.getTilePosition()
-
-    playerTileX += 3
-    playerTileY += 6
-
-    print(playerTileX, playerTileY)
-
-    if tilemap[playerTileY][playerTileX] == "GM":
-        tilemap[playerTileY][playerTileX] = "TD"
-        farmMap = renderFarmMap()
-
-    player.animateTillWater()
+from tile import *
 
 # this would not be set in real game, but rather obtained from database or previous screen
 chosenCharacter = "male"
@@ -108,18 +23,12 @@ def main():
     # gets co-ordinates of camera
     cameraPos = player.getMapPos()
 
-    # creates the farmMap
-    farmMap = renderFarmMap()
-
     keyPressed = ""
 
     while running:
 
         # gets player direction
         direction = player.whichDirection()
-
-        # gets player's co-ordinates
-        x, y = player.getPosition()
 
         # gets co-ordinates of mouse
         mousePos = pygame.mouse.get_pos()
