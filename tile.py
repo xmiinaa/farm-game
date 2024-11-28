@@ -50,30 +50,33 @@ def till(player, mousePos, key):
     # animates the player
     player.animateTillWater()
 
-# waters the tile
-def water(player, mousePos):
+# tills the tile
+def till(player, mousePos, key):
 
-    global farmMap
-
-    mouseTileX = mousePos[0] // TILE_SIZE
-    mouseTileY = mousePos[1] // TILE_SIZE
-
-    # gets the position of the map on the display farmMap
-    mapPos = player.getMapPos()
-
-    print(mapPos)
-
+    # gets the tile position of the player
     playerTileX, playerTileY = player.getTilePosition()
 
-    playerTileX += 3
-    playerTileY += 6
+    # checks to see if the tile is "tillable"
+    if tilemap[playerTileY][playerTileX] == "TD":
 
-    print(playerTileX, playerTileY)
+        #  checks if the player pressed the key x
+        if key == "x":
 
-    if tilemap[playerTileY][playerTileX] == "GM":
-        tilemap[playerTileY][playerTileX] = "TD"
-        farmMap = renderFarmMap()
+            # changes the tile to tilled land and displays it
+            tilemap[playerTileY][playerTileX] = "WD"
+            farmMap = renderFarmMap()
 
+        # checks to see if the player clicked on the mouse
+        if key == "mouse":
+            
+            # checks to see if the user had clicked the player
+            if player.mouseOnPlayer(mousePos):
+
+                # changes the tile to tilled land and displays it
+                tilemap[playerTileY][playerTileX] = "WD"
+                farmMap = renderFarmMap()
+    
+    # animates the player
     player.animateTillWater()
 
 # 2D array storing whole tilemap status
