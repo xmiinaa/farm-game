@@ -24,14 +24,55 @@ def renderFarmMap():
     
     return farmMap
 
+# tills the tile
+def till(player, mousePos, key):
 
-def till(player, mousePos, playerX, playerY):
+    global farmMap
+
+    # calculates the tile that the mouse is on
+    mouseTileX = (mousePos[0] // TILE_SIZE) + 2
+    mouseTileY = (mousePos[1] // TILE_SIZE) + 5
+
+    # gets the tile position of the player
+    playerTileX, playerTileY = player.getTilePosition()
+
+    playerTileX += 3
+    playerTileY += 6
+
+    print(playerTileX, playerTileY, mouseTileX, mouseTileY)
+
+    # checks to see if the tile is "tillable"
+    if tilemap[playerTileY][playerTileX] == "GM":
+
+        #  checks if the player pressed the key x
+        if key == "x":
+
+            # changes the tile to tilled land and displays it
+            tilemap[playerTileY][playerTileX] = "TD"
+            farmMap = renderFarmMap()
+
+        # checks to see if the player clicked on the mouse
+        if key == "mouse":
+            
+            # checks to see if the user had clicked the player
+            if player.mouseOnPlayer(mousePos):
+
+                # changes the tile to tilled land and displays it
+                tilemap[playerTileY][playerTileX] = "TD"
+                farmMap = renderFarmMap()
+    
+    # animates the player
+    player.animateTillWater()
+
+# waters the tile
+def water(player, mousePos):
 
     global farmMap
 
     mouseTileX = mousePos[0] // TILE_SIZE
     mouseTileY = mousePos[1] // TILE_SIZE
 
+    # gets the position of the map on the display farmMap
     mapPos = player.getMapPos()
 
     print(mapPos)
@@ -44,7 +85,6 @@ def till(player, mousePos, playerX, playerY):
     print(playerTileX, playerTileY)
 
     if tilemap[playerTileY][playerTileX] == "GM":
-        flag = True
         tilemap[playerTileY][playerTileX] = "TD"
         farmMap = renderFarmMap()
 
@@ -71,6 +111,7 @@ def main():
     # creates the farmMap
     farmMap = renderFarmMap()
 
+    keyPressed = ""
 
     while running:
 
@@ -100,8 +141,8 @@ def main():
 
                 if player.getAction() == "tillWater":
     
-                    till(player, mousePos, x, y)
-                    #player.animateTillWater()
+                    # tills the farm tile
+                    till(player, mousePos, keyPressed)
                 
                 elif player.getAction() == "planting":
 
@@ -140,6 +181,9 @@ def main():
                     player.changeSpeed(4)
 
                 if keys[pygame.K_x]:
+
+                    keyPressed = "x"
+
                     # ensures the player is not already engaged in another action
                     if player.isActive() == False:
 
@@ -171,6 +215,8 @@ def main():
     
             # checks if he player has clicked on the mouse
             if pygame.mouse.get_pressed()[0]:
+
+                keyPressed = "mouse"
 
                 # ensures the player is not already engaged in another action
                 if player.isActive() == False:

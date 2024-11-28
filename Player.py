@@ -292,3 +292,11 @@ class Player(Character):
         tileY = worldY // TILE_SIZE
 
         return tileX, tileY
+
+    # checks to see if the player's mouse is within range of the player
+    def mouseOnPlayer(self, mousePos):
+        if self.rect.x < mousePos[0] < self.rect.x + 100 and self.rect.y < mousePos[1] < self.rect.y + 100:
+            return True
+        else:
+            return False
+
