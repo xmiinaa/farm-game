@@ -226,7 +226,7 @@ class Player(Character):
     # animates the player tilling or watering
     def animateTillWater(self):
         
-        if self.action == "tillWater" and not self.animationFinished:
+        if (self.action == "till" or self.action == "water") and not self.animationFinished:
 
             # update animation
             currentTime = pygame.time.get_ticks()

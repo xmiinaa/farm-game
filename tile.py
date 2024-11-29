@@ -1,5 +1,7 @@
 import pygame
 from config import *
+from game import *
+from Player import *
 
 # returns tile image of from a specific index of tilemap array
 def getTileImg(tilemap, row, col):
@@ -24,6 +26,8 @@ def renderFarmMap():
 # tills the tile
 def till(player, mousePos, key):
 
+    global farmMap
+
     # gets the tile position of the player
     playerTileX, playerTileY = player.getTilePosition()
 
@@ -47,11 +51,12 @@ def till(player, mousePos, key):
                 tilemap[playerTileY][playerTileX] = "TD"
                 farmMap = renderFarmMap()
     
-    # animates the player
     player.animateTillWater()
+        
+# waters the tile
+def water(player, mousePos, key):
 
-# tills the tile
-def till(player, mousePos, key):
+    global farmMap
 
     # gets the tile position of the player
     playerTileX, playerTileY = player.getTilePosition()
@@ -105,5 +110,3 @@ tilemap = [
 # creates empty surface 
 farmMap = pygame.Surface((1800, 1440))
         
-# creates the farmMap
-farmMap = renderFarmMap()

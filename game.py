@@ -1,9 +1,8 @@
 import pygame
 from config import *
 import sys
-from spritesheet import SpriteSheet
 import Player
-from tile import *
+import tile
 
 # this would not be set in real game, but rather obtained from database or previous screen
 chosenCharacter = "male"
@@ -22,6 +21,9 @@ def main():
 
     # gets co-ordinates of camera
     cameraPos = player.getMapPos()
+
+    # creates the farmMap
+    farmMap = tile.renderFarmMap()
 
     keyPressed = ""
 
@@ -48,10 +50,15 @@ def main():
             # checks to see if the player is active
             if player.isActive():
 
-                if player.getAction() == "tillWater":
+                if player.getAction() == "till":
     
                     # tills the farm tile
-                    till(player, mousePos, keyPressed)
+                    tile.till(player, mousePos, keyPressed)
+                
+                elif player.getAction() == "water":
+
+                    # waters the farm tile
+                    tile.water(player, mousePos, keyPressed)
                 
                 elif player.getAction() == "planting":
 
@@ -102,10 +109,15 @@ def main():
                         # gets the item that the player is currently holding
                         item = player.getItem()
                     
-                        if item == "hoe" or item == "waterCan":
+                        if item == "hoe":
 
                             # changes the attribute as appropiate
-                            player.changeAction("tillWater")
+                            player.changeAction("till")
+                        
+                        if item == "waterCan":
+
+                            # changes the attribute as appropiate
+                            player.changeAction("water")
                         
                         if item == "seed":
 
@@ -136,10 +148,15 @@ def main():
                     # gets the item that the player is currently holding
                     item = player.getItem()
                 
-                    if item == "hoe" or item == "waterCan":
+                    if item == "hoe":
 
                         # changes the attribute as appropiate
-                        player.changeAction("tillWater")
+                        player.changeAction("till")
+                    
+                    if item == "waterCan":
+
+                        # changes the attribute as appropiate
+                        player.changeAction("water")
                     
                     if item == "seed":
 
@@ -154,6 +171,7 @@ def main():
                 pygame.quit()
                 sys.exit() 
         
+        # maintains framerate of game
         CLOCK.tick(60)
         pygame.display.update()
                 
