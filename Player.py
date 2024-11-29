@@ -300,3 +300,6 @@ class Player(Character):
         else:
             return False
 
+    # returns the player's inventory array
+    def getInventory(self):
+        return self.inventory
