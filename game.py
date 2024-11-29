@@ -139,30 +139,32 @@ def main():
 
                 keyPressed = "mouse"
 
-                # ensures the player is not already engaged in another action
-                if player.isActive() == False:
+                if player.mouseOnPlayer(mousePos):
 
-                    player.resetAnimation() # sets animation back to 0
-                    player.activate()
+                    # ensures the player is not already engaged in another action
+                    if player.isActive() == False:
 
-                    # gets the item that the player is currently holding
-                    item = player.getItem()
-                
-                    if item == "hoe":
+                        player.resetAnimation() # sets animation back to 0
+                        player.activate()
 
-                        # changes the attribute as appropiate
-                        player.changeAction("till")
+                        # gets the item that the player is currently holding
+                        item = player.getItem()
                     
-                    if item == "waterCan":
+                        if item == "hoe":
 
-                        # changes the attribute as appropiate
-                        player.changeAction("water")
+                            # changes the attribute as appropiate
+                            player.changeAction("till")
+                        
+                        if item == "waterCan":
+
+                            # changes the attribute as appropiate
+                            player.changeAction("water")
+                        
+                        if item == "seed":
+
+                            # changes the attribute as appropiate
+                            player.changeAction("planting")
                     
-                    if item == "seed":
-
-                        # changes the attribute as appropiate
-                        player.changeAction("planting")
-                
             # handles the exit of the game
             if event.type == pygame.QUIT:
                 running  = False
