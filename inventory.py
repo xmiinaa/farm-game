@@ -24,14 +24,32 @@ class Inventory:
     def __init__(self):
         self.capacity = 20
         self.taken_slots = 0
-
+        self.chosenSlot = 10
+        
         # creates array of slots 
         self.slots = []
         for _ in range(self.capacity):
             self.slots.append(ItemSlot())
     
-    def draw():
-        pygame.draw.rect(SCREEN, GREY, pygame.rect(299, 599, 721, 21), 3)
+    def draw(self):
+        pygame.draw.rect(SCREEN, BLACK, pygame.Rect(178, 618, 724, 76), 2)
+        for slot in range(1,11):
+            if slot == self.chosenSlot:
+                SCREEN.blit(CHOSEN_SLOT, ((self.chosenSlot*TILE_SIZE)+108,620))
+            else:
+                SCREEN.blit(SLOT, ( (TILE_SIZE*slot)+108 , 620))
+
+
+
+    def click(self, mousePos):
+        for slot in range(1,11):
+            if mousePos[0] in range((TILE_SIZE * slot)+108, (TILE_SIZE * slot)+180) and mousePos[1] in range(620, 692):
+                self.chosenSlot = slot
+    
+    def hover(self, mousePos):
+        for slot in range(1,11):
+            if mousePos[0] in range((TILE_SIZE * slot)+108, (TILE_SIZE * slot)+180) and mousePos[1] in range(620, 692):
+                SCREEN.blit(CHOSEN_SLOT, ((slot*TILE_SIZE)+108,620))
 
     # adds a certain amount of an item to the inentory, returning any excess items it couldn't add    
     def add(self, itemType, amount=1): # defeault amount is 1
@@ -127,4 +145,5 @@ class Inventory:
 
     # returns true if all slots have an item, otherwise False
     def isFull(self):
-        return self.getFreeSlots() == 0
+        return self.getFreeSlots() == 0#
+    

@@ -13,4 +13,4 @@ if __name__ == "__main__":
     config.initialise()
 
     # calls the loops that displays the first screen
-    menu.game.main()
+    menu.game.main() 

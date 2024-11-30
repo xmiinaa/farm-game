@@ -3,17 +3,12 @@ from config import *
 import sys
 import Player
 import tile
+import inventory
 
 # this would not be set in real game, but rather obtained from database or previous screen
 chosenCharacter = "male"
 
-def draw():
-    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(178, 618, 724, 76), 2)
-    x = 72
-    y = 620
-    for i in range(1,11):
-        SCREEN.blit(SLOT, ((x*i)+108,y))
-    SCREEN.blit(CHOSEN_SLOT, (252,620))
+playerInventory = inventory.Inventory()
 
 def main():
     running = True
@@ -76,7 +71,9 @@ def main():
         else:
             player.drawIdle()
         
-        draw()
+        playerInventory.draw()
+        playerInventory.hover(mousePos)
+    
 
     
         for event in pygame.event.get():
@@ -149,6 +146,8 @@ def main():
             if pygame.mouse.get_pressed()[0]:
 
                 keyPressed = "mouse"
+
+                playerInventory.click(mousePos)
 
                 if player.mouseOnPlayer(mousePos):
 
