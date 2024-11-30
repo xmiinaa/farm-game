@@ -1,4 +1,5 @@
-import pygame, config
+import pygame
+from config import *
 
 class Box:
 
@@ -6,15 +7,15 @@ class Box:
     def __init__(self, x, y, width, height):
         self.x = x
         self.y = y
-        self.colourFill = config.BOX_FILL
-        self.colourBorder = config.BOX_OUTLINE
+        self.colourFill = BOX_FILL
+        self.colourBorder = BOX_OUTLINE
         self.width = width
         self.height = height
 
     # displays box onto screen
     def draw(self):
-        pygame.draw.rect(config.SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 3)
-        pygame.draw.rect(config.SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 2, 3)
+        pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 3)
+        pygame.draw.rect(SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 2, 3)
 
 class TextBox(Box):
 
@@ -23,7 +24,7 @@ class TextBox(Box):
        super().__init__(x, y, width, height) 
        self.font = font
        self.content = content
-       self.fontColour = config.FONT_COLOUR
+       self.fontColour = FONT_COLOUR
        self.text = font.render(self.content, True, self.fontColour)
        self.textRect = self.text.get_rect(center = (self.width // 2 + self.x, self.height // 2 + self.y))
 
@@ -31,11 +32,11 @@ class TextBox(Box):
     def draw(self): 
 
         # displays the box
-        pygame.draw.rect(config.SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 10)
-        pygame.draw.rect(config.SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 3, 10)
+        pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 10)
+        pygame.draw.rect(SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 3, 10)
 
         # displays the text
-        config.SCREEN.blit(self.text, (self.textRect) )   
+        SCREEN.blit(self.text, (self.textRect) )   
 
     # getter method to access text inside text box
     def getText(self):
@@ -59,7 +60,7 @@ class Button(TextBox):
 
         # checks if mouse position is in range of the button
         if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
-            config.button1.play()
+            button1.play()
             return True
         else:
             return False
@@ -68,24 +69,24 @@ class Button(TextBox):
     def draw(self):
 
         # displays box
-        pygame.draw.rect(config.SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 10)
-        pygame.draw.rect(config.SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 3, 10)
+        pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.x, self.y, self.width, self.height), 0, 10)
+        pygame.draw.rect(SCREEN, self.colourBorder, pygame.Rect(self.x, self.y, self.width, self.height), 3, 10)
         
         # displays text
-        config.SCREEN.blit(self.text, self.textRect )
+        SCREEN.blit(self.text, self.textRect )
 
     # changes colour of button border if user is hovering over it with the cursor
     def checkHover(self, position):
 
         # checks if mouse position is in range of the button
         if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
-            self.colourBorder = config.WHITE
+            self.colourBorder = WHITE
         else:
-            self.colourBorder = config.BOX_OUTLINE
+            self.colourBorder = BOX_OUTLINE
 
     # changes colour of button border (used when choice is made)    
     def choiceClick(self):
-        self.colourBorder = config.WHITE
+        self.colourBorder = WHITE
 
 class InputBox(Button):
 
@@ -113,13 +114,13 @@ class InputBox(Button):
     # changes colour of box border depending on if the user is hovering over the box or if they have clicked it
     def checkHoverOrClick(self, position):
         if self.active:
-            self.colourBorder = config.WHITE
+            self.colourBorder = WHITE
         else:
             # checks if mouse position is in range of the input box
             if position[0] in range(self.x, self.x + self.width) and position[1] in range(self.y, self.y + self.height):
-                self.colourBorder = config.WHITE
+                self.colourBorder = WHITE
             else:
-                self.colourBorder = config.BOX_OUTLINE
+                self.colourBorder = BOX_OUTLINE
 
 class Error():
 
@@ -135,11 +136,11 @@ class Error():
         self.textX = textX
         self.textY = textY
         self.content = str(text)
-        self.fontColour = config.ERROR_FONT_COLOUR
+        self.fontColour = ERROR_FONT_COLOUR
         self.colourBorder = (190,0, 0)
-        font = config.OCR_ERROR
+        font = OCR_ERROR
         self.text = font.render(self.content, True, self.fontColour)
-        self.colourFill = config.WHITE
+        self.colourFill = WHITE
         self.textRect = self.text.get_rect(center = (self.width // 2 + self.textX, self.height // 2 + self.textY))
         
     def activate(self):
@@ -153,7 +154,7 @@ class Error():
         return self.active
     
     def draw(self):
-        config.SCREEN.blit(self.image, (self.rect))
+        SCREEN.blit(self.image, (self.rect))
 
     def checkHover(self, position):
 
@@ -161,11 +162,11 @@ class Error():
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
 
             # displays box
-            pygame.draw.rect(config.SCREEN, self.colourFill, pygame.Rect(self.textX, self.textY , self.width, self.height))
-            pygame.draw.rect(config.SCREEN, self.colourBorder, pygame.Rect(self.textX, self.textY , self.width, self.height), 1, 0)
+            pygame.draw.rect(SCREEN, self.colourFill, pygame.Rect(self.textX, self.textY , self.width, self.height))
+            pygame.draw.rect(SCREEN, self.colourBorder, pygame.Rect(self.textX, self.textY , self.width, self.height), 1, 0)
             
             # displays text
-            config.SCREEN.blit(self.text, self.textRect)
+            SCREEN.blit(self.text, self.textRect)
 
 class ImageButton():
 
@@ -184,7 +185,7 @@ class ImageButton():
 
         # checks if mouse position is in range of the button
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-            config.button1.play()
+            button1.play()
             self.activate()
             return True
         else:
@@ -196,11 +197,11 @@ class ImageButton():
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
             self.drawBox()
         else:
-            config.SCREEN.blit(self.image, self.rect)
+            SCREEN.blit(self.image, self.rect)
 
     # displays the error image
     def draw(self):
-        config.SCREEN.blit(self.image, self.rect)
+        SCREEN.blit(self.image, self.rect)
     
     def activate(self):
         self.active = True
@@ -214,7 +215,7 @@ class ImageButton():
     
     # displays the text box with the error message
     def drawBox(self):
-        pygame.draw.rect(config.SCREEN, (255,255,255, 0), pygame.Rect(self.rect.left, self.rect.top, self.width, self.height), 2, 3)
+        pygame.draw.rect(SCREEN, (255,255,255, 0), pygame.Rect(self.rect.left, self.rect.top, self.width, self.height), 2, 3)
 
 class Text():
 
@@ -229,4 +230,4 @@ class Text():
     
     # displays text on screen
     def draw(self):
-        config.SCREEN.blit(self.text, (self.x, self.y))
+        SCREEN.blit(self.text, (self.x, self.y))

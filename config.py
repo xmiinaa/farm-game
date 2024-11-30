@@ -19,6 +19,7 @@ FONT_COLOUR = (2, 100, 106)
 ERROR_FONT_COLOUR = (255, 45, 45)
 GREY = (160, 160, 160)
 BLACK = (0, 0, 0)
+TEST = (0,0,70)
 
 # text font
 OCR_TITLE = pygame.font.Font('Resources/OCR.ttf', 48)
@@ -26,7 +27,7 @@ OCR_TEXT = pygame.font.Font('Resources/OCR.ttf', 38)
 OCR_ERROR = pygame.font.Font('Resources/OCR.ttf', 20)
 
 # images 
-MENU_BG = pygame.transform.scale(pygame.image.load('Resources/Images/menu-background.png'), (WIDTH, HEIGHT))
+MENU_BG = pygame.transform.scale(pygame.image.load('Resources/Images/Menu/menu-background.png'), (WIDTH, HEIGHT))
 
 BL_TILE = pygame.transform.rotate(pygame.image.load('Resources/Images/tiles/grass corner.png'), 0)
 TL_TILE = pygame.transform.rotate(pygame.image.load('Resources/Images/tiles/grass corner.png'), 270)
@@ -42,6 +43,10 @@ GM_TILE = pygame.image.load('Resources/Images/tiles/grass middle.png')
 
 TD_TILE = pygame.image.load('Resources/Images/tiles/tilled land.png') 
 WD_TILE = pygame.image.load('Resources/Images/tiles/tilled and watered land.png') 
+
+SLOT = pygame.image.load('Resources/Images/slot.png')
+CHOSEN_SLOT = pygame.image.load('Resources/Images/chosenSlot.png')
+
 
 # dictionary of tile images 
 TILE_IMAGES = { "TL": TL_TILE, "TR": TR_TILE, "BL": BL_TILE, "BR": BR_TILE, "TE": TE_TILE, "LE": LE_TILE, "RE": RE_TILE, "BE": BE_TILE, "GM": GM_TILE, "TD": TD_TILE, "WD": WD_TILE}

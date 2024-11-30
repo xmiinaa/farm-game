@@ -131,7 +131,7 @@ class Player(Character):
 
         self.stamina = 100
         self.inventory = [[] for _ in range(20)]
-        self.item = "waterCan"
+        self.item = "hoe"
         self.money = 0
 
         # stores what action the player is currently doing

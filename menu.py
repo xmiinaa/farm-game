@@ -210,9 +210,9 @@ def newgame1_loop():
 def newgame2_loop(saveChoice):
 
     # loads the required images and scales them to the correct dimensions needed to display on this screen
-    FEMALE_MC = pygame.transform.scale(pygame.image.load('Resources/Images/girlMC.png'), (96, 144))
-    MALE_MC = pygame.transform.scale(pygame.image.load('Resources/Images/maleMC.png'), (96, 144))
-    ERROR = pygame.transform.scale(pygame.image.load('Resources/Images/error-icon.png'), (55, 48))
+    FEMALE_MC = pygame.transform.scale(pygame.image.load('Resources/Images/Menu/girlMC.png'), (96, 144))
+    MALE_MC = pygame.transform.scale(pygame.image.load('Resources/Images/Menu/maleMC.png'), (96, 144))
+    ERROR = pygame.transform.scale(pygame.image.load('Resources/Images/Menu/error-icon.png'), (55, 48))
 
     running = True
 
@@ -465,7 +465,7 @@ def loadgame_loop():
     running = True
 
     # loads the error image 
-    ERROR = pygame.transform.scale(pygame.image.load('Resources/Images/error-icon.png'), (55, 48))
+    ERROR = pygame.transform.scale(pygame.image.load('Resources/Images/Menu/error-icon.png'), (55, 48))
 
     # save choice stores the save as an object and user choice stores the save as an integer
     saveChoice = -1

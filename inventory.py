@@ -1,6 +1,6 @@
 import pygame
 import sys
-import config
+from config import *
 
 # information about each type of item the player can have / interact with
 class ItemType:
@@ -29,6 +29,9 @@ class Inventory:
         self.slots = []
         for _ in range(self.capacity):
             self.slots.append(ItemSlot())
+    
+    def draw():
+        pygame.draw.rect(SCREEN, GREY, pygame.rect(299, 599, 721, 21), 3)
 
     # adds a certain amount of an item to the inentory, returning any excess items it couldn't add    
     def add(self, itemType, amount=1): # defeault amount is 1
