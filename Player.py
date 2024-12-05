@@ -1,6 +1,7 @@
 import pygame
 from spritesheet import SpriteSheet
 from config import *
+import inventory
 
 class Entity():
     def __init__(self, x, y, spritesheet):
@@ -130,8 +131,10 @@ class Player(Character):
         super().__init__(x, y, spritesheet, name)
 
         self.stamina = 100
-        self.inventory = [[] for _ in range(20)]
-        self.item = "hoe"
+         
+        # creates an object as the inventory
+        self.inventory = inventory.Inventory()
+        self.item = "waterCan"
         self.money = 0
 
         # stores what action the player is currently doing

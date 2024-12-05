@@ -16,6 +16,7 @@ class ItemSlot:
     def __init__(self):
         self.type = None
         self.amount = 0
+    
 
 # has a certain number of slots for items.
 class Inventory:
@@ -39,8 +40,6 @@ class Inventory:
             else:
                 SCREEN.blit(SLOT, ( (TILE_SIZE*slot)+108 , 620))
 
-
-
     def click(self, mousePos):
         for slot in range(1,11):
             if mousePos[0] in range((TILE_SIZE * slot)+108, (TILE_SIZE * slot)+180) and mousePos[1] in range(620, 692):
@@ -50,6 +49,9 @@ class Inventory:
         for slot in range(1,11):
             if mousePos[0] in range((TILE_SIZE * slot)+108, (TILE_SIZE * slot)+180) and mousePos[1] in range(620, 692):
                 SCREEN.blit(CHOSEN_SLOT, ((slot*TILE_SIZE)+108,620))
+    
+    def getItem(self):
+        return self.slots[self.chosenSlot]
 
     # adds a certain amount of an item to the inentory, returning any excess items it couldn't add    
     def add(self, itemType, amount=1): # defeault amount is 1
@@ -145,5 +147,5 @@ class Inventory:
 
     # returns true if all slots have an item, otherwise False
     def isFull(self):
-        return self.getFreeSlots() == 0#
+        return self.getFreeSlots() == 0
     

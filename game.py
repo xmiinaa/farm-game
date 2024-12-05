@@ -3,12 +3,11 @@ from config import *
 import sys
 import Player
 import tile
-import inventory
 
 # this would not be set in real game, but rather obtained from database or previous screen
-chosenCharacter = "male"
+chosenCharacter = "female"
 
-playerInventory = inventory.Inventory()
+#playerInventory = inventory.Inventory()
 
 def main():
     running = True
@@ -19,7 +18,7 @@ def main():
     if chosenCharacter == "male":
         player = Player.Player(540, 360, maleMCSpriteSheet, "Bob")
 
-    else: # creates female player
+    elif chosenCharacter == "female": # creates female player
         player = Player.Player(540, 360, femaleMCSpriteSheet, "Yue")
 
     # gets co-ordinates of camera
@@ -71,10 +70,8 @@ def main():
         else:
             player.drawIdle()
         
-        playerInventory.draw()
-        playerInventory.hover(mousePos)
-    
-
+        player.inventory.draw()
+        player.inventory.hover(mousePos)
     
         for event in pygame.event.get():
 
@@ -147,7 +144,8 @@ def main():
 
                 keyPressed = "mouse"
 
-                playerInventory.click(mousePos)
+                player.inventory.click(mousePos)
+                print(player.inventory.getItem())
 
                 if player.mouseOnPlayer(mousePos):
 
