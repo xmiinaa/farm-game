@@ -25,7 +25,7 @@ class Inventory:
     def __init__(self):
         self.capacity = 20
         self.taken_slots = 0
-        self.chosenSlot = 10
+        self.chosenSlot = 1
         
         # creates array of slots 
         self.slots = []
@@ -43,7 +43,10 @@ class Inventory:
     def click(self, mousePos):
         for slot in range(1,11):
             if mousePos[0] in range((TILE_SIZE * slot)+108, (TILE_SIZE * slot)+180) and mousePos[1] in range(620, 692):
-                self.chosenSlot = slot
+                self.changeSlot(slot)
+    
+    def changeSlot(self, newSlot):
+        self.chosenSlot = newSlot
     
     def hover(self, mousePos):
         for slot in range(1,11):

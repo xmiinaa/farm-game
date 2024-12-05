@@ -101,6 +101,27 @@ def main():
                 else:
                     player.changeSpeed(4)
 
+                if keys[pygame.K_1]:
+                    player.inventory.changeSlot(1)
+                if keys[pygame.K_2]:
+                    player.inventory.changeSlot(2)
+                if keys[pygame.K_3]:
+                    player.inventory.changeSlot(3)
+                if keys[pygame.K_4]:
+                    player.inventory.changeSlot(4)
+                if keys[pygame.K_5]:
+                    player.inventory.changeSlot(5)
+                if keys[pygame.K_6]:
+                    player.inventory.changeSlot(6)
+                if keys[pygame.K_7]:
+                    player.inventory.changeSlot(7)
+                if keys[pygame.K_8]:
+                    player.inventory.changeSlot(8)
+                if keys[pygame.K_9]:
+                    player.inventory.changeSlot(9)
+                if keys[pygame.K_0]:
+                    player.inventory.changeSlot(10)
+
                 if keys[pygame.K_x]:
 
                     keyPressed = "x"
