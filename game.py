@@ -3,11 +3,10 @@ from config import *
 import sys
 import Player
 import tile
+import inventory
 
 # this would not be set in real game, but rather obtained from database or previous screen
 chosenCharacter = "female"
-
-#playerInventory = inventory.Inventory()
 
 def main():
     running = True
@@ -28,6 +27,8 @@ def main():
     farmMap = tile.renderFarmMap()
 
     keyPressed = ""
+
+    player.inventory.string()
 
     while running:
 

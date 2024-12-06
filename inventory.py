@@ -1,6 +1,9 @@
 import pygame
 import sys
+import config
 from config import *
+
+pygame.init()
 
 # information about each type of item the player can have / interact with
 class ItemType:
@@ -16,7 +19,6 @@ class ItemSlot:
     def __init__(self):
         self.type = None
         self.amount = 0
-    
 
 # has a certain number of slots for items.
 class Inventory:
@@ -24,21 +26,27 @@ class Inventory:
     # creates new inventory
     def __init__(self):
         self.capacity = 20
-        self.taken_slots = 0
+        self.taken_slots = 2
         self.chosenSlot = 1
         
         # creates array of slots 
-        self.slots = []
-        for _ in range(self.capacity):
-            self.slots.append(ItemSlot())
+        self.slots = [ItemSlot() for _ in range(self.capacity)]
+        self.slots[0].type = hoe
+        self.slots[0].amount = 1
+        self.slots[1].type = waterCan 
+        self.slots[1].amount = 1
     
     def draw(self):
-        pygame.draw.rect(SCREEN, BLACK, pygame.Rect(178, 618, 724, 76), 2)
+        pygame.draw.rect(SCREEN, BLACK, pygame.Rect(178, 618, 724, 76), 2) # draws a black outline for inventory
         for slot in range(1,11):
+
             if slot == self.chosenSlot:
                 SCREEN.blit(CHOSEN_SLOT, ((self.chosenSlot*TILE_SIZE)+108,620))
             else:
                 SCREEN.blit(SLOT, ( (TILE_SIZE*slot)+108 , 620))
+            
+            if self.slots[slot].type is not None:
+                SCREEN.blit(self.slots[slot].type.icon, ((TILE_SIZE*slot)+144 , 656))
 
     def click(self, mousePos):
         for slot in range(1,11):
@@ -52,6 +60,9 @@ class Inventory:
         for slot in range(1,11):
             if mousePos[0] in range((TILE_SIZE * slot)+108, (TILE_SIZE * slot)+180) and mousePos[1] in range(620, 692):
                 SCREEN.blit(CHOSEN_SLOT, ((slot*TILE_SIZE)+108,620))
+            
+            if self.slots[slot].type is not None:
+                SCREEN.blit(self.slots[slot].type.icon, ((TILE_SIZE*slot)+144 , 656))
     
     def getItem(self):
         return self.slots[self.chosenSlot]
@@ -130,15 +141,16 @@ class Inventory:
         return -1 # returned if item is not found
     
     # creates a string version of the inventory to view
-    def __str__(self):
+    def string(self):
         s = ""
 
-        for i in self.slots:
-            if i.type is not None:
-                s += str(i.type.name) + ":" + str(i.amount) + "\t"
+        for i in range(self.capacity):
+            if self.slots[i].type is not None:
+                s += str(self.slots[i].type.name) + ":" + str(self.slots[i].amount) + "\t"
             else:
                 s += "Empty slot\t"
-            return s
+        print(s)
+        
         
     # returns how many slots are currently open
     def getFreeSlots(self):
@@ -152,3 +164,5 @@ class Inventory:
     def isFull(self):
         return self.getFreeSlots() == 0
     
+hoe = ItemType("hoe", HOE, 200, 100)
+waterCan = ItemType("waterCan", WATERCAN, 200, 100)
