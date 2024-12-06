@@ -127,29 +127,31 @@ def main():
 
                     keyPressed = "x"
 
-                    # ensures the player is not already engaged in another action
-                    if player.isActive() == False:
+                    # gets the item that the player is currently holding
+                    item = player.inventory.getItem()
+                
+                    if item != "None":
 
-                        player.resetAnimation() # sets animation back to 0
-                        player.activate()
+                        # ensures the player is not already engaged in another action
+                        if player.isActive() == False:
 
-                        # gets the item that the player is currently holding
-                        item = player.getItem()
-                    
-                        if item == "hoe":
+                            player.resetAnimation() # sets animation back to 0
+                            player.activate()
 
-                            # changes the attribute as appropiate
-                            player.changeAction("till")
-                        
-                        if item == "waterCan":
+                            if item == "hoe":
 
-                            # changes the attribute as appropiate
-                            player.changeAction("water")
-                        
-                        if item == "seed":
+                                # changes the attribute as appropiate
+                                player.changeAction("till")
+                            
+                            if item == "waterCan":
 
-                            # changes the attribute as appropiate
-                            player.changeAction("planting")
+                                # changes the attribute as appropiate
+                                player.changeAction("water")
+                            
+                            if item == "seed":
+
+                                # changes the attribute as appropiate
+                                player.changeAction("planting")
 
 
             # checks if player is not pressing down a key
@@ -167,7 +169,6 @@ def main():
                 keyPressed = "mouse"
 
                 player.inventory.click(mousePos)
-                print(player.inventory.getItem())
 
                 if player.mouseOnPlayer(mousePos):
 

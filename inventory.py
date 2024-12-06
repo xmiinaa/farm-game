@@ -1,6 +1,5 @@
 import pygame
 import sys
-import config
 from config import *
 
 pygame.init()
@@ -25,47 +24,66 @@ class Inventory:
 
     # creates new inventory
     def __init__(self):
-        self.capacity = 20
+        self.capacity = 20 # there can only be 20 slots
         self.taken_slots = 2
         self.chosenSlot = 1
         
         # creates array of slots 
         self.slots = [ItemSlot() for _ in range(self.capacity)]
+
+        # for now i am initiating the tools here though it may change
         self.slots[0].type = hoe
         self.slots[0].amount = 1
         self.slots[1].type = waterCan 
         self.slots[1].amount = 1
     
+    # displays the inventory main 10 slots
     def draw(self):
         pygame.draw.rect(SCREEN, BLACK, pygame.Rect(178, 618, 724, 76), 2) # draws a black outline for inventory
+        
+        # loop to go through all 10 slots
         for slot in range(1,11):
 
+            # checks to see if the slot is the one currently selected
             if slot == self.chosenSlot:
-                SCREEN.blit(CHOSEN_SLOT, ((self.chosenSlot*TILE_SIZE)+108,620))
+                SCREEN.blit(CHOSEN_SLOT, ((self.chosenSlot*TILE_SIZE)+108,620)) # displays different image
             else:
                 SCREEN.blit(SLOT, ( (TILE_SIZE*slot)+108 , 620))
             
-            if self.slots[slot].type is not None:
-                SCREEN.blit(self.slots[slot].type.icon, ((TILE_SIZE*slot)+144 , 656))
+            # checks to see if the slot has an item
+            if self.slots[slot-1].type is not None:
+                SCREEN.blit(self.slots[slot-1].type.icon, ((TILE_SIZE*(slot-1)+195 , 640))) # displays item
 
+    # changes currently chosen slot if user clicks correctly
     def click(self, mousePos):
         for slot in range(1,11):
+
+            # checks if mouse position is in range of slot
             if mousePos[0] in range((TILE_SIZE * slot)+108, (TILE_SIZE * slot)+180) and mousePos[1] in range(620, 692):
                 self.changeSlot(slot)
     
+    # changes the current slot / item held
     def changeSlot(self, newSlot):
         self.chosenSlot = newSlot
     
+    # changes slot image when mouse is hovering over it to let user aware
     def hover(self, mousePos):
         for slot in range(1,11):
-            if mousePos[0] in range((TILE_SIZE * slot)+108, (TILE_SIZE * slot)+180) and mousePos[1] in range(620, 692):
-                SCREEN.blit(CHOSEN_SLOT, ((slot*TILE_SIZE)+108,620))
             
+            # checks if mouse position is in range of slot
+            if mousePos[0] in range((TILE_SIZE * slot)+108, (TILE_SIZE * slot)+180) and mousePos[1] in range(620, 692):
+                SCREEN.blit(CHOSEN_SLOT, ((slot*TILE_SIZE)+108,620)) # displays different slot
+            
+            # checks to see if the slot has an item
             if self.slots[slot].type is not None:
-                SCREEN.blit(self.slots[slot].type.icon, ((TILE_SIZE*slot)+144 , 656))
+                SCREEN.blit(self.slots[slot-1].type.icon, ((TILE_SIZE*(slot-1))+195 , 640)) # displays item
     
+    # returns the item name that the player is currently holding
     def getItem(self):
-        return self.slots[self.chosenSlot]
+        if self.slots[self.chosenSlot-1].type == None:
+            return "none"
+        else: 
+            return self.slots[self.chosenSlot-1].type.name
 
     # adds a certain amount of an item to the inentory, returning any excess items it couldn't add    
     def add(self, itemType, amount=1): # defeault amount is 1
@@ -150,7 +168,6 @@ class Inventory:
             else:
                 s += "Empty slot\t"
         print(s)
-        
         
     # returns how many slots are currently open
     def getFreeSlots(self):

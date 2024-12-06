@@ -76,7 +76,7 @@ shaylaSpriteSheet = pygame.image.load("Resources/Images/sprites/shayla-spriteshe
 wesleySpriteSheet = pygame.image.load("Resources/Images/sprites/wesley-spritesheet.png").convert_alpha()
 
 HOE = pygame.transform.scale(pygame.image.load("Resources/Images/tools/Hoe.png").convert_alpha(), (36,36))
-WATERCAN = pygame.transform.scale(pygame.image.load("Resources/Images/tools/Watering Can.png").convert_alpha(), (36,36))
+WATERCAN = pygame.transform.scale(pygame.image.load("Resources/Images/tools/Watering Can.png").convert_alpha(), (46,34))
 
 # needed when starting up program
 def initialise():
