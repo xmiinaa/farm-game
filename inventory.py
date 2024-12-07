@@ -36,6 +36,8 @@ class Inventory:
         self.slots[0].amount = 1
         self.slots[1].type = waterCan 
         self.slots[1].amount = 1
+        self.slots[2].type = scythe 
+        self.slots[2].amount = 1
     
     # displays the inventory main 10 slots
     def draw(self):
@@ -81,7 +83,7 @@ class Inventory:
     # returns the item name that the player is currently holding
     def getItem(self):
         if self.slots[self.chosenSlot-1].type == None:
-            return "none"
+            return "None"
         else: 
             return self.slots[self.chosenSlot-1].type.name
 
@@ -183,3 +185,4 @@ class Inventory:
     
 hoe = ItemType("hoe", HOE, 200, 100)
 waterCan = ItemType("waterCan", WATERCAN, 200, 100)
+scythe = ItemType("scythe", SCYTHE, 200, 100)

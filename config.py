@@ -40,6 +40,7 @@ LE_TILE = pygame.transform.rotate(pygame.image.load('Resources/Images/tiles/gras
 RE_TILE = pygame.transform.rotate(pygame.image.load('Resources/Images/tiles/grass edge.png'), 180) 
 
 GM_TILE = pygame.image.load('Resources/Images/tiles/grass middle.png') 
+DE_TILE = pygame.image.load('Resources/Images/tiles/grass middle.png') 
 
 TD_TILE = pygame.image.load('Resources/Images/tiles/tilled land.png') 
 WD_TILE = pygame.image.load('Resources/Images/tiles/tilled and watered land.png') 
@@ -49,7 +50,7 @@ CHOSEN_SLOT = pygame.image.load('Resources/Images/chosenSlot.png')
 
 
 # dictionary of tile images 
-TILE_IMAGES = { "TL": TL_TILE, "TR": TR_TILE, "BL": BL_TILE, "BR": BR_TILE, "TE": TE_TILE, "LE": LE_TILE, "RE": RE_TILE, "BE": BE_TILE, "GM": GM_TILE, "TD": TD_TILE, "WD": WD_TILE}
+TILE_IMAGES = { "TL": TL_TILE, "TR": TR_TILE, "BL": BL_TILE, "BR": BR_TILE, "TE": TE_TILE, "LE": LE_TILE, "RE": RE_TILE, "BE": BE_TILE, "GM": GM_TILE, "DE": DE_TILE, "TD": TD_TILE, "WD": WD_TILE}
 
 TILE_SIZE = 72
 
@@ -77,6 +78,7 @@ wesleySpriteSheet = pygame.image.load("Resources/Images/sprites/wesley-spriteshe
 
 HOE = pygame.transform.scale(pygame.image.load("Resources/Images/tools/Hoe.png").convert_alpha(), (36,36))
 WATERCAN = pygame.transform.scale(pygame.image.load("Resources/Images/tools/Watering Can.png").convert_alpha(), (46,34))
+SCYTHE = pygame.transform.scale(pygame.image.load("Resources/Images/tools/Scythe.png").convert_alpha(), (36,36))
 
 # needed when starting up program
 def initialise():

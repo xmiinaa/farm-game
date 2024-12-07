@@ -3,7 +3,6 @@ from config import *
 import sys
 import Player
 import tile
-import inventory
 
 # this would not be set in real game, but rather obtained from database or previous screen
 chosenCharacter = "female"
@@ -28,7 +27,7 @@ def main():
 
     keyPressed = ""
 
-    player.inventory.string()
+    #player.inventory.string()
 
     while running:
 
@@ -57,6 +56,11 @@ def main():
     
                     # tills the farm tile
                     tile.till(player, mousePos, keyPressed)
+                
+                elif player.getAction() == "untill":
+
+                    # untills the farm tile
+                    tile.untill(player, mousePos, keyPressed)
                 
                 elif player.getAction() == "water":
 
@@ -130,7 +134,7 @@ def main():
                     # gets the item that the player is currently holding
                     item = player.inventory.getItem()
                 
-                    if item != "None":
+                    if item == "hoe" or item == "scythe" or item == "waterCan" or item == "seed":
 
                         # ensures the player is not already engaged in another action
                         if player.isActive() == False:
@@ -143,6 +147,11 @@ def main():
                                 # changes the attribute as appropiate
                                 player.changeAction("till")
                             
+                            if item == "scythe":
+
+                                # changes the attribute as appropiate
+                                player.changeAction("untill")
+                            
                             if item == "waterCan":
 
                                 # changes the attribute as appropiate
@@ -152,8 +161,8 @@ def main():
 
                                 # changes the attribute as appropiate
                                 player.changeAction("planting")
-
-
+                    
+                
             # checks if player is not pressing down a key
             if event.type == pygame.KEYUP:
                 
@@ -172,29 +181,36 @@ def main():
 
                 if player.mouseOnPlayer(mousePos):
 
-                    # ensures the player is not already engaged in another action
-                    if player.isActive() == False:
+                    # gets the item that the player is currently holding
+                    item = player.inventory.getItem()
+                
+                    if item != "None":
 
-                        player.resetAnimation() # sets animation back to 0
-                        player.activate()
+                        # ensures the player is not already engaged in another action
+                        if player.isActive() == False:
 
-                        # gets the item that the player is currently holding
-                        item = player.getItem()
-                    
-                        if item == "hoe":
+                            player.resetAnimation() # sets animation back to 0
+                            player.activate()
 
-                            # changes the attribute as appropiate
-                            player.changeAction("till")
-                        
-                        if item == "waterCan":
+                            if item == "hoe":
 
-                            # changes the attribute as appropiate
-                            player.changeAction("water")
-                        
-                        if item == "seed":
+                                # changes the attribute as appropiate
+                                player.changeAction("till")
+                            
+                            if item == "scythe":
 
-                            # changes the attribute as appropiate
-                            player.changeAction("planting")
+                                # changes the attribute as appropiate
+                                player.changeAction("untill")
+                            
+                            if item == "waterCan":
+
+                                # changes the attribute as appropiate
+                                player.changeAction("water")
+                            
+                            if item == "seed":
+
+                                # changes the attribute as appropiate
+                                player.changeAction("planting")
                     
             # handles the exit of the game
             if event.type == pygame.QUIT:

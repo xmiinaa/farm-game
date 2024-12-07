@@ -229,7 +229,7 @@ class Player(Character):
     # animates the player tilling or watering
     def animateTillWater(self):
         
-        if (self.action == "till" or self.action == "water") and not self.animationFinished:
+        if (self.action == "till" or self.action == "water" or self.action == "untill") and not self.animationFinished:
 
             # update animation
             currentTime = pygame.time.get_ticks()
@@ -254,7 +254,6 @@ class Player(Character):
             # show frame image
             SCREEN.blit(self.tillWaterList[self.direction][self.frame], (self.rect.x,self.rect.y))
     
-        
     # animates the player tilling or watering
     def animatePlanting(self):
         
