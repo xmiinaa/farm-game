@@ -25,7 +25,7 @@ class Inventory:
     # creates new inventory
     def __init__(self):
         self.capacity = 20 # there can only be 20 slots
-        self.taken_slots = 2
+        self.taken_slots = 3
         self.chosenSlot = 1
         
         # creates array of slots 
@@ -36,7 +36,7 @@ class Inventory:
         self.slots[0].amount = 1
         self.slots[1].type = waterCan 
         self.slots[1].amount = 1
-        self.slots[2].type = scythe 
+        #self.slots[2].type = scythe 
         self.slots[2].amount = 1
     
     # displays the inventory main 10 slots

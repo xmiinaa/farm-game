@@ -106,6 +106,7 @@ def main():
                 else:
                     player.changeSpeed(4)
 
+                # checks to see if the user has pressed keys 1 to 0, changing the inventory slot if they have to the corresponding one
                 if keys[pygame.K_1]:
                     player.inventory.changeSlot(1)
                 if keys[pygame.K_2]:
