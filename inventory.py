@@ -1,6 +1,7 @@
 import pygame
 import sys
 from config import *
+from spritesheet import *
 
 pygame.init()
 
@@ -15,29 +16,37 @@ class ItemType:
 
 # holds a quantity of an item
 class ItemSlot:
-    def __init__(self):
+    def __init__(self, num):
         self.type = None
         self.amount = 0
+        
+        if num < 10:
+            self.rect = pygame.Rect(((num*TILE_SIZE) + 108, 620), (72, 72))
+        #elif num in range(10, )
+        else:
+            self.rect = pygame.Rect(((num*TILE_SIZE) + 108, 320), (72, 72))
 
 # has a certain number of slots for items.
 class Inventory:
 
     # creates new inventory
     def __init__(self):
-        self.capacity = 20 # there can only be 20 slots
-        self.taken_slots = 3
+        self.capacity = 40 # there can only be 40 slots
+        self.taken_slots = 4
         self.chosenSlot = 1
         
         # creates array of slots 
-        self.slots = [ItemSlot() for _ in range(self.capacity)]
+        self.slots = [ItemSlot(x) for x in range(self.capacity)]
 
         # for now i am initiating the tools here though it may change
         self.slots[0].type = hoe
         self.slots[0].amount = 1
         self.slots[1].type = waterCan 
         self.slots[1].amount = 1
-        #self.slots[2].type = scythe 
+        self.slots[2].type = scythe 
         self.slots[2].amount = 1
+        self.slots[3].type = potatoSeed
+        self.slots[3].amount = 15
     
     # displays the inventory main 10 slots
     def draw(self):
@@ -55,6 +64,9 @@ class Inventory:
             # checks to see if the slot has an item
             if self.slots[slot-1].type is not None:
                 SCREEN.blit(self.slots[slot-1].type.icon, ((TILE_SIZE*(slot-1)+195 , 640))) # displays item
+                if self.slots[slot-1].amount >1:
+                    text = OCR_INVENTORY.render( str(self.slots[slot-1].amount), True, WHITE)
+                    SCREEN.blit(text, ((TILE_SIZE*(slot-1)+186 , 624)))
 
     # changes currently chosen slot if user clicks correctly
     def click(self, mousePos):
@@ -79,6 +91,10 @@ class Inventory:
             # checks to see if the slot has an item
             if self.slots[slot].type is not None:
                 SCREEN.blit(self.slots[slot-1].type.icon, ((TILE_SIZE*(slot-1))+195 , 640)) # displays item
+
+                if self.slots[slot-1].amount >1:
+                    text = OCR_INVENTORY.render( str(self.slots[slot-1].amount), True, WHITE)
+                    SCREEN.blit(text, ((TILE_SIZE*(slot-1)+186 , 624)))
     
     # returns the item name that the player is currently holding
     def getItem(self):
@@ -186,3 +202,19 @@ class Inventory:
 hoe = ItemType("hoe", HOE, 200, 100)
 waterCan = ItemType("waterCan", WATERCAN, 200, 100)
 scythe = ItemType("scythe", SCYTHE, 200, 100)
+
+"""
+potato = ItemType("potato", HOE, 200, 100)
+turnip = ItemType("turnip", HOE, 200, 100)
+onion = ItemType("onion", HOE, 200, 100)
+radish = ItemType("radish", HOE, 200, 100)
+carrot = ItemType("carrot", HOE, 200, 100)
+spinach = ItemType("spinach", HOE, 200, 100)
+"""
+
+potatoObject = SpriteSheet(POTATO_SHEET)
+potatoList = []
+for x in range(5):
+    potatoList.append(potatoObject.getImage(x, 1, 16, 16, 3)) 
+
+potatoSeed = ItemType("potato seed", potatoList[0], 300, 200)
