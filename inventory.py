@@ -19,12 +19,23 @@ class ItemSlot:
     def __init__(self, num):
         self.type = None
         self.amount = 0
+        self.width = 72
+        self.height = 72
         
-        if num < 10:
-            self.rect = pygame.Rect(((num*TILE_SIZE) + 108, 620), (72, 72))
-        #elif num in range(10, )
-        else:
-            self.rect = pygame.Rect(((num*TILE_SIZE) + 108, 320), (72, 72))
+        if num <= 10:
+            self.rect = pygame.Rect(((num*TILE_SIZE) + 108, 620), (self.width, self.height))
+        """
+        elif 10 < num <= 16:
+            self.rect = pygame.Rect( ( ( (num-11)*TILE_SIZE) + 108, 250), (self.width, self.height)) # how it is for now but will update and change when creating rest of inventory
+        elif 17 < num <= 22:
+            self.rect = pygame.Rect((((num-17)*TILE_SIZE) + 108, 322), (self.width, self.height))
+        elif 23 < num <= 28:
+            self.rect = pygame.Rect((((num-23)*TILE_SIZE) + 108, 394), (self.width, self.height))
+        elif 29 < num <= 34:
+            self.rect = pygame.Rect((((num-29)*TILE_SIZE) + 108, 466), (self.width, self.height))
+        elif 35 < num <= 40:
+            self.rect = pygame.Rect((((num-35)*TILE_SIZE) + 108, 538), (self.width, self.height))
+        """
 
 # has a certain number of slots for items.
 class Inventory:
@@ -57,23 +68,26 @@ class Inventory:
 
             # checks to see if the slot is the one currently selected
             if slot == self.chosenSlot:
-                SCREEN.blit(CHOSEN_SLOT, ((self.chosenSlot*TILE_SIZE)+108,620)) # displays different image
+                SCREEN.blit(CHOSEN_SLOT, (self.slots[self.chosenSlot].rect.x, self.slots[self.chosenSlot].rect.y) ) # displays different image
             else:
-                SCREEN.blit(SLOT, ( (TILE_SIZE*slot)+108 , 620))
+                SCREEN.blit(SLOT, (self.slots[slot].rect.x, self.slots[slot].rect.y) ) # displays normal slot
             
             # checks to see if the slot has an item
             if self.slots[slot-1].type is not None:
-                SCREEN.blit(self.slots[slot-1].type.icon, ((TILE_SIZE*(slot-1)+195 , 640))) # displays item
-                if self.slots[slot-1].amount >1:
-                    text = OCR_INVENTORY.render( str(self.slots[slot-1].amount), True, WHITE)
-                    SCREEN.blit(text, ((TILE_SIZE*(slot-1)+186 , 624)))
+
+                SCREEN.blit(self.slots[slot-1].type.icon, ((self.slots[slot].rect.centerx - self.slots[slot-1].type.icon.get_width() / 2, self.slots[slot].rect.centery - self.slots[slot-1].type.icon.get_height() / 2))) # displays item
+
+
+                if self.slots[slot-1].amount > 1:
+                    text = OCR_INVENTORY.render( str(self.slots[slot-1].amount), True, WHITE) # creates text version of quantity
+                    SCREEN.blit(text, (self.slots[slot].rect.x + 5, self.slots[slot].rect.y + 4)) # displays text in top left corner
 
     # changes currently chosen slot if user clicks correctly
     def click(self, mousePos):
         for slot in range(1,11):
 
             # checks if mouse position is in range of slot
-            if mousePos[0] in range((TILE_SIZE * slot)+108, (TILE_SIZE * slot)+180) and mousePos[1] in range(620, 692):
+            if mousePos[0] in range(self.slots[slot].rect.x, self.slots[slot].rect.x + self.slots[slot].width) and mousePos[1] in range(self.slots[slot].rect.y, self.slots[slot].rect.y + self.slots[slot].height):
                 self.changeSlot(slot)
     
     # changes the current slot / item held
@@ -85,16 +99,17 @@ class Inventory:
         for slot in range(1,11):
             
             # checks if mouse position is in range of slot
-            if mousePos[0] in range((TILE_SIZE * slot)+108, (TILE_SIZE * slot)+180) and mousePos[1] in range(620, 692):
-                SCREEN.blit(CHOSEN_SLOT, ((slot*TILE_SIZE)+108,620)) # displays different slot
+            if mousePos[0] in range(self.slots[slot].rect.x, self.slots[slot].rect.x + self.slots[slot].width) and mousePos[1] in range(self.slots[slot].rect.y, self.slots[slot].rect.y + self.slots[slot].height):
+                SCREEN.blit(CHOSEN_SLOT, (self.slots[slot].rect.x, self.slots[slot].rect.y)) # displays different slot
             
             # checks to see if the slot has an item
             if self.slots[slot].type is not None:
-                SCREEN.blit(self.slots[slot-1].type.icon, ((TILE_SIZE*(slot-1))+195 , 640)) # displays item
 
-                if self.slots[slot-1].amount >1:
-                    text = OCR_INVENTORY.render( str(self.slots[slot-1].amount), True, WHITE)
-                    SCREEN.blit(text, ((TILE_SIZE*(slot-1)+186 , 624)))
+                SCREEN.blit(self.slots[slot-1].type.icon, ((self.slots[slot].rect.centerx - self.slots[slot-1].type.icon.get_width() / 2, self.slots[slot].rect.centery - self.slots[slot-1].type.icon.get_height() / 2))) # displays item
+
+                if self.slots[slot-1].amount > 1:
+                    text = OCR_INVENTORY.render( str(self.slots[slot-1].amount), True, WHITE) # creates text version of quantity
+                    SCREEN.blit(text, (self.slots[slot].rect.x + 5, self.slots[slot].rect.y + 4)) # displays text in top left corner
     
     # returns the item name that the player is currently holding
     def getItem(self):
@@ -217,4 +232,5 @@ potatoList = []
 for x in range(5):
     potatoList.append(potatoObject.getImage(x, 1, 16, 16, 3)) 
 
-potatoSeed = ItemType("potato seed", potatoList[0], 300, 200)
+potatoSeed = ItemType("potato seed", potatoObject.getImage(0, 1, 16, 16, 3), 300, 200)
+potato = ItemType("potato", potatoObject.getImage(1, 1, 16, 16, 3), 500, 400)
