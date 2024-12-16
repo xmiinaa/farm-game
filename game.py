@@ -233,13 +233,13 @@ def main():
 
                     mouseDrag = False
 
-                    if player.inventory.isInventoryOpen() and slotItem != False:
+                    if player.inventory.isInventoryOpen() and slotItem+1 != False:
                         player.inventory.swapItems(slotItem, mousePos)
                 
             if event.type == pygame.MOUSEMOTION:  
                 if mouseDrag:
                     if player.inventory.isInventoryOpen():
-                            if slotItem != None:
+                            if slotItem+1 != None:
                                 player.inventory.dragDropItem(mousePos, slotItem)  
 
             # handles the exit of the game

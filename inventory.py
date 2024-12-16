@@ -186,7 +186,7 @@ class Inventory:
             if mousePos[0] in range(self.slots[slot].rect.x, self.slots[slot].rect.x + self.slots[slot].width) and mousePos[1] in range(self.slots[slot].rect.y, self.slots[slot].rect.y + self.slots[slot].height):
                 swapSlot = slot
         
-        if swapSlot != None and changeSlot != None:
+        if swapSlot != None and changeSlot != None and self.slots[changeSlot].type != None:
             
             tempType = self.slots[changeSlot].type
             tempAmount = self.slots[changeSlot].amount
