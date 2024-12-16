@@ -26,6 +26,7 @@ def main():
     farmMap = tile.renderFarmMap()
 
     keyPressed = ""
+    mouseDrag = False
 
     #player.inventory.string()
 
@@ -177,45 +178,64 @@ def main():
                     player.setMoving(False)
     
             # checks if he player has clicked on the mouse
-            if pygame.mouse.get_pressed()[0]:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
 
-                keyPressed = "mouse"
+                    keyPressed = "mouse"
 
-                player.inventory.click(mousePos)
+                    player.inventory.click(mousePos)
 
-                if player.mouseOnPlayer(mousePos):
+                    mouseDrag = True
 
-                    # gets the item that the player is currently holding
-                    item = player.inventory.getItem()
-                
-                    if item != "None":
+                    """
+                    if player.inventory.isInventoryOpen():
+                        player.inventory.dragItem(mousePos)
+                    """
 
-                        # ensures the player is not already engaged in another action
-                        if player.isActive() == False:
+                    if player.mouseOnPlayer(mousePos):
 
-                            player.resetAnimation() # sets animation back to 0
-                            player.activate()
-
-                            if item == "hoe":
-
-                                # changes the attribute as appropiate
-                                player.changeAction("till")
-                            
-                            if item == "scythe":
-
-                                # changes the attribute as appropiate
-                                player.changeAction("untill")
-                            
-                            if item == "waterCan":
-
-                                # changes the attribute as appropiate
-                                player.changeAction("water")
-                            
-                            if item == "seed":
-
-                                # changes the attribute as appropiate
-                                player.changeAction("planting")
+                        # gets the item that the player is currently holding
+                        item = player.inventory.getItem()
                     
+                        if item != "None":
+
+                            # ensures the player is not already engaged in another action
+                            if player.isActive() == False:
+
+                                player.resetAnimation() # sets animation back to 0
+                                player.activate()
+
+                                if item == "hoe":
+
+                                    # changes the attribute as appropiate
+                                    player.changeAction("till")
+                                
+                                if item == "scythe":
+
+                                    # changes the attribute as appropiate
+                                    player.changeAction("untill")
+                                
+                                if item == "waterCan":
+
+                                    # changes the attribute as appropiate
+                                    player.changeAction("water")
+                                
+                                if item == "seed":
+
+                                    # changes the attribute as appropiate
+                                    player.changeAction("planting")
+                    
+            if event.type == pygame.MOUSEBUTTONUP:
+                if event.button == 1:
+
+                    mouseDrag = False
+                
+            if event.type == pygame.MOUSEMOTION:  
+                if mouseDrag:
+                    if player.inventory.isInventoryOpen():
+                            print("yabf")
+                            #player.inventory.dragItem(mousePos)  
+
             # handles the exit of the game
             if event.type == pygame.QUIT:
                 running  = False
