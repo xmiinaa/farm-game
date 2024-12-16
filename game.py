@@ -233,8 +233,7 @@ def main():
             if event.type == pygame.MOUSEMOTION:  
                 if mouseDrag:
                     if player.inventory.isInventoryOpen():
-                            print("yabf")
-                            #player.inventory.dragItem(mousePos)  
+                            player.inventory.dragDropItem(mousePos)  
 
             # handles the exit of the game
             if event.type == pygame.QUIT:
