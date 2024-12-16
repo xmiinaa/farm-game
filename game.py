@@ -82,8 +82,6 @@ def main():
 
         if slotItem != None and mouseDrag: # checks to see if the player's mouse is holding an item
             player.inventory.displayItem(mousePos, slotItem) # displays item relative to player's mouse
-
-        print(mouseDrag)
     
         for event in pygame.event.get():
 
@@ -234,11 +232,15 @@ def main():
                 if event.button == 1:
 
                     mouseDrag = False
+
+                    if player.inventory.isInventoryOpen() and slotItem != False:
+                        player.inventory.swapItems(slotItem, mousePos)
                 
             if event.type == pygame.MOUSEMOTION:  
                 if mouseDrag:
                     if player.inventory.isInventoryOpen():
-                            player.inventory.dragDropItem(mousePos, slotItem)  
+                            if slotItem != None:
+                                player.inventory.dragDropItem(mousePos, slotItem)  
 
             # handles the exit of the game
             if event.type == pygame.QUIT:

@@ -167,7 +167,8 @@ class Inventory:
         return self.inventoryOpen
 
     def dragDropItem(self, mousePos, slot):
-        SCREEN.blit(self.slots[slot].type.icon, (mousePos[0] - self.slots[slot].type.icon.get_width() // 2, mousePos[1] - self.slots[slot].type.icon.get_height() // 2 + 2))
+        if self.slots[slot].type != None:
+            SCREEN.blit(self.slots[slot].type.icon, (mousePos[0] - self.slots[slot].type.icon.get_width() // 2, mousePos[1] - self.slots[slot].type.icon.get_height() // 2 + 2))
     
     def getDragItem(self, mousePos):
         slot = None
@@ -178,6 +179,25 @@ class Inventory:
     def displayItem(self, mousePos, slot):
         if self.slots[slot].type != None:
             SCREEN.blit(self.slots[slot].type.icon, (mousePos[0] - self.slots[slot].type.icon.get_width() // 2, mousePos[1] - self.slots[slot].type.icon.get_height() // 2 + 2))
+
+    def swapItems(self, changeSlot, mousePos):
+        swapSlot = None
+        for slot in range(40):
+            if mousePos[0] in range(self.slots[slot].rect.x, self.slots[slot].rect.x + self.slots[slot].width) and mousePos[1] in range(self.slots[slot].rect.y, self.slots[slot].rect.y + self.slots[slot].height):
+                swapSlot = slot
+        
+        if swapSlot != None and changeSlot != None:
+            
+            tempType = self.slots[changeSlot].type
+            tempAmount = self.slots[changeSlot].amount
+    
+            self.slots[changeSlot].type = self.slots[swapSlot].type
+            self.slots[changeSlot].amount = self.slots[swapSlot].amount
+            
+            self.slots[swapSlot].type = tempType
+            self.slots[swapSlot].amount = tempAmount
+
+
 
     # adds a certain amount of an item to the inentory, returning any excess items it couldn't add    
     def add(self, itemType, amount=1): # defeault amount is 1
