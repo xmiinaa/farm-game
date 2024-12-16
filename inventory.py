@@ -21,21 +21,22 @@ class ItemSlot:
         self.amount = 0
         self.width = 72
         self.height = 72
+
+        self.rect = pygame.Rect(0, 0, self.width, self.height)
         
-        if num <= 10:
-            self.rect = pygame.Rect(((num*TILE_SIZE) + 108, 620), (self.width, self.height))
-        """
-        elif 10 < num <= 16:
-            self.rect = pygame.Rect( ( ( (num-11)*TILE_SIZE) + 108, 250), (self.width, self.height)) # how it is for now but will update and change when creating rest of inventory
-        elif 17 < num <= 22:
-            self.rect = pygame.Rect((((num-17)*TILE_SIZE) + 108, 322), (self.width, self.height))
-        elif 23 < num <= 28:
-            self.rect = pygame.Rect((((num-23)*TILE_SIZE) + 108, 394), (self.width, self.height))
-        elif 29 < num <= 34:
-            self.rect = pygame.Rect((((num-29)*TILE_SIZE) + 108, 466), (self.width, self.height))
-        elif 35 < num <= 40:
-            self.rect = pygame.Rect((((num-35)*TILE_SIZE) + 108, 538), (self.width, self.height))
-        """
+        if num < 10:
+            self.rect = pygame.Rect(((num*TILE_SIZE) + 180, 620), (self.width, self.height))
+        
+        elif 10 <= num < 16:
+            self.rect = pygame.Rect( ( ( (num-7)*TILE_SIZE) + 108, 250), (self.width, self.height)) # how it is for now but will update and change when creating rest of inventory
+        elif 16 <= num < 22:
+            self.rect = pygame.Rect((((num-13)*TILE_SIZE) + 108, 322), (self.width, self.height))
+        elif 22 <= num < 28:
+            self.rect = pygame.Rect((((num-19)*TILE_SIZE) + 108, 394), (self.width, self.height))
+        elif 28 <= num < 34:
+            self.rect = pygame.Rect((((num-25)*TILE_SIZE) + 108, 466), (self.width, self.height))
+        elif 34 <= num <= 40:
+            self.rect = pygame.Rect((((num-31)*TILE_SIZE) + 108, 538), (self.width, self.height))
 
 # has a certain number of slots for items.
 class Inventory:
@@ -49,7 +50,9 @@ class Inventory:
         # creates array of slots 
         self.slots = [ItemSlot(x) for x in range(self.capacity)]
 
-        # for now i am initiating the tools here though it may change
+        self.inventoryOpen = False
+
+        # for now i am initiating the items here though it may change
         self.slots[0].type = hoe
         self.slots[0].amount = 1
         self.slots[1].type = waterCan 
@@ -58,13 +61,16 @@ class Inventory:
         self.slots[2].amount = 1
         self.slots[3].type = potatoSeed
         self.slots[3].amount = 15
+
+        self.slots[24].type = hoe
+        self.slots[24].amount = 13
     
     # displays the inventory main 10 slots
     def draw(self):
         pygame.draw.rect(SCREEN, BLACK, pygame.Rect(178, 618, 724, 76), 2) # draws a black outline for inventory
         
         # loop to go through all 10 slots
-        for slot in range(1,11):
+        for slot in range(0,10):
 
             # checks to see if the slot is the one currently selected
             if slot == self.chosenSlot:
@@ -73,18 +79,48 @@ class Inventory:
                 SCREEN.blit(SLOT, (self.slots[slot].rect.x, self.slots[slot].rect.y) ) # displays normal slot
             
             # checks to see if the slot has an item
-            if self.slots[slot-1].type is not None:
+            if self.slots[slot].type is not None:
 
-                SCREEN.blit(self.slots[slot-1].type.icon, ((self.slots[slot].rect.centerx - self.slots[slot-1].type.icon.get_width() / 2, self.slots[slot].rect.centery - self.slots[slot-1].type.icon.get_height() / 2))) # displays item
+                SCREEN.blit(self.slots[slot].type.icon, ((self.slots[slot].rect.centerx - self.slots[slot].type.icon.get_width() / 2, self.slots[slot].rect.centery - self.slots[slot].type.icon.get_height() / 2 + 2))) # displays item
 
 
-                if self.slots[slot-1].amount > 1:
-                    text = OCR_INVENTORY.render( str(self.slots[slot-1].amount), True, WHITE) # creates text version of quantity
+                if self.slots[slot].amount > 1:
+                    text = OCR_INVENTORY.render( str(self.slots[slot].amount), True, WHITE) # creates text version of quantity
                     SCREEN.blit(text, (self.slots[slot].rect.x + 5, self.slots[slot].rect.y + 4)) # displays text in top left corner
+        
+        if self.inventoryOpen:
+
+            pygame.draw.rect(SCREEN, BLACK, pygame.Rect(322, 248, 436, 364), 2)
+
+            # loop to go through all 10 slots
+            for slot in range(11,41):
+                slot -= 1
+
+                # checks to see if the slot is the one currently selected
+                if slot == self.chosenSlot:
+                    SCREEN.blit(CHOSEN_SLOT, (self.slots[self.chosenSlot].rect.x, self.slots[self.chosenSlot].rect.y) ) # displays different image
+                else:
+                    SCREEN.blit(SLOT, (self.slots[slot].rect.x, self.slots[slot].rect.y) ) # displays normal slot
+                
+                # checks to see if the slot has an item
+                if self.slots[slot].type is not None:
+
+                    SCREEN.blit(self.slots[slot].type.icon, ((self.slots[slot].rect.centerx - self.slots[slot].type.icon.get_width() / 2, self.slots[slot].rect.centery - self.slots[slot].type.icon.get_height() / 2 + 2))) # displays item
+
+
+                    if self.slots[slot].amount > 1:
+                        text = OCR_INVENTORY.render( str(self.slots[slot].amount), True, WHITE) # creates text version of quantity
+                        SCREEN.blit(text, (self.slots[slot].rect.x + 5, self.slots[slot].rect.y + 4)) # displays text in top left corner
 
     # changes currently chosen slot if user clicks correctly
     def click(self, mousePos):
-        for slot in range(1,11):
+
+        if self.inventoryOpen:
+            num = 40
+        else:
+            num = 10
+
+        for slot in range(num):
 
             # checks if mouse position is in range of slot
             if mousePos[0] in range(self.slots[slot].rect.x, self.slots[slot].rect.x + self.slots[slot].width) and mousePos[1] in range(self.slots[slot].rect.y, self.slots[slot].rect.y + self.slots[slot].height):
@@ -96,7 +132,13 @@ class Inventory:
     
     # changes slot image when mouse is hovering over it to let user aware
     def hover(self, mousePos):
-        for slot in range(1,11):
+
+        if self.inventoryOpen:
+            num = 40
+        else:
+            num = 10
+
+        for slot in range(num):
             
             # checks if mouse position is in range of slot
             if mousePos[0] in range(self.slots[slot].rect.x, self.slots[slot].rect.x + self.slots[slot].width) and mousePos[1] in range(self.slots[slot].rect.y, self.slots[slot].rect.y + self.slots[slot].height):
@@ -105,19 +147,22 @@ class Inventory:
             # checks to see if the slot has an item
             if self.slots[slot].type is not None:
 
-                SCREEN.blit(self.slots[slot-1].type.icon, ((self.slots[slot].rect.centerx - self.slots[slot-1].type.icon.get_width() / 2, self.slots[slot].rect.centery - self.slots[slot-1].type.icon.get_height() / 2))) # displays item
+                SCREEN.blit(self.slots[slot].type.icon, ((self.slots[slot].rect.centerx - self.slots[slot].type.icon.get_width() / 2, self.slots[slot].rect.centery - self.slots[slot].type.icon.get_height() / 2 + 2))) # displays item
 
-                if self.slots[slot-1].amount > 1:
-                    text = OCR_INVENTORY.render( str(self.slots[slot-1].amount), True, WHITE) # creates text version of quantity
+                if self.slots[slot].amount > 1:
+                    text = OCR_INVENTORY.render( str(self.slots[slot].amount), True, WHITE) # creates text version of quantity
                     SCREEN.blit(text, (self.slots[slot].rect.x + 5, self.slots[slot].rect.y + 4)) # displays text in top left corner
     
     # returns the item name that the player is currently holding
     def getItem(self):
-        if self.slots[self.chosenSlot-1].type == None:
+        if self.slots[self.chosenSlot].type == None:
             return "None"
         else: 
-            return self.slots[self.chosenSlot-1].type.name
-
+            return self.slots[self.chosenSlot].type.name
+    
+    def openCloseInventory(self):
+        self.inventoryOpen = not self.inventoryOpen
+    
     # adds a certain amount of an item to the inentory, returning any excess items it couldn't add    
     def add(self, itemType, amount=1): # defeault amount is 1
 
