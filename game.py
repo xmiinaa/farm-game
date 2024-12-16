@@ -27,6 +27,7 @@ def main():
 
     keyPressed = ""
     mouseDrag = False
+    slotItem = None
 
     #player.inventory.string()
 
@@ -78,6 +79,11 @@ def main():
         
         player.inventory.draw()
         player.inventory.hover(mousePos)
+
+        if slotItem != None and mouseDrag: # checks to see if the player's mouse is holding an item
+            player.inventory.displayItem(mousePos, slotItem) # displays item relative to player's mouse
+
+        print(mouseDrag)
     
         for event in pygame.event.get():
 
@@ -187,10 +193,9 @@ def main():
 
                     mouseDrag = True
 
-                    """
+                    # checks if inventory is open
                     if player.inventory.isInventoryOpen():
-                        player.inventory.dragItem(mousePos)
-                    """
+                        slotItem = player.inventory.getDragItem(mousePos) # gets item that player is holding on
 
                     if player.mouseOnPlayer(mousePos):
 
@@ -233,7 +238,7 @@ def main():
             if event.type == pygame.MOUSEMOTION:  
                 if mouseDrag:
                     if player.inventory.isInventoryOpen():
-                            player.inventory.dragDropItem(mousePos)  
+                            player.inventory.dragDropItem(mousePos, slotItem)  
 
             # handles the exit of the game
             if event.type == pygame.QUIT:

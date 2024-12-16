@@ -91,7 +91,7 @@ SCYTHE = pygame.transform.scale(pygame.image.load("Resources/Images/tools/Scythe
 def initialise():
 
     # set up window
-    pygame.display.set_caption('THE Farm Game')
+    pygame.display.set_caption('Arable Valley')
 
     # loads up music and plays it
     pygame.mixer.music.load('Resources/Music/music1.mp3')
