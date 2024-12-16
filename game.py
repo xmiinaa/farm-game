@@ -91,25 +91,62 @@ def main():
                 # collects all keys Boolean value of whether it has been pressed or not and stores in list
                 keys = pygame.key.get_pressed()
 
-                if keys[pygame.K_a] or keys[pygame.K_d] or keys[pygame.K_w] or keys[pygame.K_s]:
-                    player.setMoving(True)
-    
-                if keys[pygame.K_a] and direction != 1:
-                    player.changeDirection(1)
+                if player.inventory.isInventoryOpen() == False:
 
-                elif keys[pygame.K_d]:
-                    player.changeDirection(3)
+                    if keys[pygame.K_a] or keys[pygame.K_d] or keys[pygame.K_w] or keys[pygame.K_s]:
+                        player.setMoving(True)
+        
+                    if keys[pygame.K_a] and direction != 1:
+                        player.changeDirection(1)
 
-                if keys[pygame.K_w]:
-                    player.changeDirection(0)
+                    elif keys[pygame.K_d]:
+                        player.changeDirection(3)
 
-                elif keys[pygame.K_s]:
-                    player.changeDirection(2)
+                    if keys[pygame.K_w]:
+                        player.changeDirection(0)
 
-                if keys[pygame.K_LSHIFT]:
-                    player.changeSpeed(6)
-                else:
-                    player.changeSpeed(4)
+                    elif keys[pygame.K_s]:
+                        player.changeDirection(2)
+
+                    if keys[pygame.K_LSHIFT]:
+                        player.changeSpeed(6)
+                    else:
+                        player.changeSpeed(4)
+
+                    if keys[pygame.K_x]:
+
+                        keyPressed = "x"
+
+                        # gets the item that the player is currently holding
+                        item = player.inventory.getItem()
+                    
+                        if item == "hoe" or item == "scythe" or item == "waterCan" or item == "seed":
+
+                            # ensures the player is not already engaged in another action
+                            if player.isActive() == False:
+
+                                player.resetAnimation() # sets animation back to 0
+                                player.activate()
+
+                                if item == "hoe":
+
+                                    # changes the attribute as appropiate
+                                    player.changeAction("till")
+                                
+                                if item == "scythe":
+
+                                    # changes the attribute as appropiate
+                                    player.changeAction("untill")
+                                
+                                if item == "waterCan":
+
+                                    # changes the attribute as appropiate
+                                    player.changeAction("water")
+                                
+                                if item == "seed":
+
+                                    # changes the attribute as appropiate
+                                    player.changeAction("planting")
                 
                 if keys[pygame.K_e]:
                     player.inventory.openCloseInventory()
@@ -135,43 +172,7 @@ def main():
                     player.inventory.changeSlot(8)
                 if keys[pygame.K_0]:
                     player.inventory.changeSlot(9)
-
-                if keys[pygame.K_x]:
-
-                    keyPressed = "x"
-
-                    # gets the item that the player is currently holding
-                    item = player.inventory.getItem()
-                
-                    if item == "hoe" or item == "scythe" or item == "waterCan" or item == "seed":
-
-                        # ensures the player is not already engaged in another action
-                        if player.isActive() == False:
-
-                            player.resetAnimation() # sets animation back to 0
-                            player.activate()
-
-                            if item == "hoe":
-
-                                # changes the attribute as appropiate
-                                player.changeAction("till")
-                            
-                            if item == "scythe":
-
-                                # changes the attribute as appropiate
-                                player.changeAction("untill")
-                            
-                            if item == "waterCan":
-
-                                # changes the attribute as appropiate
-                                player.changeAction("water")
-                            
-                            if item == "seed":
-
-                                # changes the attribute as appropiate
-                                player.changeAction("planting")
-                    
-                
+                        
             # checks if player is not pressing down a key
             if event.type == pygame.KEYUP:
                 
@@ -233,13 +234,13 @@ def main():
 
                     mouseDrag = False
 
-                    if player.inventory.isInventoryOpen() and slotItem+1 != False:
+                    if player.inventory.isInventoryOpen() and (slotItem != None or slotItem == 0):
                         player.inventory.swapItems(slotItem, mousePos)
                 
             if event.type == pygame.MOUSEMOTION:  
                 if mouseDrag:
                     if player.inventory.isInventoryOpen():
-                            if slotItem+1 != None:
+                            if slotItem != None or slotItem == 0:
                                 player.inventory.dragDropItem(mousePos, slotItem)  
 
             # handles the exit of the game
