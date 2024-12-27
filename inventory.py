@@ -308,10 +308,5 @@ carrot = ItemType("carrot", HOE, 200, 100)
 spinach = ItemType("spinach", HOE, 200, 100)
 """
 
-potatoObject = SpriteSheet(POTATO_SHEET)
-potatoList = []
-for x in range(5):
-    potatoList.append(potatoObject.getImage(x, 1, 16, 16, 3)) 
-
 potatoSeed = ItemType("potato seed", potatoObject.getImage(0, 1, 16, 16, 3), 300, 200)
 potato = ItemType("potato", potatoObject.getImage(1, 1, 16, 16, 3), 500, 400)

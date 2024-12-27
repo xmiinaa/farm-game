@@ -3,6 +3,7 @@ from config import *
 import sys
 import Player
 import tile
+from spritesheet import SpriteSheet
 
 # this would not be set in real game, but rather obtained from database or previous screen
 chosenCharacter = "female"
@@ -71,7 +72,7 @@ def main():
                 
                 elif player.getAction() == "planting":
 
-                    player.animatePlanting()
+                    tile.plant(player, mousePos, keyPressed)
 
         # displays the player in its idle state
         else:
@@ -82,7 +83,7 @@ def main():
 
         if slotItem != None and mouseDrag: # checks to see if the player's mouse is holding an item
             player.inventory.displayItem(mousePos, slotItem) # displays item relative to player's mouse
-    
+
         for event in pygame.event.get():
 
             # checks if player presses down a key
@@ -120,7 +121,7 @@ def main():
                         # gets the item that the player is currently holding
                         item = player.inventory.getItem()
                     
-                        if item == "hoe" or item == "scythe" or item == "waterCan" or item == "seed":
+                        if item == "hoe" or item == "scythe" or item == "waterCan" or "seed" in item:
 
                             # ensures the player is not already engaged in another action
                             if player.isActive() == False:
@@ -143,7 +144,7 @@ def main():
                                     # changes the attribute as appropiate
                                     player.changeAction("water")
                                 
-                                if item == "seed":
+                                if "seed" in item:
 
                                     # changes the attribute as appropiate
                                     player.changeAction("planting")

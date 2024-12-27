@@ -1,6 +1,7 @@
 # imports and initialise the pygame library, and oher libraries used and needed in program
 
 import pygame
+from spritesheet import SpriteSheet
 pygame.init()
 
 # dimensions of screen
@@ -86,6 +87,13 @@ wesleySpriteSheet = pygame.image.load("Resources/Images/sprites/wesley-spriteshe
 HOE = pygame.transform.scale(pygame.image.load("Resources/Images/tools/Hoe.png").convert_alpha(), (36,36))
 WATERCAN = pygame.transform.scale(pygame.image.load("Resources/Images/tools/Watering Can.png").convert_alpha(), (46,34))
 SCYTHE = pygame.transform.scale(pygame.image.load("Resources/Images/tools/Scythe.png").convert_alpha(), (36,36))
+
+potatoObject = SpriteSheet(POTATO_SHEET)
+potatoList = []
+for x in range(2,5):
+    potatoList.append(potatoObject.getImage(x, 0, 16, 32, 3)) 
+
+CROP_STAGES = { "P1": potatoList[0], "P2": potatoList[1], "P3": potatoList[2]}
 
 # needed when starting up program
 def initialise():

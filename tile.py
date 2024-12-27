@@ -6,9 +6,15 @@ from Player import *
 # returns tile image of from a specific index of tilemap array
 def getTileImg(tilemap, row, col):
 
-    tile = tilemap[row][col] # accesses tile from array
+    tile = tilemap[row][col][0] # accesses tile from array
 
     return TILE_IMAGES.get(tile, GM_TILE) # if key is not found, grass middle tile is returned
+
+def getCropImg(tilemap, row, col):
+
+    tile = tilemap[row][col][1] # accesses crop from array
+
+    return CROP_STAGES.get(tile, None) # if key is not found, grass middle tile is returned
 
 # creates farm map screen
 def renderFarmMap():
@@ -20,6 +26,11 @@ def renderFarmMap():
             tileImg = getTileImg(tilemap, row, col) # gets image to display
             
             farmMap.blit(tileImg, (col*72, row*72))
+
+            if tilemap[row][col][1] != None:
+
+                cropImg = getCropImg(tilemap, row, col)
+                farmMap.blit(cropImg, ((col*72) +10, (row*72) -30))
     
     return farmMap
 
@@ -32,13 +43,13 @@ def till(player, mousePos, key):
     playerTileX, playerTileY = player.getTilePosition()
 
     # checks to see if the tile is "tillable"
-    if tilemap[playerTileY][playerTileX] == "GM":
+    if tilemap[playerTileY][playerTileX][0] == "GM":
 
         #  checks if the player pressed the key x
         if key == "x":
 
             # changes the tile to tilled land and displays it
-            tilemap[playerTileY][playerTileX] = "TD"
+            tilemap[playerTileY][playerTileX][0] = "TD"
             farmMap = renderFarmMap()
 
         # checks to see if the player clicked on the mouse
@@ -48,7 +59,7 @@ def till(player, mousePos, key):
             if player.mouseOnPlayer(mousePos):
 
                 # changes the tile to tilled land and displays it
-                tilemap[playerTileY][playerTileX] = "TD"
+                tilemap[playerTileY][playerTileX][0] = "TD"
                 farmMap = renderFarmMap()
     
     player.animateTillWater()
@@ -62,13 +73,13 @@ def untill(player, mousePos, key):
     playerTileX, playerTileY = player.getTilePosition()
 
     # checks to see if the tile has been tilled
-    if tilemap[playerTileY][playerTileX] == "TD" or tilemap[playerTileY][playerTileX] == "WD":
+    if tilemap[playerTileY][playerTileX][0] == "TD" or tilemap[playerTileY][playerTileX][0] == "WD":
 
         #  checks if the player pressed the key x
         if key == "x":
 
             # changes the tile to untilled land and displays it
-            tilemap[playerTileY][playerTileX] = "GM"
+            tilemap[playerTileY][playerTileX][0] = "GM"
             farmMap = renderFarmMap()
 
         # checks to see if the player clicked on the mouse
@@ -78,7 +89,7 @@ def untill(player, mousePos, key):
             if player.mouseOnPlayer(mousePos):
 
                 # changes the tile to untilled land and displays it
-                tilemap[playerTileY][playerTileX] = "GM"
+                tilemap[playerTileY][playerTileX][0] = "GM"
                 farmMap = renderFarmMap()
     
     # animates the player
@@ -93,13 +104,13 @@ def water(player, mousePos, key):
     playerTileX, playerTileY = player.getTilePosition()
 
     # checks to see if the tile is "tillable"
-    if tilemap[playerTileY][playerTileX] == "TD":
+    if tilemap[playerTileY][playerTileX][0] == "TD":
 
         #  checks if the player pressed the key x
         if key == "x":
 
             # changes the tile to tilled land and displays it
-            tilemap[playerTileY][playerTileX] = "WD"
+            tilemap[playerTileY][playerTileX][0] = "WD"
             farmMap = renderFarmMap()
 
         # checks to see if the player clicked on the mouse
@@ -109,34 +120,71 @@ def water(player, mousePos, key):
             if player.mouseOnPlayer(mousePos):
 
                 # changes the tile to tilled land and displays it
-                tilemap[playerTileY][playerTileX] = "WD"
+                tilemap[playerTileY][playerTileX][0] = "WD"
                 farmMap = renderFarmMap()
     
     # animates the player
     player.animateTillWater()
 
+def plant(player, mousePos, key):
+    global farmMap
+
+    # gets the tile position of the player
+    playerTileX, playerTileY = player.getTilePosition()
+
+    playerItem = player.inventory.getItem()
+    
+    #print(playerItem)
+    
+    # checks to see if the tile is "tillable"
+    if tilemap[playerTileY][playerTileX][0] == "TD":
+
+        #  checks if the player pressed the key x
+        if key == "x":
+
+            # calculates the code for the crop
+            string = playerItem[0].upper() + "1"
+
+            tilemap[playerTileY][playerTileX][1] = string
+            farmMap = renderFarmMap()
+
+        # checks to see if the player clicked on the mouse
+        if key == "mouse":
+            
+            # checks to see if the user had clicked the player
+            if player.mouseOnPlayer(mousePos):
+
+                # calculates the code for the crop
+                string = playerItem[0].upper() + "1"
+
+                tilemap[playerTileY][playerTileX][1] = string
+                farmMap = renderFarmMap()
+    
+
+    player.animatePlanting()
+
 # 2D array storing whole tilemap status
 tilemap = [
-    ["TL", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TE", "TR"],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE"],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE"],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE"],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE"],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE"],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE"],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE"],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE"],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "DE"],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "DE"],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE"],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE"],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE"],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE"],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE"],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE"],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE"],
-    ["LE", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "GM", "RE"],
-    ["BL", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BE", "BR"]]
+    [["TL", None], ["TE", None], ["TE", None], ["TE", None], ["TE", None], ["TE", None], ["TE", None], ["TE", None], ["TE", None], ["TE", None], ["TE", None], ["TE", None], ["TE", None], ["TE", None], ["TE", None], ["TE", None], ["TE", None], ["TE", None], ["TE", None], ["TE", None], ["TE", None], ["TE", None], ["TE", None], ["TE", None], ["TR", None]],
+    [["LE", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["RE", None]],
+    [["LE", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["RE", None]],
+    [["LE", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["RE", None]],
+    [["LE", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["RE", None]],
+    [["LE", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["RE", None]],
+    [["LE", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["RE", None]],
+    [["LE", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["RE", None]],
+    [["LE", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["RE", None]],
+    [["LE", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["RE", None]],
+    [["LE", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["RE", None]],
+    [["LE", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["RE", None]],
+    [["LE", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["RE", None]],
+    [["LE", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["RE", None]],
+    [["LE", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["RE", None]],
+    [["LE", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["RE", None]],
+    [["LE", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["RE", None]],
+    [["LE", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["RE", None]],
+    [["LE", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["GM", None], ["RE", None]],
+    [["BL", None], ["BE", None], ["BE", None], ["BE", None], ["BE", None], ["BE", None], ["BE", None], ["BE", None], ["BE", None], ["BE", None], ["BE", None], ["BE", None], ["BE", None], ["BE", None], ["BE", None], ["BE", None], ["BE", None], ["BE", None], ["BE", None], ["BE", None], ["BE", None], ["BE", None], ["BE", None], ["BE", None], ["BR", None]] ]
 
 # creates empty surface 
 farmMap = pygame.Surface((1800, 1440))
