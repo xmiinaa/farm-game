@@ -134,8 +134,7 @@ class Player(Character):
          
         # creates an object as the inventory
         self.inventory = inventory.Inventory()
-        self.item = "waterCan"
-        self.money = 0
+        self.money = 500
 
         # stores what action the player is currently doing
         self.action = "idle"

@@ -89,11 +89,28 @@ WATERCAN = pygame.transform.scale(pygame.image.load("Resources/Images/tools/Wate
 SCYTHE = pygame.transform.scale(pygame.image.load("Resources/Images/tools/Scythe.png").convert_alpha(), (36,36))
 
 potatoObject = SpriteSheet(POTATO_SHEET)
-potatoList = []
+turnipObject = SpriteSheet(TURNIP_SHEET)
+onionObject = SpriteSheet(ONION_SHEET)
+radishObject = SpriteSheet(RADISH_SHEET)
+carrotObject = SpriteSheet(CARROT_SHEET)
+spinachObject = SpriteSheet(SPINACH_SHEET)
+
+potatoList, turnipList, onionList, radishList, carrotList, spinachList = [], [], [], [], [], []
+
 for x in range(2,5):
     potatoList.append(potatoObject.getImage(x, 0, 16, 32, 3)) 
+for x in range(2,5):
+    turnipList.append(turnipObject.getImage(x, 0, 16, 32, 3)) 
+for x in range(2,5):
+    onionList.append(onionObject.getImage(x, 0, 16, 32, 3)) 
+for x in range(2,5):
+    radishList.append(radishObject.getImage(x, 0, 16, 32, 3)) 
+for x in range(2,5):
+    carrotList.append(carrotObject.getImage(x, 0, 16, 32, 3)) 
+for x in range(2,5):
+    spinachList.append(spinachObject.getImage(x, 0, 16, 32, 3)) 
 
-CROP_STAGES = { "P1": potatoList[0], "P2": potatoList[1], "P3": potatoList[2]}
+CROP_STAGES = { "P1": potatoList[0], "P2": potatoList[1], "P3": potatoList[2], "T1": turnipList[0], "T2": turnipList[1], "T3": turnipList[2], "O1": onionList[0], "O2": onionList[1], "O3": onionList[2], "R1": radishList[0], "R2": radishList[1], "R3": radishList[2], "C1": carrotList[0], "C2": carrotList[1], "C3": carrotList[2], "S1": spinachList[0], "S2": spinachList[1], "S3": spinachList[2]}
 
 # needed when starting up program
 def initialise():

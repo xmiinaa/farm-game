@@ -3,6 +3,8 @@ from config import *
 from game import *
 from Player import *
 
+plantingDone = False
+
 # returns tile image of from a specific index of tilemap array
 def getTileImg(tilemap, row, col):
 
@@ -127,26 +129,28 @@ def water(player, mousePos, key):
     player.animateTillWater()
 
 def plant(player, mousePos, key):
-    global farmMap
+    global farmMap, plantingDone
 
     # gets the tile position of the player
     playerTileX, playerTileY = player.getTilePosition()
 
     playerItem = player.inventory.getItem()
     
-    #print(playerItem)
-    
     # checks to see if the tile is "tillable"
     if tilemap[playerTileY][playerTileX][0] == "TD":
 
         #  checks if the player pressed the key x
-        if key == "x":
+        if key == "x" and player.isActive():
 
             # calculates the code for the crop
             string = playerItem[0].upper() + "1"
 
             tilemap[playerTileY][playerTileX][1] = string
             farmMap = renderFarmMap()
+
+            print("DGF")
+
+            player.inventory.removeItemHeld()
 
         # checks to see if the player clicked on the mouse
         if key == "mouse":
@@ -159,7 +163,6 @@ def plant(player, mousePos, key):
 
                 tilemap[playerTileY][playerTileX][1] = string
                 farmMap = renderFarmMap()
-    
 
     player.animatePlanting()
 

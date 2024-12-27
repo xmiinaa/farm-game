@@ -44,8 +44,8 @@ class Inventory:
     # creates new inventory
     def __init__(self):
         self.capacity = 40 # there can only be 40 slots
-        self.taken_slots = 4
-        self.chosenSlot = 1
+        self.taken_slots = 9
+        self.chosenSlot = 0
         
         # creates array of slots 
         self.slots = [ItemSlot(x) for x in range(self.capacity)]
@@ -53,14 +53,25 @@ class Inventory:
         self.inventoryOpen = False
 
         # for now i am initiating the items here though it may change
-        self.slots[0].type = hoe
-        self.slots[0].amount = 1
-        self.slots[1].type = waterCan 
-        self.slots[1].amount = 1
-        self.slots[2].type = scythe 
-        self.slots[2].amount = 1
-        self.slots[3].type = potatoSeed
+        self.slots[7].type = hoe
+        self.slots[7].amount = 1
+        self.slots[8].type = waterCan 
+        self.slots[8].amount = 1
+        self.slots[9].type = scythe 
+        self.slots[9].amount = 1
+
+        self.slots[0].type = potatoSeed
+        self.slots[0].amount = 15
+        self.slots[1].type = turnipSeed
+        self.slots[1].amount = 15
+        self.slots[2].type = onionSeed
+        self.slots[2].amount = 15
+        self.slots[3].type = radishSeed
         self.slots[3].amount = 15
+        self.slots[4].type = carrotSeed
+        self.slots[4].amount = 15
+        self.slots[5].type = spinachSeed
+        self.slots[5].amount = 15
 
         self.slots[24].type = hoe
         self.slots[24].amount = 13
@@ -225,6 +236,11 @@ class Inventory:
                     slot.amount = amount
                     return 0
     
+    def removeItemHeld(self):
+        if self.slots[self.chosenSlot].amount == 1:
+            self.slots[self.chosenSlot].type = None
+        self.slots[self.chosenSlot].amount -= 1
+
     # removes an item from the inventory
     def remove(self, itemType, amount=1): # default amount is 1
         found = 0
@@ -299,14 +315,15 @@ hoe = ItemType("hoe", HOE, 200, 100)
 waterCan = ItemType("waterCan", WATERCAN, 200, 100)
 scythe = ItemType("scythe", SCYTHE, 200, 100)
 
-"""
-potato = ItemType("potato", HOE, 200, 100)
-turnip = ItemType("turnip", HOE, 200, 100)
-onion = ItemType("onion", HOE, 200, 100)
-radish = ItemType("radish", HOE, 200, 100)
-carrot = ItemType("carrot", HOE, 200, 100)
-spinach = ItemType("spinach", HOE, 200, 100)
-"""
-
 potatoSeed = ItemType("potato seed", potatoObject.getImage(0, 1, 16, 16, 3), 300, 200)
 potato = ItemType("potato", potatoObject.getImage(1, 1, 16, 16, 3), 500, 400)
+turnipSeed = ItemType("turnip seed", turnipObject.getImage(0, 1, 16, 16, 3), 300, 200)
+turnip = ItemType("turnip", turnipObject.getImage(1, 1, 16, 16, 3), 500, 400)
+onionSeed = ItemType("onion seed", onionObject.getImage(0, 1, 16, 16, 3), 300, 200)
+onion = ItemType("onion", onionObject.getImage(1, 1, 16, 16, 3), 500, 400)
+radishSeed = ItemType("radish seed", radishObject.getImage(0, 1, 16, 16, 3), 300, 200)
+radish = ItemType("radish", radishObject.getImage(1, 1, 16, 16, 3), 500, 400)
+carrotSeed = ItemType("carrot seed", carrotObject.getImage(0, 1, 16, 16, 3), 300, 200)
+carrot = ItemType("carrot", carrotObject.getImage(1, 1, 16, 16, 3), 500, 400)
+spinachSeed = ItemType("spinach seed", spinachObject.getImage(0, 1, 16, 16, 3), 300, 200)
+spinach = ItemType("spinach", spinachObject.getImage(1, 1, 16, 16, 3), 500, 400)

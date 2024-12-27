@@ -5,7 +5,7 @@ import Player
 import tile
 from spritesheet import SpriteSheet
 
-# this would not be set in real game, but rather obtained from database or previous screen
+# this would not be set in real game, but rather obtained from the database
 chosenCharacter = "female"
 
 def main():
