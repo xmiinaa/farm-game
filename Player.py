@@ -140,6 +140,8 @@ class Player(Character):
         self.action = "idle"
         self.active = False
 
+        self.flag = False
+
         # creates a rectangle of the entity.
         self.rect = pygame.Rect((x, y), (72, 72))
         
@@ -148,6 +150,15 @@ class Player(Character):
     
     def changeAction(self, action):
         self.action = action
+    
+    def onFlag(self):
+        self.flag = True
+    
+    def offFlag(self):
+        self.flag = False
+
+    def getFlag(self):
+        return self.flag
     
     def getAction(self):
         return self.action

@@ -146,6 +146,8 @@ def main():
                                 
                                 if "seed" in item:
 
+                                    player.offFlag()
+                                    
                                     # changes the attribute as appropiate
                                     player.changeAction("planting")
                 

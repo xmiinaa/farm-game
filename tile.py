@@ -32,7 +32,8 @@ def renderFarmMap():
             if tilemap[row][col][1] != None:
 
                 cropImg = getCropImg(tilemap, row, col)
-                farmMap.blit(cropImg, ((col*72) +10, (row*72) -30))
+                if cropImg is not None:
+                    farmMap.blit(cropImg, ((col*72) +10, (row*72) -30))
     
     return farmMap
 
@@ -82,6 +83,7 @@ def untill(player, mousePos, key):
 
             # changes the tile to untilled land and displays it
             tilemap[playerTileY][playerTileX][0] = "GM"
+            tilemap[playerTileY][playerTileX][1] = None
             farmMap = renderFarmMap()
 
         # checks to see if the player clicked on the mouse
@@ -92,6 +94,7 @@ def untill(player, mousePos, key):
 
                 # changes the tile to untilled land and displays it
                 tilemap[playerTileY][playerTileX][0] = "GM"
+                tilemap[playerTileY][playerTileX][1] = None
                 farmMap = renderFarmMap()
     
     # animates the player
@@ -136,8 +139,8 @@ def plant(player, mousePos, key):
 
     playerItem = player.inventory.getItem()
     
-    # checks to see if the tile is "tillable"
-    if tilemap[playerTileY][playerTileX][0] == "TD":
+    # checks to see if the tile is "plantable"
+    if tilemap[playerTileY][playerTileX][0] == "TD" and tilemap[playerTileY][playerTileX][1] == None:
 
         #  checks if the player pressed the key x
         if key == "x" and player.isActive():
@@ -148,9 +151,10 @@ def plant(player, mousePos, key):
             tilemap[playerTileY][playerTileX][1] = string
             farmMap = renderFarmMap()
 
-            print("DGF")
+            if player.getFlag() == False:
 
-            player.inventory.removeItemHeld()
+                player.inventory.removeItemHeld()
+                player.onFlag()
 
         # checks to see if the player clicked on the mouse
         if key == "mouse":
