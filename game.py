@@ -227,7 +227,9 @@ def main():
                                     # changes the attribute as appropiate
                                     player.changeAction("water")
                                 
-                                if item == "seed":
+                                if "seed" in item:
+
+                                    player.offFlag()
 
                                     # changes the attribute as appropiate
                                     player.changeAction("planting")

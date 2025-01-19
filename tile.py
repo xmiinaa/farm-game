@@ -146,9 +146,9 @@ def plant(player, mousePos, key):
         if key == "x" and player.isActive():
 
             # calculates the code for the crop
-            string = playerItem[0].upper() + "1"
+            cropList = SEED_TO_CROPS.get(playerItem, None)
 
-            tilemap[playerTileY][playerTileX][1] = string
+            tilemap[playerTileY][playerTileX][1] = cropList[0]
             farmMap = renderFarmMap()
 
             if player.getFlag() == False:
@@ -157,16 +157,21 @@ def plant(player, mousePos, key):
                 player.onFlag()
 
         # checks to see if the player clicked on the mouse
-        if key == "mouse":
+        if key == "mouse" and player.isActive():
             
             # checks to see if the user had clicked the player
             if player.mouseOnPlayer(mousePos):
 
                 # calculates the code for the crop
-                string = playerItem[0].upper() + "1"
+                cropList = SEED_TO_CROPS.get(playerItem, None)
 
-                tilemap[playerTileY][playerTileX][1] = string
+                tilemap[playerTileY][playerTileX][1] = cropList[0]
                 farmMap = renderFarmMap()
+
+                if player.getFlag() == False:
+
+                    player.inventory.removeItemHeld()
+                    player.onFlag()
 
     player.animatePlanting()
 
