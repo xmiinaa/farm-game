@@ -50,6 +50,8 @@ WD_TILE = pygame.image.load('Resources/Images/tiles/tilled and watered land.png'
 SLOT = pygame.image.load('Resources/Images/slot.png')
 CHOSEN_SLOT = pygame.image.load('Resources/Images/chosenSlot.png')
 
+TOP_SCREEN = pygame.transform.scale(pygame.image.load('Resources/Images/topscreen.png'), (290, 150))
+
 POTATO_SHEET = pygame.image.load('Resources/Images/Crops/Spring/Potato.png')
 TURNIP_SHEET = pygame.image.load('Resources/Images/Crops/Spring/Turnip.png')
 ONION_SHEET = pygame.image.load('Resources/Images/Crops/Summer/Onion.png')
@@ -120,6 +122,14 @@ spinachGrowthStages = ["P1", "P2", "P2", "P2", "P3"]
 SEED_TO_CROPS = { "potato seed": potatoGrowthStages, "turnip seed": turnipGrowthStages, "onion seed": onionGrowthStages, "radish seed": radishGrowthStages, "carrot seed": carrotGrowthStages, "spinach seed": spinachGrowthStages, }
 
 CROP_STAGES = { "P1": potatoList[0], "P2": potatoList[1], "P3": potatoList[2], "T1": turnipList[0], "T2": turnipList[1], "T3": turnipList[2], "O1": onionList[0], "O2": onionList[1], "O3": onionList[2], "R1": radishList[0], "R2": radishList[1], "R3": radishList[2], "C1": carrotList[0], "C2": carrotList[1], "C3": carrotList[2], "S1": spinachList[0], "S2": spinachList[1], "S3": spinachList[2]}
+
+# In-game time configuration
+START_HOUR = 6  # Start time is 6:00 AM
+START_MINUTE = 0
+DAY_DURATION = 15 * 60  # Total duration of a day in seconds (15 minutes)
+
+# Tracks elapsed real time (in milliseconds)
+elapsedRealTime = 0
 
 # needed when starting up program
 def initialise():

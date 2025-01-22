@@ -3,10 +3,34 @@ from config import *
 import sys
 import Player
 import tile
-from spritesheet import SpriteSheet
+import time
 
 # this would not be set in real game, but rather obtained from the database
 chosenCharacter = "female"
+
+def renderTime():
+
+    global elapsedRealTime
+
+    # Get the time elapsed since the last frame in milliseconds
+    deltaTime = CLOCK.get_time()
+    elapsedRealTime += deltaTime
+
+    # Convert real elapsed time into in-game time
+    elapsedGameTime = (elapsedRealTime / 1000) * (24 * 60 * 60 / DAY_DURATION)  # Scale to a 24-hour day
+    gameHour = (START_HOUR + int(elapsedGameTime // 3600)) % 24
+    gameMinute = int((START_MINUTE + (elapsedGameTime % 3600) // 60) % 60)
+
+    # Format in-game time as hh:mm
+    timeString = f"{gameHour:02}:{gameMinute:02}"
+
+    # Render the time
+    timeSurface = OCR_ERROR.render(timeString, True, (255, 255, 255))  # White text
+    timeRect = timeSurface.get_rect(center=(510, 50))
+
+    SCREEN.blit(TOP_SCREEN, (400, -5))
+    SCREEN.blit(timeSurface, timeRect)
+
 
 def main():
     running = True
@@ -83,6 +107,10 @@ def main():
 
         if slotItem != None and mouseDrag: # checks to see if the player's mouse is holding an item
             player.inventory.displayItem(mousePos, slotItem) # displays item relative to player's mouse
+
+        # displays time
+        renderTime()
+
 
         for event in pygame.event.get():
 
