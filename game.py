@@ -22,14 +22,25 @@ def renderTime():
     gameMinute = int((START_MINUTE + (elapsedGameTime % 3600) // 60) % 60)
 
     # Format in-game time as hh:mm
-    timeString = f"{gameHour:02}:{gameMinute:02}"
+    timeString = f"Time: {gameHour:02}:{gameMinute:02}"
+    dateString = "Date: Spring 1"
+    moneyString = "Money: 300"
+    weatherString = "Weather: Sunny"
 
     # Render the time
     timeSurface = OCR_ERROR.render(timeString, True, (255, 255, 255))  # White text
-    timeRect = timeSurface.get_rect(center=(510, 50))
+    dateSurface = OCR_ERROR.render(dateString, True, (255, 255, 255))  # White text
+    moneySurface = OCR_ERROR.render(moneyString, True, (255, 255, 255))  # White text
+    weatherSurface = OCR_ERROR.render(weatherString, True, (255, 255, 255))  # White text
 
-    SCREEN.blit(TOP_SCREEN, (400, -5))
-    SCREEN.blit(timeSurface, timeRect)
+    SCREEN.blit(TOP_SCREEN, (440, -5))
+
+    SCREEN.blit(timeSurface, (447, 1))
+    SCREEN.blit(dateSurface, (447, 23))
+    SCREEN.blit(moneySurface, (447, 45))
+    SCREEN.blit(weatherSurface, (447, 67))
+
+    pygame.draw.rect(SCREEN, DARK_GREY, pygame.Rect(440, -5, 200, 100), 3, 0)
 
 
 def main():

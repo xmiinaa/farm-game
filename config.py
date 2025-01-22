@@ -19,6 +19,7 @@ BOX_FILL = (211, 245, 253)
 FONT_COLOUR = (2, 100, 106)
 ERROR_FONT_COLOUR = (255, 45, 45)
 GREY = (160, 160, 160)
+DARK_GREY = (70, 70, 70)
 BLACK = (0, 0, 0)
 TEST = (0,0,70)
 
@@ -50,7 +51,7 @@ WD_TILE = pygame.image.load('Resources/Images/tiles/tilled and watered land.png'
 SLOT = pygame.image.load('Resources/Images/slot.png')
 CHOSEN_SLOT = pygame.image.load('Resources/Images/chosenSlot.png')
 
-TOP_SCREEN = pygame.transform.scale(pygame.image.load('Resources/Images/topscreen.png'), (290, 150))
+TOP_SCREEN = pygame.transform.scale(pygame.image.load('Resources/Images/topscreen.png'), (200, 100))
 
 POTATO_SHEET = pygame.image.load('Resources/Images/Crops/Spring/Potato.png')
 TURNIP_SHEET = pygame.image.load('Resources/Images/Crops/Spring/Turnip.png')
