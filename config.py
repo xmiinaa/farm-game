@@ -114,11 +114,11 @@ for x in range(2,5):
     spinachList.append(spinachObject.getImage(x, 0, 16, 32, 3)) 
 
 potatoGrowthStages = ["P1", "P1", "P2", "P2", "P3"]
-turnipGrowthStages = ["P1", "P1", "P1", "P2", "P2", "P3"]
-onionGrowthStages = ["P1", "P2", "P2", "P3"]
-radishGrowthStages = ["P1", "P1", "P1", "P2", "P2", "P2", "P3"]
-carrotGrowthStages = ["P1", "P1", "P2", "P2", "P2", "P2", "P3"]
-spinachGrowthStages = ["P1", "P2", "P2", "P2", "P3"]
+turnipGrowthStages = ["T1", "T1", "T1", "T2", "T2", "T3"]
+onionGrowthStages = ["O1", "O2", "O2", "O3"]
+radishGrowthStages = ["R1", "R1", "R1", "R2", "R2", "R2", "R3"]
+carrotGrowthStages = ["C1", "C1", "C2", "C2", "C2", "C2", "C3"]
+spinachGrowthStages = ["S1", "S2", "S2", "S2", "S3"]
 
 SEED_TO_CROPS = { "potato seed": potatoGrowthStages, "turnip seed": turnipGrowthStages, "onion seed": onionGrowthStages, "radish seed": radishGrowthStages, "carrot seed": carrotGrowthStages, "spinach seed": spinachGrowthStages, }
 

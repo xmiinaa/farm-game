@@ -140,7 +140,7 @@ def plant(player, mousePos, key):
     playerItem = player.inventory.getItem()
     
     # checks to see if the tile is "plantable"
-    if tilemap[playerTileY][playerTileX][0] == "TD" and tilemap[playerTileY][playerTileX][1] == None:
+    if (tilemap[playerTileY][playerTileX][0] == "TD" or tilemap[playerTileY][playerTileX][0] == "WD") and tilemap[playerTileY][playerTileX][1] == None:
 
         #  checks if the player pressed the key x
         if key == "x" and player.isActive():
