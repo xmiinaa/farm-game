@@ -53,6 +53,7 @@ CHOSEN_SLOT = pygame.image.load('Resources/Images/chosenSlot.png')
 
 TOP_SCREEN = pygame.transform.scale(pygame.image.load('Resources/Images/topscreen.png'), (200, 100))
 
+# spritesheet for crops and its different stages (seed to final)
 POTATO_SHEET = pygame.image.load('Resources/Images/Crops/Spring/Potato.png')
 TURNIP_SHEET = pygame.image.load('Resources/Images/Crops/Spring/Turnip.png')
 ONION_SHEET = pygame.image.load('Resources/Images/Crops/Summer/Onion.png')
@@ -91,6 +92,7 @@ HOE = pygame.transform.scale(pygame.image.load("Resources/Images/tools/Hoe.png")
 WATERCAN = pygame.transform.scale(pygame.image.load("Resources/Images/tools/Watering Can.png").convert_alpha(), (46,34))
 SCYTHE = pygame.transform.scale(pygame.image.load("Resources/Images/tools/Scythe.png").convert_alpha(), (36,36))
 
+# creates an object of each crop
 potatoObject = SpriteSheet(POTATO_SHEET)
 turnipObject = SpriteSheet(TURNIP_SHEET)
 onionObject = SpriteSheet(ONION_SHEET)
