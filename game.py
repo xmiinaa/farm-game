@@ -33,14 +33,14 @@ def renderTime():
     moneySurface = OCR_ERROR.render(moneyString, True, (255, 255, 255))  # White text
     weatherSurface = OCR_ERROR.render(weatherString, True, (255, 255, 255))  # White text
 
-    SCREEN.blit(TOP_SCREEN, (440, -5))
+    SCREEN.blit(TOP_SCREEN, (-10, -5))
 
-    SCREEN.blit(timeSurface, (447, 1))
-    SCREEN.blit(dateSurface, (447, 23))
-    SCREEN.blit(moneySurface, (447, 45))
-    SCREEN.blit(weatherSurface, (447, 67))
+    SCREEN.blit(timeSurface, (7, 5))
+    SCREEN.blit(dateSurface, (267, 5))
+    SCREEN.blit(moneySurface, (507, 5))
+    SCREEN.blit(weatherSurface, (737, 5))
 
-    pygame.draw.rect(SCREEN, DARK_GREY, pygame.Rect(440, -5, 200, 100), 3, 0)
+    pygame.draw.rect(SCREEN, DARK_GREY, pygame.Rect(-10, -5, 1100, 40), 1, 0)
 
 
 def main():
