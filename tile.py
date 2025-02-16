@@ -21,7 +21,7 @@ def getCropImg(tilemap, row, col):
     return CROP_STAGES.get(tile, None) # if key is not found, grass middle tile is returned
 
 # creates farm map screen
-def renderFarmMap(newDay=False):
+def renderFarmMap(weather, newDay=False):
 
     # displays tile images from tilemap onto surface
     for row in range(len(tilemap)):
@@ -53,8 +53,11 @@ def renderFarmMap(newDay=False):
                     farmMap.blit(cropImg, ((col*72) +10, (row*72) -30))
 
             if newDay:
-                if tilemap[row][col][0] == "WD":
-                    tilemap[row][col][0] = "TD" # resets all watered tiles to unwatered
+                if weather != 2:
+                    if tilemap[row][col][0] == "WD":
+                        tilemap[row][col][0] = "TD" # resets all watered tiles to unwatered
+                else:
+                    tilemap[row][col][0] == "WD"
     
     return farmMap
 

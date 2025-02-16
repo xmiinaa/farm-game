@@ -3,12 +3,12 @@ from config import *
 import sys
 import Player
 import tile
-import time
+import random
 
 # this would not be set in real game, but rather obtained from the database
 chosenCharacter = "female"
 
-def renderTime():
+def renderTime(weather):
 
     global elapsedRealTime
 
@@ -21,13 +21,18 @@ def renderTime():
     gameHour = (START_HOUR + int(elapsedGameTime // 3600)) % 24
     gameMinute = int((START_MINUTE + (elapsedGameTime % 3600) // 60) % 60)
 
-    date = START_DATE
+    # Convert real elapsed time to in-game days
+    elapsedDays = int((elapsedRealTime / 1000) // DAY_DURATION)
+
+    # Calculate the in-game date
+    currentDay = int((START_DATE + elapsedDays) % 30)
+    currentSeason = int((START_SEASON + (START_DATE + elapsedDays) // 30) % 4)
 
     # Format in-game time as hh:mm
     timeString = f"Time: {gameHour:02}:{gameMinute:02}"
-    dateString = f"Date: Spring {date}"
+    dateString = f"Date: {SEASONS[currentSeason]} {currentDay}"
     moneyString = "Money: 300"
-    weatherString = "Weather: Sunny"
+    weatherString = f"Weather: {WEATHERS[weather]}"
 
     # Render the time
     timeSurface = OCR_ERROR.render(timeString, True, (255, 255, 255))  # White text
@@ -44,13 +49,17 @@ def renderTime():
 
     pygame.draw.rect(SCREEN, DARK_GREY, pygame.Rect(-10, -5, 1100, 40), 1, 0)
 
-    if gameHour == 6:
-        date = (date + 1) % 24
-        print(date)
+    flag = False
+    if gameHour == 6 and gameMinute == 0:
         newDay()
 
 def newDay():
-    farmMap = tile.renderFarmMap(True)
+    weather = random.choice(WEATHERS)
+    print(weather)
+    
+    farmMap = tile.renderFarmMap(weather, True)
+    #return num
+
 
 def main():
     running = True
@@ -67,8 +76,10 @@ def main():
     # gets co-ordinates of camera
     cameraPos = player.getMapPos()
 
+    weather = 0
+
     # creates the farmMap
-    farmMap = tile.renderFarmMap()
+    farmMap = tile.renderFarmMap(weather)
 
     keyPressed = ""
     mouseDrag = False
@@ -127,7 +138,7 @@ def main():
             player.inventory.displayItem(mousePos, slotItem) # displays item relative to player's mouse
 
         # displays time
-        renderTime()
+        renderTime(weather)
 
 
         for event in pygame.event.get():
