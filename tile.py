@@ -14,7 +14,7 @@ def getTileImg(tilemap, row, col):
 
 def getCropImg(tilemap, row, col):
 
-    stage = tilemap[row][col][2]
+    stage = tilemap[row][col][2] # gets the stage of the crop
 
     tile = tilemap[row][col][1][stage] # accesses crop from array
 
@@ -31,6 +31,7 @@ def renderFarmMap(newDay=False):
             
             farmMap.blit(tileImg, (col*72, row*72))
 
+            # checks if there is a crop
             if tilemap[row][col][1] != None:
 
                 if newDay == True:
@@ -45,7 +46,6 @@ def renderFarmMap(newDay=False):
                     if tile[1] != "3" and tilemap[row][col][0] == "WD":
                         stage += 1
                         tilemap[row][col][2] = stage
-                        tilemap[row][col][0] = "TD"
  
                 cropImg = getCropImg(tilemap, row, col)
 
@@ -54,7 +54,7 @@ def renderFarmMap(newDay=False):
 
             if newDay:
                 if tilemap[row][col][0] == "WD":
-                    tilemap[row][col][0] = "TD"
+                    tilemap[row][col][0] = "TD" # resets all watered tiles to unwatered
     
     return farmMap
 
