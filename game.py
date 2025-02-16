@@ -21,9 +21,11 @@ def renderTime():
     gameHour = (START_HOUR + int(elapsedGameTime // 3600)) % 24
     gameMinute = int((START_MINUTE + (elapsedGameTime % 3600) // 60) % 60)
 
+    date = START_DATE
+
     # Format in-game time as hh:mm
     timeString = f"Time: {gameHour:02}:{gameMinute:02}"
-    dateString = "Date: Spring 1"
+    dateString = f"Date: Spring {date}"
     moneyString = "Money: 300"
     weatherString = "Weather: Sunny"
 
@@ -42,6 +44,13 @@ def renderTime():
 
     pygame.draw.rect(SCREEN, DARK_GREY, pygame.Rect(-10, -5, 1100, 40), 1, 0)
 
+    if gameHour == 6:
+        date = (date + 1) % 24
+        print(date)
+        newDay()
+
+def newDay():
+    farmMap = tile.renderFarmMap(True)
 
 def main():
     running = True
@@ -64,8 +73,6 @@ def main():
     keyPressed = ""
     mouseDrag = False
     slotItem = None
-
-    #player.inventory.string()
 
     while running:
 
