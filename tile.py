@@ -21,7 +21,7 @@ def getCropImg(tilemap, row, col):
     return CROP_STAGES.get(tile, None) # if key is not found, grass middle tile is returned
 
 # creates farm map screen
-def renderFarmMap(weather, newDay=False):
+def renderFarmMap(weather=False, newDay=False):
 
     # displays tile images from tilemap onto surface
     for row in range(len(tilemap)):
@@ -62,7 +62,7 @@ def renderFarmMap(weather, newDay=False):
     return farmMap
 
 # tills the tile
-def till(player, mousePos, key):
+def till(player, mousePos, key, weather):
 
     global farmMap
 
@@ -75,8 +75,12 @@ def till(player, mousePos, key):
         #  checks if the player pressed the key x
         if key == "x":
 
-            # changes the tile to tilled land and displays it
-            tilemap[playerTileY][playerTileX][0] = "TD"
+            if weather == 2:
+                tilemap[playerTileY][playerTileX][0] = "WD"
+            
+            else:
+                # changes the tile to tilled land and displays it
+                tilemap[playerTileY][playerTileX][0] = "TD"
             farmMap = renderFarmMap()
 
         # checks to see if the player clicked on the mouse
@@ -85,8 +89,12 @@ def till(player, mousePos, key):
             # checks to see if the user had clicked the player
             if player.mouseOnPlayer(mousePos):
 
-                # changes the tile to tilled land and displays it
-                tilemap[playerTileY][playerTileX][0] = "TD"
+                if weather == 2:
+                    tilemap[playerTileY][playerTileX][0] = "WD"
+            
+                else:
+                    # changes the tile to tilled land and displays it
+                    tilemap[playerTileY][playerTileX][0] = "TD"
                 farmMap = renderFarmMap()
     
     player.animateTillWater()

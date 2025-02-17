@@ -134,7 +134,7 @@ class Player(Character):
          
         # creates an object as the inventory
         self.inventory = inventory.Inventory()
-        self.money = 500
+        self.money = 478
 
         # stores what action the player is currently doing
         self.action = "idle"
@@ -180,6 +180,9 @@ class Player(Character):
 
     def changeSpeed(self, speed):
         self.vel= speed
+
+    def getMoney(self):
+        return self.money
 
     # moves the position of the entity in the direction it is facing
     def move(self):
