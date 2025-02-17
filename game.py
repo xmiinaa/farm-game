@@ -87,6 +87,7 @@ def main():
     mouseDrag = False
     slotItem = None
 
+
     while running:
 
         # gets player direction
@@ -141,7 +142,6 @@ def main():
 
         # displays time
         renderTime(player)
-
 
         for event in pygame.event.get():
 

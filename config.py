@@ -23,6 +23,13 @@ DARK_GREY = (70, 70, 70)
 BLACK = (0, 0, 0)
 TEST = (0,0,70)
 
+GM_GREEN = (121,170,127)
+
+BROWN1 = (185,98,26)
+BROWN2 = (190,104,33)
+BROWN3 = (210,116,37)
+BROWN4 = (221,115,26)
+
 # text font
 OCR_TITLE = pygame.font.Font('Resources/OCR.ttf', 48)
 OCR_TEXT = pygame.font.Font('Resources/OCR.ttf', 38)
@@ -79,6 +86,24 @@ SCREEN = pygame.display.set_mode([WIDTH,HEIGHT])
 
 CLOCK = pygame.time.Clock()
 
+# load assets for player and npc houses
+
+MCHouseTopWall = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/MCTopWall.png"), (72,72))
+MCHouseMiddleWall = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/MCWallMiddle.png"), (72,72))
+MCHouseBottomWall = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/MCWallBottom.png"), (72,72))
+MCHouseMiddleFloor = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/MCfloor.png"), (72,72))
+
+window = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/window.png").convert_alpha(), (70,70))
+blueBed = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/bluebed.png").convert_alpha(), (60,100))
+MCDresser = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/lightdresser1.png").convert_alpha(), (40,46))
+purpleCurtains = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/purplecurtain.png").convert_alpha(), (80,80))
+MCbookshelf = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/lightbigbookcase.png").convert_alpha(), (84,104))
+bluecirclerug = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/bluecirclerug.png").convert_alpha(), (70,41))
+flowepot = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/flowerpot.png").convert_alpha(), (14,34))
+lampoff = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/lampoff.png").convert_alpha(), (32,100))
+lighttable = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/lighttable.png").convert_alpha(), (46,26))
+bluestool = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/bluestool.png").convert_alpha(), (22,34))
+
 # load player sprite sheet
 maleMCSpriteSheet = pygame.image.load("Resources/Images/sprites/maleMC-spritesheet.png").convert_alpha()
 femaleMCSpriteSheet = pygame.image.load("Resources/Images/sprites/femaleMC-spritesheet.png").convert_alpha()
@@ -127,7 +152,7 @@ SEED_TO_CROPS = { "potato seed": potatoGrowthStages, "turnip seed": turnipGrowth
 CROP_STAGES = { "P1": potatoList[0], "P2": potatoList[1], "P3": potatoList[2], "T1": turnipList[0], "T2": turnipList[1], "T3": turnipList[2], "O1": onionList[0], "O2": onionList[1], "O3": onionList[2], "R1": radishList[0], "R2": radishList[1], "R3": radishList[2], "C1": carrotList[0], "C2": carrotList[1], "C3": carrotList[2], "S1": spinachList[0], "S2": spinachList[1], "S3": spinachList[2]}
 
 # In-game time configuration
-START_HOUR = 5  # Start time is 6:00 AM
+START_HOUR = 6  # Start time is 6:00 AM
 START_MINUTE = 0
 DAY_DURATION = 15 * 60  # Total duration of a day in seconds (15 minutes)
 

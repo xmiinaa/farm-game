@@ -144,6 +144,8 @@ class Player(Character):
 
         # creates a rectangle of the entity.
         self.rect = pygame.Rect((x, y), (72, 72))
+
+        self.feetrect = pygame.Rect((x,y+52), (72, 20))
         
         # (lower x, lower y, upper x, upper y) boundaries
         self.moveBox = [130, 130, 820, 470]

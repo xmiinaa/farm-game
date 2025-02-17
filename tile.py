@@ -58,7 +58,52 @@ def renderFarmMap(weather=False, newDay=False):
                         tilemap[row][col][0] = "TD" # resets all watered tiles to unwatered
                 else:
                     tilemap[row][col][0] == "WD"
+
+    farmMap.blit(MCHouseTopWall, (432, 432))
+    farmMap.blit(MCHouseTopWall, (504, 432))
+    farmMap.blit(MCHouseTopWall, (576, 432))
+    farmMap.blit(MCHouseTopWall, (648, 432))
+
+    farmMap.blit(MCHouseBottomWall, (432, 504))
+    farmMap.blit(MCHouseBottomWall, (504, 504))
+    farmMap.blit(MCHouseBottomWall, (576, 504))
+    farmMap.blit(MCHouseBottomWall, (648, 504))
+
+    farmMap.blit(MCHouseMiddleFloor, (432, 574))
+    farmMap.blit(MCHouseMiddleFloor, (504, 574))
+    farmMap.blit(MCHouseMiddleFloor, (576, 574))
+    farmMap.blit(MCHouseMiddleFloor, (648, 574))
+
+    farmMap.blit(MCHouseMiddleFloor, (432, 644))
+    farmMap.blit(MCHouseMiddleFloor, (504, 644))
+    farmMap.blit(MCHouseMiddleFloor, (576, 644))
+    farmMap.blit(MCHouseMiddleFloor, (648, 644))
+
+    farmMap.blit(MCHouseMiddleFloor, (432, 714))
+    farmMap.blit(MCHouseMiddleFloor, (504, 714))
+    farmMap.blit(MCHouseMiddleFloor, (576, 714))
+    farmMap.blit(MCHouseMiddleFloor, (648, 714))
+
+    farmMap.blit(window, (530, 460))
+    farmMap.blit(purpleCurtains, (525, 455))
+    farmMap.blit(blueBed, (440, 535))
+    farmMap.blit(MCDresser, (510, 545))
+    farmMap.blit(MCbookshelf, (625, 495))
+    farmMap.blit(bluecirclerug, (435, 640))
+    farmMap.blit(flowepot, (522, 520))
+
+
+    pygame.draw.rect(farmMap, BROWN1, pygame.Rect(430, 430, 292, 356), 2)
+    pygame.draw.rect(farmMap, BROWN2, pygame.Rect(428, 428, 296, 360), 2)
+    pygame.draw.rect(farmMap, BROWN3, pygame.Rect(426, 426, 300, 364), 2)
+    pygame.draw.rect(farmMap, BROWN4, pygame.Rect(424, 424, 304, 368), 2)
+    pygame.draw.rect(farmMap, BROWN3, pygame.Rect(422, 422, 308, 372), 2)
+    pygame.draw.rect(farmMap, BROWN2, pygame.Rect(420, 420, 312, 376), 2)
+    pygame.draw.rect(farmMap, BROWN1, pygame.Rect(418, 418, 316, 380), 2)
+
+    pygame.draw.rect(farmMap, GM_GREEN, pygame.Rect(522, 785, 100, 14))
     
+
     return farmMap
 
 # tills the tile
