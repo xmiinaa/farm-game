@@ -32,9 +32,16 @@ class Entity():
 
     def getMapPos(self):
         return self.mapPos
+    
+    def changeMapPos(self, x, y):
+        self.mapPos = [x,y]
 
     def getPosition(self):
         return self.rect.x, self.rect.y
+    
+    def setPosition(self, x, y):
+        self.rect.x = x
+        self.rect.y = y
     
     # moves the position of the entity in the direction it is facing
     def move(self):

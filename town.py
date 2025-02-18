@@ -1,6 +1,6 @@
 import pygame
 from config import *
-import Player, game, sys
+import Player, game, sys, farm
 
 # returns tile image of from a specific index of tilemap array
 def getTileImg(tilemap, row, col):
@@ -19,6 +19,8 @@ def renderTownMap():
             tileImg = getTileImg(townTileMap, row, col) # gets image to display
             
             townMap.blit(tileImg, (col*72, row*72))
+    
+    return townMap
 
 def checkEdgeOfTown(player):
     # gets the tile position of the player
@@ -29,13 +31,17 @@ def checkEdgeOfTown(player):
     else:
         return False
 
-def main(player):
-    
-    # gets co-ordinates of camera
-    cameraPos = player.getMapPos()
+def main(player, fromFarm=False):
 
     # creates the farmMap
-    farmMap = renderTownMap()
+    townMap = renderTownMap()
+
+    if fromFarm:
+        player.changeMapPos(180, 0)
+        player.setPosition(40, 300)
+
+    # gets co-ordinates of camera
+    cameraPos = player.getMapPos()
 
     keyPressed = ""
     mouseDrag = False
@@ -54,7 +60,7 @@ def main(player):
         SCREEN.blit(townMap, (cameraPos[0]-180, cameraPos[1]-360))
 
         if checkEdgeOfTown(player) == True:
-            game.main()
+            farm.main(True)
 
         # checks if the player is moving and they are not in another action, and displays it appropiately if they are
         if player.isMoving() and player.isActive() == False:

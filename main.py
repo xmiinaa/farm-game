@@ -1,5 +1,5 @@
 # imports the pygame library, and oher libraries used and needed in program
-import pygame, database, config, menu, game
+import pygame, database, config, menu, farm
 
 # initiailses the pygame library so it can be used
 pygame.init()
@@ -13,4 +13,4 @@ if __name__ == "__main__":
     config.initialise()
 
     # calls the loops that displays the first screen
-    game.main()
+    farm.main()
