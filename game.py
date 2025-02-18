@@ -3,10 +3,10 @@ from config import *
 import sys
 import Player
 import tile
-import random
+import random, town
 
 # this would not be set in real game, but rather obtained from the database
-chosenCharacter = "female"
+chosenCharacter = "male"
 weather = 0
 
 def renderTime(player):
@@ -98,6 +98,9 @@ def main():
 
         # displays background tiles
         SCREEN.blit(farmMap, (cameraPos[0]-180, cameraPos[1]-360))
+
+        if tile.checkEdgeOfFarm(player) == True:
+            town.main(player)
 
         # checks if the player is moving and they are not in another action, and displays it appropiately if they are
         if player.isMoving() and player.isActive() == False:
