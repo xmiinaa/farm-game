@@ -2,6 +2,7 @@ import pygame
 from config import *
 from game import *
 from Player import *
+from furniture import *
 
 plantingDone = False
 
@@ -280,4 +281,8 @@ tilemap = [
 
 # creates empty surface 
 farmMap = pygame.Surface((1800, 1440))
-        
+
+window
+purpleCurtains
+blueBed 
+MCDresser

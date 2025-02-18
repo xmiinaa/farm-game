@@ -140,6 +140,8 @@ class Player(Character):
         self.action = "idle"
         self.active = False
 
+        self.location = "farm"
+
         self.flag = False
 
         # creates a rectangle of the entity.
@@ -185,6 +187,12 @@ class Player(Character):
 
     def getMoney(self):
         return self.money
+    
+    def checkToMoveFarm(self):
+        canMove = True
+        if 418 < self.feetrect.x < 432 and 418 < self.feetrect.y < 432:
+            canMove = False
+        return canMove
 
     # moves the position of the entity in the direction it is facing
     def move(self):
@@ -196,7 +204,10 @@ class Player(Character):
 
                 # checks if the player is at the top edge of the screen
                 if self.mapPos[1] >= 360:
-                    self.rect.y = max(0, self.rect.y-self.vel) # move character up
+
+                    if 418 < self.feetrect.x < 382 and 418 < self.feetrect.y < 432 == False: 
+
+                        self.rect.y = max(0, self.rect.y-self.vel) # move character up
                 else:
                     self.mapPos[1] += self.vel # move screen up
             else:
