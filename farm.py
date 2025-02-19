@@ -22,6 +22,8 @@ def main(fromTown=False):
 
     global player
 
+    player.setLocation("Farm")
+
     if fromTown:
         player.changeMapPos(-540, 0)
         player.setPosition(970, 300)
@@ -40,8 +42,6 @@ def main(fromTown=False):
     slotItem = None
 
     while running:
-
-        #print(player.getPosition())
 
         # gets player direction
         direction = player.whichDirection()

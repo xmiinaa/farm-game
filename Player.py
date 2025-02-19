@@ -171,6 +171,12 @@ class Player(Character):
     def getFlag(self):
         return self.flag
     
+    def getLocation(self):
+        return self.location
+
+    def setLocation(self, newLocation):
+        self.location = newLocation
+    
     def getAction(self):
         return self.action
     
@@ -182,6 +188,14 @@ class Player(Character):
 
     def deactivate(self):
         self.active = False
+
+    def getCoordinates(self):
+
+        # gets the position of the player in relation to farmMap screen
+        worldX = self.rect.x - self.mapPos[0]
+        worldY = self.rect.y - self.mapPos[1]
+
+        return (worldX, worldY)
     
     def getItem(self):
         return self.item
@@ -195,21 +209,36 @@ class Player(Character):
     def getMoney(self):
         return self.money
     
-    def checkToMoveFarm(self):
+    def checkToMove(self, direction):
         canMove = True
-        if self.feetrect.colliderect(house):
-            print("colida")
-            canMove = False
+        position = self.getCoordinates()
+
+        if self.location == "Farm":
+
+            if direction == 0: # facing up
+                if (200 < position[0] < 510 and position[1] == 160) or ((190 < position[0] < 300 or 390 < position[0] < 510) and position[1] == 360) :
+                    canMove = False
+            
+            if direction == 1: # facing left
+                if (position[0] == 220 or position[0] == 520) and -40 < position[1] < 350:
+                    canMove = False
+            
+            if direction == 2: # facing down
+                if (175 < position[0] < 510 and position[1] == -40) or ((190 < position[0] < 300 or 390 < position[0] < 510) and 320 < position[1] < 330):
+                    canMove = False
+            
+            if direction == 3: # facing right
+                if (170 < position[0] < 180 or 470 < position[0] < 480) and -40 < position[1] < 350:
+                    canMove = False
+
         return canMove
 
     # moves the position of the entity in the direction it is facing
     def move(self):
 
-        canMove = self.checkToMoveFarm()
+        if self.direction == 0: # facing up
 
-        if canMove == True:
-
-            if self.direction == 0: # facing up
+            if self.checkToMove(self.direction) == True:
 
                 # checks if the co-ordinate is at the box border
                 if self.rect.y <= self.moveBox[1]:
@@ -218,12 +247,18 @@ class Player(Character):
                     if self.mapPos[1] >= 360:
     
                         self.rect.y = max(0, self.rect.y-self.vel) # move character up
+                        self.feetrect.y = self.rect.y
+
                     else:
                         self.mapPos[1] += self.vel # move screen up
                 else:
                     self.rect.y = max(0, self.rect.y-self.vel) # move character up
+                    self.feetrect.y = self.rect.y
 
-            if self.direction == 1: # facing left
+
+        if self.direction == 1: # facing left
+
+            if self.checkToMove(self.direction) == True:
 
                 # checks if the co-ordinate is at the box border
                 if self.rect.x <= self.moveBox[0]:
@@ -231,36 +266,50 @@ class Player(Character):
                     # checks if the player is at the left edge of the screen
                     if self.mapPos[0] >= 180:
                         self.rect.x = max(0, self.rect.x-self.vel) # move character left
+                        self.feetrect.x = self.rect.x
+
                     else:
                         self.mapPos[0] += self.vel # move screen left
                 else:
                     self.rect.x = max(0, self.rect.x-self.vel) # move character left
+                    self.feetrect.x = self.rect.x
 
-            if self.direction == 2: # facing down
+        if self.direction == 2: # facing down
+
+            if self.checkToMove(self.direction) == True:
 
                 # checks if the co-ordinate is at the box border
                 if self.rect.y >= self.moveBox[3]:
 
                     # checks if the player is at the bottom edge of the screen
-                    if self.mapPos[1] <= -360:
+                    if self.mapPos[1] <= -285:
                         self.rect.y = min(HEIGHT-110, self.rect.y+self.vel) # move character down
+                        #self.feetrect.y = self.rect.y
+
                     else:
                         self.mapPos[1] -= self.vel # move screen down
                 else:
                     self.rect.y = min(HEIGHT-110, self.rect.y+self.vel) # move character down
+                    #self.feetrect.y = self.rect.y
 
-            if self.direction == 3: # facing right
+
+        if self.direction == 3: # facing right
+
+            if self.checkToMove(self.direction) == True:
 
                 # checks if the co-ordinate is at the box border
                 if self.rect.x >= self.moveBox[2]:
+                    
                     # checks if the player is at the right edge of the screen
                     if self.mapPos[0] <= -540:
                         self.rect.x = min(WIDTH-90, self.rect.x+self.vel) # move character right
+                        self.feetrect.x = self.rect.x
                     
                     else:
                         self.mapPos[0] -= self.vel # move screen right
                 else:
                     self.rect.x = min(WIDTH-90, self.rect.x+self.vel) # move character right
+                    self.feetrect.x = self.rect.x
 
     # animates the player tilling or watering
     def animateTillWater(self):
@@ -343,4 +392,4 @@ class Player(Character):
         return self.inventory
 
 #house = pygame.Rect(417,417,318, 160)
-house = pygame.Rect(0,0,100, 100)
+house = pygame.Rect(0,0,50, 50)

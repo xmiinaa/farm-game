@@ -33,6 +33,8 @@ def checkEdgeOfTown(player):
 
 def main(player, fromFarm=False):
 
+    player.setLocation("Town")
+
     # creates the farmMap
     townMap = renderTownMap()
 

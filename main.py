@@ -9,7 +9,7 @@ if __name__ == "__main__":
     # sets up and creates the database if it has not yet been created
     database.startupDatabase()
 
-    # sets up sound / music
+    # sets up sound / music 
     config.initialise()
 
     # calls the loops that displays the first screen
