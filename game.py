@@ -4,6 +4,7 @@ import sys
 import Player
 import tile
 import random, town
+import numpy as np
 
 weather = 0
 lastUpdatedDay = 0
@@ -53,13 +54,20 @@ def renderTime(player):
 
     flag = False
     if gameHour == 6 and gameMinute == 00 and currentDay != lastUpdatedDay:
-        newDay()
+        newDay(SEASONS[currentSeason])
         lastUpdatedDay = currentDay
 
-def newDay():
+def newDay(currentSeason):
     global weather
 
-    weather = random.randint(0,2)
+    if currentSeason == "Spring":
+        weather = np.random.choice([0,1,2], p=[0.3, 0.4, 0.3])
+    elif currentSeason == "Summer":
+        weather = np.random.choice([0,1,2], p=[0.3, 0.5, 0.2])
+    elif currentSeason == "Autumn":
+        weather = np.random.choice([0,1,2], p=[0.3, 0.3, 0.4])
+    elif currentSeason == "Winter":
+        weather = np.random.choice([0,1,2], p=[0.2, 0.2, 0.6])
 
     tile.itsanewDay(WEATHERS[weather])
 
