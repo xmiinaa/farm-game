@@ -58,6 +58,8 @@ def newDay(flag):
     global weather
     if not flag:
         weather = random.randint(0,2)
-        print(weather)
         flag = True
-        farmMap = tile.renderFarmMap(weather, True)
+
+        tile.itsanewDay(WEATHERS[weather])
+
+        farmMap = tile.renderFarmMap()

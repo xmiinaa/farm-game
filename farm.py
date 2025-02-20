@@ -8,7 +8,6 @@ import game
 
 # this would not be set in real game, but rather obtained from the database
 chosenCharacter = "male"
-weather = 0
 
 # creates player object depending on the variable, chosenCharacter
 if chosenCharacter == "male":
@@ -34,7 +33,7 @@ def main(fromTown=False):
     cameraPos = player.getMapPos()
 
     # creates the farmMap
-    farmMap = tile.renderFarmMap(weather)
+    farmMap = tile.renderFarmMap()
 
     # displays time
     game.renderTime(player)
@@ -72,7 +71,7 @@ def main(fromTown=False):
                 if player.getAction() == "till":
     
                     # tills the farm tile
-                    tile.till(player, mousePos, keyPressed, weather)
+                    tile.till(player, mousePos, keyPressed, game.weather)
                 
                 elif player.getAction() == "untill":
 
