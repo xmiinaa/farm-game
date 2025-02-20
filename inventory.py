@@ -61,20 +61,17 @@ class Inventory:
         self.slots[9].amount = 1
 
         self.slots[0].type = potatoSeed
-        self.slots[0].amount = 15
+        self.slots[0].amount = 5
         self.slots[1].type = turnipSeed
-        self.slots[1].amount = 15
+        self.slots[1].amount = 5
         self.slots[2].type = onionSeed
-        self.slots[2].amount = 15
+        self.slots[2].amount = 5
         self.slots[3].type = radishSeed
-        self.slots[3].amount = 15
+        self.slots[3].amount = 5
         self.slots[4].type = carrotSeed
-        self.slots[4].amount = 15
+        self.slots[4].amount = 5
         self.slots[5].type = spinachSeed
-        self.slots[5].amount = 15
-
-        self.slots[24].type = hoe
-        self.slots[24].amount = 13
+        self.slots[5].amount = 5
     
     # displays the inventory main 10 slots
     def draw(self):
@@ -209,12 +206,11 @@ class Inventory:
             self.slots[swapSlot].amount = tempAmount
 
 
-
     # adds a certain amount of an item to the inentory, returning any excess items it couldn't add    
     def add(self, itemType, amount=1): # defeault amount is 1
 
         # first sweep for any open stacks
-        if ItemType.stackSize > 1:
+        if itemType.stackSize > 1:
             for slot in self.slots:
                 if slot.type == itemType:
                     addAmo = amount
@@ -327,3 +323,5 @@ carrotSeed = ItemType("carrot seed", carrotObject.getImage(0, 1, 16, 16, 3), 300
 carrot = ItemType("carrot", carrotObject.getImage(1, 1, 16, 16, 3), 500, 400)
 spinachSeed = ItemType("spinach seed", spinachObject.getImage(0, 1, 16, 16, 3), 300, 200)
 spinach = ItemType("spinach", spinachObject.getImage(1, 1, 16, 16, 3), 500, 400)
+
+CROP_STAGE3_TO_CROP = { "P3": potato, "T3": turnip, "O3": onion, "R3": radish, "C3": carrot, "S3": spinach}

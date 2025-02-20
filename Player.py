@@ -233,6 +233,14 @@ class Player(Character):
 
         return canMove
 
+    # checks if the user is near their bed
+    def nearBed(self):
+        position = self.getCoordinates()
+        if self.location == "Farm" and 210 < position[0] < 320 and 140 < position[1] < 210:
+                return True
+        else:
+            return False
+
     # moves the position of the entity in the direction it is facing
     def move(self):
 

@@ -3,6 +3,7 @@ from config import *
 from game import *
 from Player import *
 from furniture import *
+from inventory import *
 
 plantingDone = False
 
@@ -161,6 +162,7 @@ def untill(player, mousePos, key):
             # changes the tile to untilled land and displays it
             tilemap[playerTileY][playerTileX][0] = "GM"
             tilemap[playerTileY][playerTileX][1] = None
+            tilemap[playerTileY][playerTileX][2] = None
             farmMap = renderFarmMap()
 
         # checks to see if the player clicked on the mouse
@@ -172,6 +174,7 @@ def untill(player, mousePos, key):
                 # changes the tile to untilled land and displays it
                 tilemap[playerTileY][playerTileX][0] = "GM"
                 tilemap[playerTileY][playerTileX][1] = None
+                tilemap[playerTileY][playerTileX][2] = None
                 farmMap = renderFarmMap()
     
     # animates the player
@@ -208,6 +211,7 @@ def water(player, mousePos, key):
     # animates the player
     player.animateTillWater()
 
+# plants seeds in a tile
 def plant(player, mousePos, key):
     global farmMap, plantingDone
 
@@ -223,7 +227,7 @@ def plant(player, mousePos, key):
         if key == "x" and player.isActive():
 
             # calculates the code for the crop
-            cropList = SEED_TO_CROPS.get(playerItem, None)
+            cropList = SEED_TO_CROP_STAGES.get(playerItem, None)
 
             tilemap[playerTileY][playerTileX][1] = cropList
             tilemap[playerTileY][playerTileX][2] = 0
@@ -241,7 +245,7 @@ def plant(player, mousePos, key):
             if player.mouseOnPlayer(mousePos):
 
                 # calculates the code for the crop
-                cropList = SEED_TO_CROPS.get(playerItem, None)
+                cropList = SEED_TO_CROP_STAGES.get(playerItem, None)
 
                 tilemap[playerTileY][playerTileX][1] = cropList
                 tilemap[playerTileY][playerTileX][2] = 0
@@ -254,6 +258,48 @@ def plant(player, mousePos, key):
                     player.onFlag()
 
     player.animatePlanting()
+
+# restores the tile back to its original state
+def harvest(player, mousePos, key):
+
+    global farmMap
+
+    # gets the tile position of the player
+    playerTileX, playerTileY = player.getTilePosition()
+
+    # checks to see if the tile has a crop planted
+    if tilemap[playerTileY][playerTileX][1] != None:
+
+        stage = tilemap[playerTileY][playerTileX][2] # gets the current stage of the crop
+
+        if tilemap[playerTileY][playerTileX][1][stage][1] == "3": # checks if the crop is at its last stage
+
+            #  checks if the player pressed the key x or has clicked on the player
+            if key == "x" or (key == "mouse" and player.mouseOnPlayer(mousePos)):
+
+                cropStage = tilemap[playerTileY][playerTileX][1][stage]
+
+                crop = CROP_STAGE3_TO_CROP.get(cropStage, None)
+
+                player.inventory.add(crop)
+
+                # changes the tile to untilled land and displays it
+                tilemap[playerTileY][playerTileX][0] = "GM"
+                tilemap[playerTileY][playerTileX][1] = None
+                tilemap[playerTileY][playerTileX][2] = None
+                farmMap = renderFarmMap()
+            
+            else:
+                player.deactivate()
+                player.changeAction("idle") # resets player to idle state
+    
+        else:
+            player.deactivate()
+            player.changeAction("idle") # resets player to idle state
+
+    else:
+        player.deactivate()
+        player.changeAction("idle") # resets player to idle state
 
 def checkEdgeOfFarm(player):
     # gets the tile position of the player
@@ -271,13 +317,13 @@ tilemap = [
     [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
     [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
     [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
-    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
-    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
-    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
-    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
-    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["DE", None, None]],
-    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["DE", None, None]],
-    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
+    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
+    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
+    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
+    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
+    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["DE", None, None]],
+    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["DE", None, None]],
+    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
     [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
     [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
     [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],

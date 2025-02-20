@@ -22,6 +22,8 @@ def main(fromTown=False):
 
     global player
 
+    pause = False
+
     player.setLocation("Farm")
 
     if fromTown:
@@ -86,6 +88,10 @@ def main(fromTown=False):
 
                     tile.plant(player, mousePos, keyPressed)
 
+                elif player.getAction() == "harvesting":
+
+                    tile.harvest(player, mousePos, keyPressed)
+
         # displays the player in its idle state
         else:
             player.drawIdle()
@@ -97,7 +103,11 @@ def main(fromTown=False):
             player.inventory.displayItem(mousePos, slotItem) # displays item relative to player's mouse
 
         # displays time
-        game.renderTime(player)
+        if not pause:
+            game.renderTime(player)
+
+        if player.nearBed():
+            print("ok")
 
         for event in pygame.event.get():
 
@@ -135,36 +145,39 @@ def main(fromTown=False):
 
                         # gets the item that the player is currently holding
                         item = player.inventory.getItem()
-                    
-                        if item == "hoe" or item == "scythe" or item == "waterCan" or "seed" in item:
 
-                            # ensures the player is not already engaged in another action
-                            if player.isActive() == False:
+                        # ensures the player is not already engaged in another action
+                        if player.isActive() == False:
 
-                                player.resetAnimation() # sets animation back to 0
-                                player.activate()
+                            player.resetAnimation() # sets animation back to 0
+                            player.activate()
 
-                                if item == "hoe":
+                            if item == "hoe":
 
-                                    # changes the attribute as appropiate
-                                    player.changeAction("till")
+                                # changes the attribute as appropiate
+                                player.changeAction("till")
+                            
+                            if item == "scythe":
+
+                                # changes the attribute as appropiate
+                                player.changeAction("untill")
+                            
+                            if item == "waterCan":
+
+                                # changes the attribute as appropiate
+                                player.changeAction("water")
+                            
+                            if "seed" in item:
+
+                                player.offFlag()
                                 
-                                if item == "scythe":
+                                # changes the attribute as appropiate
+                                player.changeAction("planting")
 
-                                    # changes the attribute as appropiate
-                                    player.changeAction("untill")
-                                
-                                if item == "waterCan":
+                            if item == "None":
 
-                                    # changes the attribute as appropiate
-                                    player.changeAction("water")
-                                
-                                if "seed" in item:
-
-                                    player.offFlag()
-                                    
-                                    # changes the attribute as appropiate
-                                    player.changeAction("planting")
+                                # changes the attribute as appropiate
+                                player.changeAction("harvesting")
                 
                 if keys[pygame.K_e]:
                     player.inventory.openCloseInventory()
@@ -199,7 +212,7 @@ def main(fromTown=False):
 
                 if not keys[pygame.K_a] and not keys[pygame.K_d] and not keys[pygame.K_w] and not keys[pygame.K_s]:
                     player.setMoving(False)
-    
+
             # checks if he player has clicked on the mouse
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
