@@ -6,10 +6,11 @@ import tile
 import random, town
 
 weather = 0
+lastUpdatedDay = 0
 
 def renderTime(player):
 
-    global elapsedRealTime, weather
+    global elapsedRealTime, weather, lastUpdatedDay
 
     # Get the time elapsed since the last frame in milliseconds
     deltaTime = CLOCK.get_time()
@@ -51,15 +52,15 @@ def renderTime(player):
     pygame.draw.rect(SCREEN, DARK_GREY, pygame.Rect(-10, -5, 1100, 40), 1, 0)
 
     flag = False
-    if gameHour == 6 and gameMinute == 00:
-        newDay(flag)
+    if gameHour == 6 and gameMinute == 00 and currentDay != lastUpdatedDay:
+        newDay()
+        lastUpdatedDay = currentDay
 
-def newDay(flag):
+def newDay():
     global weather
-    if not flag:
-        weather = random.randint(0,2)
-        flag = True
 
-        tile.itsanewDay(WEATHERS[weather])
+    weather = random.randint(0,2)
 
-        farmMap = tile.renderFarmMap()
+    tile.itsanewDay(WEATHERS[weather])
+
+    farmMap = tile.renderFarmMap()
