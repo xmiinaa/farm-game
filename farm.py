@@ -146,38 +146,41 @@ def main(fromTown=False):
                         # gets the item that the player is currently holding
                         item = player.inventory.getItem()
 
-                        # ensures the player is not already engaged in another action
-                        if player.isActive() == False:
+                        if item == "hoe" or item == "scythe" or item == "waterCan" or "seed" in item or item == "None":
 
-                            player.resetAnimation() # sets animation back to 0
-                            player.activate()
+                            # ensures the player is not already engaged in another action
+                            if player.isActive() == False:
 
-                            if item == "hoe":
+                                player.resetAnimation() # sets animation back to 0
+                                player.activate()
 
-                                # changes the attribute as appropiate
-                                player.changeAction("till")
-                            
-                            if item == "scythe":
+                                if item == "hoe":
 
-                                # changes the attribute as appropiate
-                                player.changeAction("untill")
-                            
-                            if item == "waterCan":
-
-                                # changes the attribute as appropiate
-                                player.changeAction("water")
-                            
-                            if "seed" in item:
-
-                                player.offFlag()
+                                    # changes the attribute as appropiate
+                                    player.changeAction("till")
                                 
-                                # changes the attribute as appropiate
-                                player.changeAction("planting")
+                                if item == "scythe":
 
-                            if item == "None":
+                                    # changes the attribute as appropiate
+                                    player.changeAction("untill")
+                                
+                                if item == "waterCan":
 
-                                # changes the attribute as appropiate
-                                player.changeAction("harvesting")
+                                    # changes the attribute as appropiate
+                                    player.changeAction("water")
+                                
+                                if "seed" in item:
+
+                                    player.offFlag()
+                                    
+                                    # changes the attribute as appropiate
+                                    player.changeAction("planting")
+
+                                if item == "None":
+
+                                    # changes the attribute as appropiate
+                                    player.changeAction("harvesting")
+                            
                 
                 if keys[pygame.K_e]:
                     player.inventory.openCloseInventory()
