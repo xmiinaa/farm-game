@@ -41,8 +41,12 @@ def renderFarmMap():
 
                 if cropImg is not None:
                     farmMap.blit(cropImg, ((col*72) +10, (row*72) -30))
+    
+    displayMCHouse()
+    
+    return farmMap
 
-
+def displayMCHouse():
     farmMap.blit(MCHouseTopWall, (432, 432))
     farmMap.blit(MCHouseTopWall, (504, 432))
     farmMap.blit(MCHouseTopWall, (576, 432))
@@ -85,9 +89,7 @@ def renderFarmMap():
     pygame.draw.rect(farmMap, BROWN1, pygame.Rect(418, 418, 316, 380), 2)
 
     pygame.draw.rect(farmMap, GM_GREEN, pygame.Rect(522, 785, 100, 14))
-    
 
-    return farmMap
 
 def itsanewDay(weather):
     
