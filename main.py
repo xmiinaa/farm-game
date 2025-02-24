@@ -12,5 +12,5 @@ if __name__ == "__main__":
     # sets up sound / music 
     config.initialise()
 
-    # calls the loops that displays the first screen
+    # calls the loops that displdays the first screen
     farm.main()

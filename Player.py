@@ -112,16 +112,21 @@ class Character(Entity):
     def changeDirection(self, direction):
         self.direction = direction
 
+    def getName(self):
+        return self.name
+    
     # displays character image in direction it is facing
     def drawIdle(self):
         
         from town import townMap
-        
+
         x, y = self.getCoordinates()
         townMap.blit(self.idleList[self.direction], (x, y))
 
     # animates character moving in direction it is facing 
     def animateWalk(self):
+
+        from town import townMap
 
         # update animation
         currentTime = pygame.time.get_ticks()
@@ -138,7 +143,7 @@ class Character(Entity):
                 self.frame = 0
 
         # show frame image
-        SCREEN.blit(self.walkList[self.direction][self.frame], (self.rect.x, self.rect.y ))
+        townMap.blit(self.walkList[self.direction][self.frame], (self.rect.x, self.rect.y ))
     
     def getCoordinates(self):
 
@@ -148,6 +153,12 @@ class Character(Entity):
 
         return (worldX, worldY)
     
+    def nearCharacter(self, x, y):
+        characterX, characterY = self.getCoordinates()
+        if characterX - 60 < x < characterX + 90 and characterY - 60 < y < characterY + 90:
+            return True
+        else:
+            return False
 
 class Player(Character):
         
@@ -326,6 +337,26 @@ class Player(Character):
                     self.rect.x = min(WIDTH-90, self.rect.x+self.vel) # move character right
                     self.feetrect.x = self.rect.x
 
+    # animates character moving in direction it is facing 
+    def animateWalk(self):
+
+        # update animation
+        currentTime = pygame.time.get_ticks()
+
+        # checks to see if time last updated has exeeded animation cooldown time
+        if currentTime - self.lastUpdate >= self.animationCooldown:
+
+            # updates frame and sets new last updated time to current time
+            self.frame = self.frame + 1  # loops back to first frame
+            self.lastUpdate = currentTime
+
+            # ensures the frames loops back to the first frame if it reaches the end
+            if self.frame >= len(self.walkList[self.direction]):
+                self.frame = 0
+
+        # show frame image
+        SCREEN.blit(self.walkList[self.direction][self.frame], (self.rect.x, self.rect.y ))
+
     # animates the player tilling or watering
     def animateTillWater(self):
         
@@ -406,8 +437,8 @@ class Player(Character):
     def getInventory(self):
         return self.inventory
 
-annabelle = Character(200, 200, annabelleSpriteSheet, "Annabelle")
-wesley = Character(300, 200, wesleySpriteSheet, "Wesley")
-andre = Character(400, 200, andreSpriteSheet, "Andre")
-joan = Character(500, 200, joanSpriteSheet, "Joan")
-shayla = Character(600, 200, shaylaSpriteSheet, "Shayla")
+annabelle = Character(400, 335, annabelleSpriteSheet, "Annabelle")
+wesley = Character(1360, 410, wesleySpriteSheet, "Wesley")
+andre = Character(320, 980, andreSpriteSheet, "Andre")
+joan = Character(1450, 1080, joanSpriteSheet, "Joan")
+shayla = Character(810, 780, shaylaSpriteSheet, "Shayla")

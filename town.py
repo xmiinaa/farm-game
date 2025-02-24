@@ -288,6 +288,8 @@ def main(player, fromFarm=False):
         # displays background tiles
         SCREEN.blit(townMap, (cameraPos[0]-180, cameraPos[1]-360))
 
+        #print(player.getCoordinates())
+
         if checkEdgeOfTown(player) == True:
             farm.main(True)
 
@@ -306,6 +308,8 @@ def main(player, fromFarm=False):
         joan.drawIdle()
         andre.drawIdle()
         annabelle.drawIdle()
+
+        x,y = player.getCoordinates()
         
         player.inventory.draw()
         player.inventory.hover(mousePos)
@@ -340,6 +344,12 @@ def main(player, fromFarm=False):
 
                     elif keys[pygame.K_s]:
                         player.changeDirection(2)
+                    
+                    if keys[pygame.K_x]:
+
+                        for npc in [shayla, wesley, joan, andre, annabelle]:
+                            if npc.nearCharacter(x+200, y+400):
+                                print(npc.getName())
 
                     if keys[pygame.K_LSHIFT]:
                         player.changeSpeed(6)
