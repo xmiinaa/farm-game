@@ -72,8 +72,8 @@ def displayMCHouse():
     farmMap.blit(MCHouseMiddleFloor, (576, 714))
     farmMap.blit(MCHouseMiddleFloor, (648, 714))
 
-    farmMap.blit(window, (530, 460))
-    farmMap.blit(purpleCurtains, (525, 455))
+    farmMap.blit(window1, (530, 460))
+    farmMap.blit(blueCurtains, (525, 455))
     farmMap.blit(blueBed, (440, 535))
     farmMap.blit(MCDresser, (510, 545))
     farmMap.blit(MCbookshelf, (625, 495))
@@ -346,8 +346,3 @@ tilemap = [
 # creates empty surface 
 farmMap = pygame.Surface((1800, 1440))
 house = pygame.Rect(417,417, 318, 160)
-
-window
-purpleCurtains
-blueBed 
-MCDresser

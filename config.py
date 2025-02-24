@@ -89,27 +89,75 @@ CLOCK = pygame.time.Clock()
 # load assets for player and npc houses
 
 MCHouseTopWall = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/MCTopWall.png"), (72,72))
-MCHouseMiddleWall = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/MCWallMiddle.png"), (72,72))
 MCHouseBottomWall = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/MCWallBottom.png"), (72,72))
 MCHouseMiddleFloor = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/MCfloor.png"), (72,72))
 
-window = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/window.png").convert_alpha(), (70,70))
+annaHouseTopWall = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/AnnaWallTop.png"), (72,72))
+annaHouseBottomWall = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/AnnaWallBottom.png"), (72,72))
+annaHouseMiddleFloor = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/AnnaFloor.png"), (72,72))
+
+wesleyHouseTopWall = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/WesleyWallTop.png"), (72,72))
+wesleyHouseBottomWall = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/WesleyWallBottom.png"), (72,72))
+wesleyHouseMiddleFloor = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/WesleyFloor.png"), (72,72))
+
+andreHouseTopWall = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/AndreWallTop.png"), (72,72))
+andreHouseBottomWall = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/AndreWallBottom.png"), (72,72))
+andreHouseMiddleFloor = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/AndreFloor.png"), (72,72))
+
+shaylaHouseTopWall = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/ShaylaWallTop.png"), (72,72))
+shaylaHouseBottomWall = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/ShaylaWallBottom.png"), (72,72))
+shaylaHouseMiddleFloor = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/ShaylaFloor.png"), (72,72))
+
+joanHouseTopWall = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/JoanWallTop.png"), (72,72))
+joanHouseBottomWall = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/JoanWallBottom.png"), (72,72))
+joanHouseMiddleFloor = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/JoanFloor.png"), (72,72))
+
+window1 = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/window.png").convert_alpha(), (70,70))
+window2 = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/window2.png").convert_alpha(), (70,70))
+
+
 blueBed = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/bluebed.png").convert_alpha(), (60,100))
+bigblueBed = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/lightbluebed.png").convert_alpha(), (95,125))
+orangeBed = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/darkorangebed.png").convert_alpha(), (95,125))
+redBed = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/darkredbed.png").convert_alpha(), (60,100))
+darkpinkBed = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/darkpinkbed.png").convert_alpha(), (60,100))
+lightpinkBed = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/pinkbed.png").convert_alpha(), (60,100))
+
 MCDresser = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/lightdresser1.png").convert_alpha(), (40,46))
-purpleCurtains = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/purplecurtain.png").convert_alpha(), (80,80))
-MCbookshelf = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/lightbigbookcase.png").convert_alpha(), (84,104))
+shaylaDresser = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/darkdresser1.png").convert_alpha(), (40,46))
+annaDresser = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/lightdresser1.png").convert_alpha(), (40,46))
+wesleyDresser = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/darkdresser2.png").convert_alpha(), (40,46))
+andreDresser = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/darkgametable.png").convert_alpha(), (40,46))
+joanDresser = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/lightdresser2.png").convert_alpha(), (40,46))
+
+blueCurtains = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/purplecurtain.png").convert_alpha(), (80,80))
+darkbeigeCurtains = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/darkbeigecurtain.png").convert_alpha(), (100,80))
+darkredCurtains = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/darkredcurtain2.png").convert_alpha(), (100,80))
+redCurtains = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/redcurtain.png").convert_alpha(), (80,80))
+beigeCurtains = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/beigecurtain.png").convert_alpha(), (80,80))
+
 bluecirclerug = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/bluecirclerug.png").convert_alpha(), (70,41))
+bluesquarerug = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/bluesquarerug.png").convert_alpha(), (70,41))
+pinkcirclerug = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/pinkcirclerug.png").convert_alpha(), (70,41))
+pinksquarerug = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/pinksquarerug.png").convert_alpha(), (70,41))
+redcirclerug = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/redcirclerug.png").convert_alpha(), (70,41))
+orangecirclerug = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/orangecirclerug.png").convert_alpha(), (70,41))
+
 flowepot = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/flowerpot.png").convert_alpha(), (14,34))
-lampoff = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/lampoff.png").convert_alpha(), (32,100))
-lighttable = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/lighttable.png").convert_alpha(), (46,26))
-bluestool = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/bluestool.png").convert_alpha(), (22,34))
+
+MCbookshelf = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/lightbigbookcase.png").convert_alpha(), (84,104))
+darkdressingtable = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/darkdressingtable.png").convert_alpha(), (84,104))
+lightdressingtable = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/lightdressingtable.png").convert_alpha(), (84,104))
+redstool = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/darkredstool.png").convert_alpha(), (84,104))
+smalllightbookcase = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/smalllightbookcase.png").convert_alpha(), (84,104))
+MCbookshelf = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/lightbigbookcase.png").convert_alpha(), (84,104))
 
 # load player sprite sheet
 maleMCSpriteSheet = pygame.image.load("Resources/Images/sprites/maleMC-spritesheet.png").convert_alpha()
 femaleMCSpriteSheet = pygame.image.load("Resources/Images/sprites/femaleMC-spritesheet.png").convert_alpha()
 andreSpriteSheet = pygame.image.load("Resources/Images/sprites/andre-spritesheet.png").convert_alpha()
 annabelleSpriteSheet = pygame.image.load("Resources/Images/sprites/annabelle-spritesheet.png").convert_alpha()
-rosalineSpriteSheet = pygame.image.load("Resources/Images/sprites/rosaline-spritesheet.png").convert_alpha()
+joanSpriteSheet = pygame.image.load("Resources/Images/sprites/rosaline-spritesheet.png").convert_alpha()
 shaylaSpriteSheet = pygame.image.load("Resources/Images/sprites/shayla-spritesheet.png").convert_alpha()
 wesleySpriteSheet = pygame.image.load("Resources/Images/sprites/wesley-spritesheet.png").convert_alpha()
 
