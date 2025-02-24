@@ -3,7 +3,7 @@ from config import *
 import sys
 import Player
 import tile
-import random, town
+import town
 import game
 
 # this would not be set in real game, but rather obtained from the database

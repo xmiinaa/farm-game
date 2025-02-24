@@ -1,6 +1,7 @@
 import pygame
 from config import *
-import Player, game, sys, farm
+import game, sys, farm
+from Player import *
 
 # returns tile image of from a specific index of tilemap array
 def getTileImg(tilemap, row, col):
@@ -299,6 +300,12 @@ def main(player, fromFarm=False):
         # displays the player in its idle state
         else:
             player.drawIdle()
+
+        shayla.drawIdle()
+        wesley.drawIdle()
+        joan.drawIdle()
+        andre.drawIdle()
+        annabelle.drawIdle()
         
         player.inventory.draw()
         player.inventory.hover(mousePos)

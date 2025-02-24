@@ -46,7 +46,6 @@ class Entity():
     # moves the position of the entity in the direction it is facing
     def move(self):
 
-        #if 0 <= self.rect.x < len(tilemap[0]) and 0 <= self.rect.y < len(tilemap):
         if self.direction == 0: # facing up
             self.rect.y = max(0, self.rect.y-self.vel)
 
@@ -92,8 +91,14 @@ class Character(Entity):
         self.idleList = self.spritesheet.createIdleList()
         self.walkList, self.tillWaterList, self.plantList = self.spritesheet.createAnimationList()
 
+        # creates a rectangle of the entity.
+        self.rect = pygame.Rect((x, y), (72, 72))
+
         # player is not moving at first
         self.moving = False
+
+        # (lower x, lower y, upper x, upper y) boundaries
+        self.moveBox = [130, 130, 820, 470]
     
     def isMoving(self):
         return self.moving
@@ -109,7 +114,11 @@ class Character(Entity):
 
     # displays character image in direction it is facing
     def drawIdle(self):
-        SCREEN.blit(self.idleList[self.direction], (self.rect.x, self.rect.y))
+        
+        from town import townMap
+        
+        x, y = self.getCoordinates()
+        townMap.blit(self.idleList[self.direction], (x, y))
 
     # animates character moving in direction it is facing 
     def animateWalk(self):
@@ -131,6 +140,14 @@ class Character(Entity):
         # show frame image
         SCREEN.blit(self.walkList[self.direction][self.frame], (self.rect.x, self.rect.y ))
     
+    def getCoordinates(self):
+
+        # gets the position of the player in relation to farmMap screen
+        worldX = self.rect.x - self.mapPos[0]
+        worldY = self.rect.y - self.mapPos[1]
+
+        return (worldX, worldY)
+    
 
 class Player(Character):
         
@@ -151,16 +168,14 @@ class Player(Character):
 
         self.flag = False
 
-        # creates a rectangle of the entity.
-        self.rect = pygame.Rect((x, y), (72, 72))
-
         self.feetrect = pygame.Rect((x,y+52), (72, 20))
-        
-        # (lower x, lower y, upper x, upper y) boundaries
-        self.moveBox = [130, 130, 820, 470]
     
     def changeAction(self, action):
         self.action = action
+
+    # displays character image in direction it is facing
+    def drawIdle(self):
+        SCREEN.blit(self.idleList[self.direction], (self.rect.x, self.rect.y))
     
     def onFlag(self):
         self.flag = True
@@ -188,14 +203,6 @@ class Player(Character):
 
     def deactivate(self):
         self.active = False
-
-    def getCoordinates(self):
-
-        # gets the position of the player in relation to farmMap screen
-        worldX = self.rect.x - self.mapPos[0]
-        worldY = self.rect.y - self.mapPos[1]
-
-        return (worldX, worldY)
     
     def getItem(self):
         return self.item
@@ -399,5 +406,8 @@ class Player(Character):
     def getInventory(self):
         return self.inventory
 
-#house = pygame.Rect(417,417,318, 160)
-house = pygame.Rect(0,0,50, 50)
+annabelle = Character(200, 200, annabelleSpriteSheet, "Annabelle")
+wesley = Character(300, 200, wesleySpriteSheet, "Wesley")
+andre = Character(400, 200, andreSpriteSheet, "Andre")
+joan = Character(500, 200, joanSpriteSheet, "Joan")
+shayla = Character(600, 200, shaylaSpriteSheet, "Shayla")
