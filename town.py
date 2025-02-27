@@ -276,6 +276,8 @@ def main(player, fromFarm=False):
     mouseDrag = False
     slotItem = None
 
+    dialogueOn = False
+
     running = True
     while running:
 
@@ -348,8 +350,11 @@ def main(player, fromFarm=False):
                     if keys[pygame.K_x]:
 
                         for npc in [shayla, wesley, joan, andre, annabelle]:
+
+                            # checks if the player is near the npc
                             if npc.nearCharacter(x+200, y+400):
                                 print(npc.getName())
+                                dialogue(npc.getName())
 
                     if keys[pygame.K_LSHIFT]:
                         player.changeSpeed(6)

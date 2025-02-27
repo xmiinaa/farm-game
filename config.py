@@ -211,6 +211,7 @@ START_SEASON = 0
 
 WEATHERS = ["Cloudy", "Sunny", "Rainy"]
 
+
 # Tracks elapsed real time (in milliseconds)
 elapsedRealTime = 0
 

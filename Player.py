@@ -437,8 +437,98 @@ class Player(Character):
     def getInventory(self):
         return self.inventory
 
+class dialogueNode():
+    def __init__(self, text):
+        self.text = text # the text displayed to the user
+        self.responses = {} # key: response option, value: next node
+
+    # adds a response option to the dialogue presented to the user
+    def addResponse(self, option, responseText, nextNode):
+        self.responses[option] = (responseText, nextNode)
+
 annabelle = Character(400, 335, annabelleSpriteSheet, "Annabelle")
 wesley = Character(1360, 410, wesleySpriteSheet, "Wesley")
 andre = Character(320, 980, andreSpriteSheet, "Andre")
 joan = Character(1450, 1080, joanSpriteSheet, "Joan")
 shayla = Character(810, 780, shaylaSpriteSheet, "Shayla")
+
+annabelleRoot = dialogueNode("Hii, is there anything I can help with?")
+annabelleTalk = dialogueNode("Im Annabelle, and my dream is to own 8 cats!")
+annabelleBuy = dialogueNode("Oh you'd like to buy from me? Of course! What would you like to buy?")
+annabelleSell = dialogueNode("You want to sell something? Sure, what do you have?")
+annabelleBye = dialogueNode("It was nice chatting to you! Bye!!")
+annabelleAmountBuy = dialogueNode("How many do you want to buy?")
+annabelleAmountSell = dialogueNode("How many do you want to sell?")
+
+annabelleRoot.addResponse(1, "Who are you?", annabelleTalk)
+annabelleRoot.addResponse(2, "Buy", annabelleBuy)
+annabelleRoot.addResponse(3, "Sell", annabelleSell)
+annabelleRoot.addResponse(4, "Exit", annabelleBye)
+
+annabelleTalk.addResponse(1, "Back to main options", annabelleRoot)
+
+annabelleBuy.addResponse(1, "Potato seeds", annabelleAmountBuy)
+annabelleBuy.addResponse(2, "Onion seeds", annabelleAmountBuy)
+annabelleBuy.addResponse(3, "Carrot seeds", annabelleAmountBuy)
+annabelleBuy.addResponse(4, "Turnip seeds", annabelleAmountBuy)
+annabelleBuy.addResponse(5, "Radish seeds", annabelleAmountBuy)
+annabelleBuy.addResponse(6, "Spinach seeds", annabelleAmountBuy)
+
+annabelleSell.addResponse(1, "Potato seeds", annabelleAmountBuy)
+annabelleSell.addResponse(2, "Onion seeds", annabelleAmountBuy)
+annabelleSell.addResponse(3, "Carrot seeds", annabelleAmountBuy)
+annabelleSell.addResponse(4, "Turnip seeds", annabelleAmountBuy)
+annabelleSell.addResponse(5, "Radish seeds", annabelleAmountBuy)
+annabelleSell.addResponse(6, "Spinach seeds", annabelleAmountBuy)
+
+def dialogue(npc):
+
+    # dictionary to pair npc with dialogue tree
+    NPC_TO_DIALOGUE = {"Annabelle": annabelleRoot, "Shayla": annabelleRoot}
+
+    currentNode = NPC_TO_DIALOGUE.get(npc, None)
+    print(currentNode)
+    conversing = True
+
+    while conversing:
+
+        # displays current dialogue
+        text = OCR_TITLE.render(currentNode.text, True, BLACK)
+        SCREEN.blit(text, (200,200))
+        print(currentNode.text)
+        
+        # if there are no further choices, end conversation
+        if not currentNode.responses:
+            break
+
+        numChoices = 0
+
+        # display choices for user
+        for key, (responseText, _) in currentNode.responses.items():
+            optionText = OCR_TEXT.render(f"{key}, {responseText}", True, BLACK)
+            SCREEN.blit(optionText, (100,(key+2)*100))
+            print(f"{key}. {responseText}")
+            numChoices += 1
+        
+        #print(numChoices)
+
+        choice = int(input("Choose an option: "))
+
+        if choice in currentNode.responses:
+            currentNode = currentNode.responses[choice][1]
+
+        
+        for choice in range(numChoices):
+
+            # gets co-ordinates of mouse
+            mousePos = pygame.mouse.get_pos()
+
+            for event in pygame.event.get():
+
+                # checks if he player has clicked on the mouse
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+
+                        if mousePos[0] in range(80, 120) and mousePos[1] in range( ((key+2)*100)-20, ((key+2)*100) + 20):
+                            currentNode = currentNode.responses[choice][1]
+        
