@@ -200,7 +200,7 @@ SEED_TO_CROP_STAGES = { "potato seed": potatoGrowthStages, "turnip seed": turnip
 CROP_STAGES = { "P1": potatoList[0], "P2": potatoList[1], "P3": potatoList[2], "T1": turnipList[0], "T2": turnipList[1], "T3": turnipList[2], "O1": onionList[0], "O2": onionList[1], "O3": onionList[2], "R1": radishList[0], "R2": radishList[1], "R3": radishList[2], "C1": carrotList[0], "C2": carrotList[1], "C3": carrotList[2], "S1": spinachList[0], "S2": spinachList[1], "S3": spinachList[2]}
 
 # In-game time configuration
-START_HOUR = 5  # Start time is 6:00 AM
+START_HOUR = 6  # Start time is 6:00 AM
 START_MINUTE = 0
 DAY_DURATION = 0.5 * 60  # Total duration of a day in seconds (15 minutes)
 

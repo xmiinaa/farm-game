@@ -481,10 +481,10 @@ annabelleSell.addResponse(4, "Turnip seeds", annabelleAmountBuy)
 annabelleSell.addResponse(5, "Radish seeds", annabelleAmountBuy)
 annabelleSell.addResponse(6, "Spinach seeds", annabelleAmountBuy)
 
-def dialogue(npc):
+# dictionary to pair npc with dialogue tree
+NPC_TO_DIALOGUE = {"Annabelle": annabelleRoot, "Shayla": annabelleRoot}
 
-    # dictionary to pair npc with dialogue tree
-    NPC_TO_DIALOGUE = {"Annabelle": annabelleRoot, "Shayla": annabelleRoot}
+def dialogue(npc):
 
     currentNode = NPC_TO_DIALOGUE.get(npc, None)
     print(currentNode)
@@ -493,8 +493,8 @@ def dialogue(npc):
     while conversing:
 
         # displays current dialogue
-        text = OCR_TITLE.render(currentNode.text, True, BLACK)
-        SCREEN.blit(text, (200,200))
+        text = OCR_ERROR.render(currentNode.text, True, BLACK)
+        SCREEN.blit(currentNode.text, (100,200))
         print(currentNode.text)
         
         # if there are no further choices, end conversation
@@ -505,7 +505,7 @@ def dialogue(npc):
 
         # display choices for user
         for key, (responseText, _) in currentNode.responses.items():
-            optionText = OCR_TEXT.render(f"{key}, {responseText}", True, BLACK)
+            optionText = OCR_ERROR.render(f"{key}, {responseText}", True, BLACK)
             SCREEN.blit(optionText, (100,(key+2)*100))
             print(f"{key}. {responseText}")
             numChoices += 1

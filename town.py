@@ -277,6 +277,7 @@ def main(player, fromFarm=False):
     slotItem = None
 
     dialogueOn = False
+    npcConversing = None
 
     running = True
     while running:
@@ -319,6 +320,35 @@ def main(player, fromFarm=False):
         if slotItem != None and mouseDrag: # checks to see if the player's mouse is holding an item
             player.inventory.displayItem(mousePos, slotItem) # displays item relative to player's mouse
 
+        if dialogueOn == True:
+            # displays current dialogue
+            text = OCR_ERROR.render(currentNode.text, True, BLACK)
+            pygame.draw.rect(SCREEN, BOX_FILL, pygame.Rect(70, 480, 950, 40), 0)
+            pygame.draw.rect(SCREEN, BOX_OUTLINE, pygame.Rect(70, 480, 950, 40), 2)
+            SCREEN.blit(text, (100,485))
+            
+            # if there are no further choices, end conversation
+            if not currentNode.responses:
+                dialogueOn = False
+
+            numChoices = 0
+
+            # display choices for user
+            for key, (responseText, _) in currentNode.responses.items():
+                optionText = OCR_ERROR.render(f"{key}, {responseText}", True, BLACK)
+                pygame.draw.rect(SCREEN, BOX_FILL, pygame.Rect(70, (key+2)*40 + 400, 950, 40), 0)
+                pygame.draw.rect(SCREEN, BOX_OUTLINE, pygame.Rect(70, (key+2)*40 + 400, 950, 40), 2)
+                SCREEN.blit(optionText, (100,(key+2)*40 + 405))
+                numChoices += 1
+            
+            #print(numChoices)
+
+            #choice = int(input("Choose an option: "))
+
+            #if choice in currentNode.responses:
+                #currentNode = currentNode.responses[choice][1]
+
+
         # displays time
         game.renderTime(player)
 
@@ -332,60 +362,65 @@ def main(player, fromFarm=False):
 
                 if player.inventory.isInventoryOpen() == False:
 
-                    if keys[pygame.K_a] or keys[pygame.K_d] or keys[pygame.K_w] or keys[pygame.K_s]:
-                        player.setMoving(True)
-        
-                    if keys[pygame.K_a] and direction != 1:
-                        player.changeDirection(1)
+                    if dialogueOn == False: # if the player is not currently talking to an npc
 
-                    elif keys[pygame.K_d]:
-                        player.changeDirection(3)
+                        if keys[pygame.K_a] or keys[pygame.K_d] or keys[pygame.K_w] or keys[pygame.K_s]:
+                            player.setMoving(True)
+            
+                        if keys[pygame.K_a] and direction != 1:
+                            player.changeDirection(1)
 
-                    if keys[pygame.K_w]:
-                        player.changeDirection(0)
+                        elif keys[pygame.K_d]:
+                            player.changeDirection(3)
 
-                    elif keys[pygame.K_s]:
-                        player.changeDirection(2)
-                    
+                        if keys[pygame.K_w]:
+                            player.changeDirection(0)
+
+                        elif keys[pygame.K_s]:
+                            player.changeDirection(2)
+                        
                     if keys[pygame.K_x]:
 
                         for npc in [shayla, wesley, joan, andre, annabelle]:
 
                             # checks if the player is near the npc
                             if npc.nearCharacter(x+200, y+400):
+                                npcConversing = npc
                                 print(npc.getName())
-                                dialogue(npc.getName())
+                                dialogueOn = True
+                                currentNode = NPC_TO_DIALOGUE.get(npcConversing.getName(), None)
 
                     if keys[pygame.K_LSHIFT]:
                         player.changeSpeed(6)
                     else:
                         player.changeSpeed(4)
                 
-                if keys[pygame.K_e]:
-                    player.inventory.openCloseInventory()
+                if not dialogueOn:
+                    if keys[pygame.K_e]:
+                        player.inventory.openCloseInventory()
 
-                # checks to see if the user has pressed keys 1 to 0, changing the inventory slot if they have to the corresponding one
-                if keys[pygame.K_1]:
-                    player.inventory.changeSlot(0)
-                if keys[pygame.K_2]:
-                    player.inventory.changeSlot(1)
-                if keys[pygame.K_3]:
-                    player.inventory.changeSlot(2)
-                if keys[pygame.K_4]:
-                    player.inventory.changeSlot(3)
-                if keys[pygame.K_5]:
-                    player.inventory.changeSlot(4)
-                if keys[pygame.K_6]:
-                    player.inventory.changeSlot(5)
-                if keys[pygame.K_7]:
-                    player.inventory.changeSlot(6)
-                if keys[pygame.K_8]:
-                    player.inventory.changeSlot(7)
-                if keys[pygame.K_9]:
-                    player.inventory.changeSlot(8)
-                if keys[pygame.K_0]:
-                    player.inventory.changeSlot(9)
-                        
+                    # checks to see if the user has pressed keys 1 to 0, changing the inventory slot if they have to the corresponding one
+                    if keys[pygame.K_1]:
+                        player.inventory.changeSlot(0)
+                    if keys[pygame.K_2]:
+                        player.inventory.changeSlot(1)
+                    if keys[pygame.K_3]:
+                        player.inventory.changeSlot(2)
+                    if keys[pygame.K_4]:
+                        player.inventory.changeSlot(3)
+                    if keys[pygame.K_5]:
+                        player.inventory.changeSlot(4)
+                    if keys[pygame.K_6]:
+                        player.inventory.changeSlot(5)
+                    if keys[pygame.K_7]:
+                        player.inventory.changeSlot(6)
+                    if keys[pygame.K_8]:
+                        player.inventory.changeSlot(7)
+                    if keys[pygame.K_9]:
+                        player.inventory.changeSlot(8)
+                    if keys[pygame.K_0]:
+                        player.inventory.changeSlot(9)
+                            
             # checks if player is not pressing down a key
             if event.type == pygame.KEYUP:
                 
@@ -400,6 +435,11 @@ def main(player, fromFarm=False):
                 if event.button == 1:
 
                     keyPressed = "mouse"
+
+                    if dialogueOn:
+                        for key in range(numChoices):
+                            if mousePos[0] in range(50, 600) and mousePos[1] in range( (key+3)*40 + 400, (key+3)*40 + 440):
+                                currentNode = currentNode.responses[key+1][1]
 
                     player.inventory.click(mousePos)
 
