@@ -453,7 +453,7 @@ joan = Character(1450, 1080, joanSpriteSheet, "Joan")
 shayla = Character(810, 780, shaylaSpriteSheet, "Shayla")
 
 annabelleRoot = dialogueNode("Hii, is there anything I can help with?")
-annabelleTalk = dialogueNode("Im Annabelle, and my dream is to own 8 cats!")
+annabelleTalk = dialogueNode("Im Annabelle, and I have 8 cats even though im deathly allergic.")
 annabelleBuy = dialogueNode("Oh you'd like to buy from me? Of course! What would you like to buy?")
 annabelleSell = dialogueNode("You want to sell something? Sure, what do you have?")
 annabelleBye = dialogueNode("It was nice chatting to you! Bye!!")
@@ -469,20 +469,146 @@ annabelleTalk.addResponse(1, "Back to main options", annabelleRoot)
 
 annabelleBuy.addResponse(1, "Potato seeds", annabelleAmountBuy)
 annabelleBuy.addResponse(2, "Onion seeds", annabelleAmountBuy)
-annabelleBuy.addResponse(3, "Carrot seeds", annabelleAmountBuy)
-annabelleBuy.addResponse(4, "Turnip seeds", annabelleAmountBuy)
-annabelleBuy.addResponse(5, "Radish seeds", annabelleAmountBuy)
-annabelleBuy.addResponse(6, "Spinach seeds", annabelleAmountBuy)
+annabelleBuy.addResponse(3, "Change my mind", annabelleRoot)
 
 annabelleSell.addResponse(1, "Potato seeds", annabelleAmountBuy)
 annabelleSell.addResponse(2, "Onion seeds", annabelleAmountBuy)
-annabelleSell.addResponse(3, "Carrot seeds", annabelleAmountBuy)
-annabelleSell.addResponse(4, "Turnip seeds", annabelleAmountBuy)
-annabelleSell.addResponse(5, "Radish seeds", annabelleAmountBuy)
-annabelleSell.addResponse(6, "Spinach seeds", annabelleAmountBuy)
+annabelleSell.addResponse(3, "Change my mind", annabelleRoot)
+
+annabelleAmountBuy.addResponse(1, "", annabelleRoot)
+annabelleAmountBuy.addResponse(2, "Change my mind", annabelleRoot)
+
+annabelleAmountSell.addResponse(1, "", annabelleRoot)
+annabelleAmountSell.addResponse(2, "Change my mind", annabelleRoot)
+
+annabelleBye.addResponse(1, "Bye!", None)
+
+wesleyRoot = dialogueNode("Hello, did you need something?")
+wesleyTalk = dialogueNode("I am Wesley, and I chop wood in my free time.")
+wesleyBuy = dialogueNode("You want to buy something? What do you wanna buy?")
+wesleySell = dialogueNode("Sell something? To me? What are you selling?")
+wesleyBye = dialogueNode("Great convo, bye!")
+wesleyAmountBuy = dialogueNode("How many do you want to buy?")
+wesleyAmountSell = dialogueNode("How many do you want to sell?")
+
+wesleyRoot.addResponse(1, "Who are you?", wesleyTalk)
+wesleyRoot.addResponse(2, "Buy", wesleyBuy)
+wesleyRoot.addResponse(3, "Sell", wesleySell)
+wesleyRoot.addResponse(4, "Exit", wesleyBye)
+
+wesleyTalk.addResponse(1, "Back to main options", wesleyRoot)
+
+wesleyBuy.addResponse(1, "Potato seeds", wesleyAmountBuy)
+wesleyBuy.addResponse(2, "Onion seeds", wesleyAmountBuy)
+wesleyBuy.addResponse(3, "Change my mind", wesleyRoot)
+
+wesleySell.addResponse(1, "Potato", wesleyAmountBuy)
+wesleySell.addResponse(2, "Onion", wesleyAmountBuy)
+wesleySell.addResponse(3, "Change my mind", wesleyRoot)
+
+wesleyAmountBuy.addResponse(1, "", wesleyRoot)
+wesleyAmountBuy.addResponse(2, "Change my mind", wesleyRoot)
+
+wesleyAmountSell.addResponse(1, "", wesleyRoot)
+wesleyAmountSell.addResponse(2, "Change my mind", wesleyRoot)
+
+wesleyBye.addResponse(1, "Bye!", None)
+
+shaylaRoot = dialogueNode("Hey girly pop! What's up?")
+shaylaTalk = dialogueNode("I'm shayla, and I built my own home with galvanised steel and eco-friendly wood!")
+shaylaBuy = dialogueNode("Oh you want to buy from me? What do you want to buy?")
+shaylaSell = dialogueNode("You want to sell something? Okay girl, what do you have?")
+shaylaBye = dialogueNode("Bye Bye!")
+shaylaAmountBuy = dialogueNode("How many do you want to buy?")
+shaylaAmountSell = dialogueNode("How many do you want to sell?")
+
+shaylaRoot.addResponse(1, "Who are you?", shaylaTalk)
+shaylaRoot.addResponse(2, "Buy", shaylaBuy)
+shaylaRoot.addResponse(3, "Sell", shaylaSell)
+shaylaRoot.addResponse(4, "Exit", shaylaBye)
+
+shaylaTalk.addResponse(1, "Back to main options", shaylaRoot)
+
+shaylaBuy.addResponse(1, "Potato seeds", shaylaAmountBuy)
+shaylaBuy.addResponse(2, "Onion seeds", shaylaAmountBuy)
+shaylaBuy.addResponse(3, "Change my mind", shaylaRoot)
+
+shaylaSell.addResponse(1, "Potato", shaylaAmountBuy)
+shaylaSell.addResponse(2, "Onion", shaylaAmountBuy)
+shaylaSell.addResponse(3, "Change my mind", shaylaRoot)
+
+shaylaAmountBuy.addResponse(1, "", shaylaRoot)
+shaylaAmountBuy.addResponse(2, "Change my mind", shaylaRoot)
+
+shaylaAmountSell.addResponse(1, "", shaylaRoot)
+shaylaAmountSell.addResponse(2, "Change my mind", shaylaRoot)
+
+shaylaBye.addResponse(1, "Bye!", None)
+
+andreRoot = dialogueNode("What.")
+andreTalk = dialogueNode("If you must know, I'm Andre and i'm banned from 5 countries, including this one.")
+andreBuy = dialogueNode("Fine. What do you want to buy.")
+andreSell = dialogueNode("Hmm? You want to get rid of something? What item?")
+andreBye = dialogueNode("Ok, bye.")
+andreAmountBuy = dialogueNode("How many do you want to buy?")
+andreAmountSell = dialogueNode("How many do you want to sell?")
+
+andreRoot.addResponse(1, "Who are you?", andreTalk)
+andreRoot.addResponse(2, "Buy", andreBuy)
+andreRoot.addResponse(3, "Sell", andreSell)
+andreRoot.addResponse(4, "Exit", andreBye)
+
+andreTalk.addResponse(1, "Back to main options", andreRoot)
+
+andreBuy.addResponse(1, "Potato seeds", andreAmountBuy)
+andreBuy.addResponse(2, "Onion seeds", andreAmountBuy)
+andreBuy.addResponse(3, "Change my mind", andreRoot)
+
+andreSell.addResponse(1, "Potato", andreAmountBuy)
+andreSell.addResponse(2, "Onion", andreAmountBuy)
+andreSell.addResponse(3, "Change my mind", andreRoot)
+
+andreAmountBuy.addResponse(1, "", andreRoot)
+andreAmountBuy.addResponse(2, "Change my mind", andreRoot)
+
+andreAmountSell.addResponse(1, "", andreRoot)
+andreAmountSell.addResponse(2, "Change my mind", andreRoot)
+
+andreBye.addResponse(1, "Bye!", None)
+
+joanRoot = dialogueNode("Salut mon ami, was there something you wanted to talk to me about?")
+joanTalk = dialogueNode("Im joan, and I am, to some, considered a saint in France")
+joanBuy = dialogueNode("I see, you want to purchase something. What do you want to buy?")
+joanSell = dialogueNode("You want to sell? Sell what?")
+joanBye = dialogueNode("Au revoir! I'll see you around")
+joanAmountBuy = dialogueNode("How many do you want to buy?")
+joanAmountSell = dialogueNode("How many do you want to sell?")
+
+joanRoot.addResponse(1, "Who are you?", joanTalk)
+joanRoot.addResponse(2, "Buy", joanBuy)
+joanRoot.addResponse(3, "Sell", joanSell)
+joanRoot.addResponse(4, "Exit", joanBye)
+
+joanTalk.addResponse(1, "Back to main options", joanRoot)
+
+joanBuy.addResponse(1, "Potato seeds", joanAmountBuy)
+joanBuy.addResponse(2, "Onion seeds", joanAmountBuy)
+joanBuy.addResponse(3, "Change my mind", joanRoot)
+
+joanSell.addResponse(1, "Potato", joanAmountBuy)
+joanSell.addResponse(2, "Onion", joanAmountBuy)
+joanSell.addResponse(3, "Change my mind", joanRoot)
+
+joanAmountBuy.addResponse(1, "", joanRoot)
+joanAmountBuy.addResponse(2, "Change my mind", joanRoot)
+
+joanAmountSell.addResponse(1, "", joanRoot)
+joanAmountSell.addResponse(2, "Change my mind", joanRoot)
+
+joanBye.addResponse(1, "Bye!", None)
 
 # dictionary to pair npc with dialogue tree
-NPC_TO_DIALOGUE = {"Annabelle": annabelleRoot, "Shayla": annabelleRoot}
+NPC_TO_DIALOGUE = {"Annabelle": annabelleRoot, "Shayla": shaylaRoot, "Wesley": wesleyRoot, "Andre": andreRoot, "Joan": joanRoot}
 
 def dialogue(npc):
 

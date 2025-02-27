@@ -315,38 +315,44 @@ def main(player, fromFarm=False):
         x,y = player.getCoordinates()
         
         player.inventory.draw()
-        player.inventory.hover(mousePos)
+
+        if not dialogueOn: # can't interact with inventory when in dialogue
+            player.inventory.hover(mousePos)
 
         if slotItem != None and mouseDrag: # checks to see if the player's mouse is holding an item
             player.inventory.displayItem(mousePos, slotItem) # displays item relative to player's mouse
 
         if dialogueOn == True:
-            # displays current dialogue
-            text = OCR_ERROR.render(currentNode.text, True, BLACK)
-            pygame.draw.rect(SCREEN, BOX_FILL, pygame.Rect(70, 480, 950, 40), 0)
-            pygame.draw.rect(SCREEN, BOX_OUTLINE, pygame.Rect(70, 480, 950, 40), 2)
-            SCREEN.blit(text, (100,485))
-            
-            # if there are no further choices, end conversation
-            if not currentNode.responses:
+
+            # displays npc's name at the top
+            text = OCR_ERROR.render(npcConversing.getName(), True, FONT_COLOUR)
+            pygame.draw.rect(SCREEN, BOX_FILL, pygame.Rect(70, 440, 200, 40), 0)
+            pygame.draw.rect(SCREEN, BOX_OUTLINE, pygame.Rect(70, 440, 200, 40), 2)
+            SCREEN.blit(text, (100,445))
+
+            if currentNode is None:
                 dialogueOn = False
+            else:
+                # displays current dialogue
+                text = OCR_ERROR.render(currentNode.text, True, FONT_COLOUR)
+                pygame.draw.rect(SCREEN, BOX_FILL, pygame.Rect(70, 480, 950, 40), 0)
+                pygame.draw.rect(SCREEN, BOX_OUTLINE, pygame.Rect(70, 480, 950, 40), 2)
+                SCREEN.blit(text, (100,485))
+                
+                # if there are no further choices, end conversation
+                if not currentNode.responses:
+                    dialogueOn = False
 
-            numChoices = 0
+                numChoices = 0
 
-            # display choices for user
-            for key, (responseText, _) in currentNode.responses.items():
-                optionText = OCR_ERROR.render(f"{key}, {responseText}", True, BLACK)
-                pygame.draw.rect(SCREEN, BOX_FILL, pygame.Rect(70, (key+2)*40 + 400, 950, 40), 0)
-                pygame.draw.rect(SCREEN, BOX_OUTLINE, pygame.Rect(70, (key+2)*40 + 400, 950, 40), 2)
-                SCREEN.blit(optionText, (100,(key+2)*40 + 405))
-                numChoices += 1
+                # display choices for user
+                for key, (responseText, _) in currentNode.responses.items():
+                    optionText = OCR_ERROR.render(f"{key}, {responseText}", True, BLACK)
+                    pygame.draw.rect(SCREEN, BOX_FILL, pygame.Rect(70, (key+2)*40 + 400, 950, 40), 0)
+                    pygame.draw.rect(SCREEN, BOX_OUTLINE, pygame.Rect(70, (key+2)*40 + 400, 950, 40), 2)
+                    SCREEN.blit(optionText, (100,(key+2)*40 + 405))
+                    numChoices += 1
             
-            #print(numChoices)
-
-            #choice = int(input("Choose an option: "))
-
-            #if choice in currentNode.responses:
-                #currentNode = currentNode.responses[choice][1]
 
 
         # displays time
@@ -438,16 +444,17 @@ def main(player, fromFarm=False):
 
                     if dialogueOn:
                         for key in range(numChoices):
-                            if mousePos[0] in range(50, 600) and mousePos[1] in range( (key+3)*40 + 400, (key+3)*40 + 440):
+                            if mousePos[0] in range(50, 1050) and mousePos[1] in range( (key+3)*40 + 400, (key+3)*40 + 440):
                                 currentNode = currentNode.responses[key+1][1]
 
-                    player.inventory.click(mousePos)
+                    if not dialogueOn:
+                        player.inventory.click(mousePos)
 
-                    mouseDrag = True
+                        mouseDrag = True
 
-                    # checks if inventory is open
-                    if player.inventory.isInventoryOpen():
-                        slotItem = player.inventory.getDragItem(mousePos) # gets item that player is holding on
+                        # checks if inventory is open
+                        if player.inventory.isInventoryOpen():
+                            slotItem = player.inventory.getDragItem(mousePos) # gets item that player is holding on
                     
             if event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 1:

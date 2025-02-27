@@ -202,7 +202,7 @@ CROP_STAGES = { "P1": potatoList[0], "P2": potatoList[1], "P3": potatoList[2], "
 # In-game time configuration
 START_HOUR = 6  # Start time is 6:00 AM
 START_MINUTE = 0
-DAY_DURATION = 0.5 * 60  # Total duration of a day in seconds (15 minutes)
+DAY_DURATION = 15 * 60  # Total duration of a day in seconds (15 minutes)
 
 START_DATE = 1 # first date in the game
 
