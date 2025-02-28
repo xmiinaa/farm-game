@@ -458,6 +458,7 @@ annabelleBuy = dialogueNode("Oh you'd like to buy from me? Of course! What would
 annabelleSell = dialogueNode("You want to sell something? Sure, what do you have?")
 annabelleBye = dialogueNode("It was nice chatting to you! Bye!!")
 annabelleAmountBuy = dialogueNode("How many do you want to buy?")
+#annabelleBuySuccess = 
 annabelleAmountSell = dialogueNode("How many do you want to sell?")
 
 annabelleRoot.addResponse(1, "Who are you?", annabelleTalk)

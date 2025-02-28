@@ -258,6 +258,13 @@ def checkEdgeOfTown(player):
     else:
         return False
 
+
+def buyItem(item, amount):
+    amount = int(amount)
+    print("yayayayayay")
+    print(amount, item)
+
+
 def main(player, fromFarm=False):
 
     player.setLocation("Town")
@@ -275,6 +282,8 @@ def main(player, fromFarm=False):
     keyPressed = ""
     mouseDrag = False
     slotItem = None
+    value = "1"
+    item = None
 
     dialogueOn = False
     npcConversing = None
@@ -347,7 +356,11 @@ def main(player, fromFarm=False):
 
                 # display choices for user
                 for key, (responseText, _) in currentNode.responses.items():
-                    optionText = OCR_ERROR.render(f"{key}, {responseText}", True, BLACK)
+                    if responseText == "":
+                        optionText = OCR_ERROR.render(f"{key}, {value}", True, BLACK)
+                    else:
+                        optionText = OCR_ERROR.render(f"{key}, {responseText}", True, BLACK)
+
                     pygame.draw.rect(SCREEN, BOX_FILL, pygame.Rect(70, (key+2)*40 + 400, 950, 40), 0)
                     pygame.draw.rect(SCREEN, BOX_OUTLINE, pygame.Rect(70, (key+2)*40 + 400, 950, 40), 2)
                     SCREEN.blit(optionText, (100,(key+2)*40 + 405))
@@ -367,6 +380,16 @@ def main(player, fromFarm=False):
                 keys = pygame.key.get_pressed()
 
                 if player.inventory.isInventoryOpen() == False:
+
+                    if dialogueOn:
+                        if "buy" in currentNode.text:
+                            if keys[pygame.K_0] or keys[pygame.K_1] or keys[pygame.K_2] or keys[pygame.K_3] or keys[pygame.K_4] or keys[pygame.K_5] or keys[pygame.K_6] or keys[pygame.K_7] or keys[pygame.K_8] or keys[pygame.K_9]:
+                                value += event.unicode
+                            
+                            if event.key == pygame.K_BACKSPACE: 
+        
+                                # deletes the last character in the variable password 
+                                value = value[:-1]
 
                     if dialogueOn == False: # if the player is not currently talking to an npc
 
@@ -445,6 +468,17 @@ def main(player, fromFarm=False):
                     if dialogueOn:
                         for key in range(numChoices):
                             if mousePos[0] in range(50, 1050) and mousePos[1] in range( (key+3)*40 + 400, (key+3)*40 + 440):
+                                if "buy" in currentNode.text:
+                                    item = currentNode.responses[key+1][0]
+                                    player.changeAction("buying")
+                                elif "sell" in currentNode.text:
+                                    item = currentNode.responses[key+1][0]
+                                    player.changeAction("selling")
+                                print(item)
+                                if currentNode.responses[key+1][0] == "":
+                                    if player.getAction() == "buying":
+                                        print("the item", item)
+                                        buyItem(item, value)
                                 currentNode = currentNode.responses[key+1][1]
 
                     if not dialogueOn:
