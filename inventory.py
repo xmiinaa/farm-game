@@ -17,6 +17,9 @@ class ItemType:
     def getPrice(self):
         return self.price
     
+    def getValue(self):
+        return self.value
+    
     def getStackSize(self):
         return self.stackSize
 

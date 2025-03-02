@@ -174,7 +174,7 @@ class Player(Character):
          
         # creates an object as the inventory
         self.inventory = inventory.Inventory()
-        self.money = 13780000
+        self.money = 1000
 
         # stores what action the player is currently doing
         self.action = "idle"
@@ -234,6 +234,9 @@ class Player(Character):
     
     def reduceMoney(self, value):
         self.money -= value
+
+    def addMoney(self, value):
+        self.money += value
     
     def checkToMove(self, direction):
         canMove = True
@@ -456,16 +459,19 @@ class dialogueNode():
 
 annabelleRoot = dialogueNode("Hii, is there anything I can help with?")
 annabelleTalk = dialogueNode("Im Annabelle, and I have 8 cats even though im deathly allergic.")
-annabelleBuy = dialogueNode("Oh you'd like to buy from me? Of course! What would you like to buy?")
-annabelleSell = dialogueNode("You want to sell something? Sure, what do you have?")
 annabelleBye = dialogueNode("It was nice chatting to you! Bye!!")
 
+annabelleBuy = dialogueNode("Oh you'd like to buy from me? Of course! What would you like to buy?")
 annabelleAmountBuy = dialogueNode("How many do you want to buy?")
 annabelleBuySuccess = dialogueNode("All good! Thank you for your purchase!")
 annabelleCantAfford = dialogueNode("Sorry! You don't have enough money for this purchase!")
 annabelleNoSpace = dialogueNode("Sorry! You don't have enough inventory space for this purchase!")
 
+annabelleSell = dialogueNode("You want to sell something? Sure, what do you have?")
 annabelleAmountSell = dialogueNode("How many do you want to sell?")
+annabelleSellSuccess = dialogueNode("Thank you! Your sale was successfull!")
+annabelleNotEnough = dialogueNode("Sorry! You don't have enough to sell to me!")
+
 
 annabelleRoot.addResponse(1, "Who are you?", annabelleTalk)
 annabelleRoot.addResponse(2, "Buy", annabelleBuy)
@@ -477,6 +483,9 @@ annabelleTalk.addResponse(1, "Back to main options", annabelleRoot)
 annabelleBuy.addResponse(1, "Potato seeds", annabelleAmountBuy)
 annabelleBuy.addResponse(2, "Onion seeds", annabelleAmountBuy)
 annabelleBuy.addResponse(3, "Change my mind", annabelleRoot)
+
+annabelleAmountBuy.addResponse(1, "", annabelleRoot)
+annabelleAmountBuy.addResponse(2, "Change my mind", annabelleRoot)
 
 annabelleBuySuccess.addResponse(1, "Back to main options", annabelleRoot)
 annabelleBuySuccess.addResponse(2, "Exit", annabelleBye)
@@ -491,15 +500,20 @@ annabelleNoSpace.addResponse(2, "Buy something else", annabelleBuy)
 annabelleNoSpace.addResponse(3, "Back to main options", annabelleRoot)
 annabelleNoSpace.addResponse(4, "Exit", annabelleBye)
 
-annabelleSell.addResponse(1, "Potato seeds", annabelleAmountBuy)
-annabelleSell.addResponse(2, "Onion seeds", annabelleAmountBuy)
+annabelleSell.addResponse(1, "Potatoes", annabelleAmountBuy)
+annabelleSell.addResponse(2, "Onions", annabelleAmountBuy)
 annabelleSell.addResponse(3, "Change my mind", annabelleRoot)
-
-annabelleAmountBuy.addResponse(1, "", annabelleRoot)
-annabelleAmountBuy.addResponse(2, "Change my mind", annabelleRoot)
 
 annabelleAmountSell.addResponse(1, "", annabelleRoot)
 annabelleAmountSell.addResponse(2, "Change my mind", annabelleRoot)
+
+annabelleSellSuccess.addResponse(1, "Back to main options", annabelleRoot)
+annabelleSellSuccess.addResponse(2, "Exit", annabelleBye)
+
+annabelleNotEnough.addResponse(1, "Change the amount", annabelleAmountBuy)
+annabelleNotEnough.addResponse(2, "Buy something else", annabelleBuy)
+annabelleNotEnough.addResponse(3, "Back to main options", annabelleRoot)
+annabelleNoSpace.addResponse(4, "Exit", annabelleBye)
 
 annabelleBye.addResponse(1, "Bye!", None)
 

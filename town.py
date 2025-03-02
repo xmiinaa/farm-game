@@ -286,6 +286,29 @@ def buyItem(player, toBuy, amount):
         else:
             return annabelleCantAfford
 
+# allows player to purchase an item from an npc
+def sellItem(player, toSell, amount):
+    amount = int(amount)
+    
+    ITEM_TO_OBJECT = {"Potatoes": inventory.potato, "Onions": inventory.onion, "Radishes": inventory.radish, "Spinaches": inventory.spinach, "Carrots": inventory.carrot, "Turnips": inventory.turnip}
+    
+    item = ITEM_TO_OBJECT.get(toSell, None)
+
+    if item is not None:
+        singleValue = item.getValue() # gets the value of the single item
+        totalValue = singleValue * amount # calculates the total value of all items
+            
+        enough = player.inventory.has(item, amount) # checks if the player has enough quantity
+
+        if enough:
+            player.inventory.remove(item, amount) # remove items from inventory
+
+            player.addMoney(totalValue) # adds the money to the player
+
+            return annabelleSellSuccess
+        else:
+            return annabelleNotEnough
+    
 
 def main(player, fromFarm=False):
 
@@ -492,6 +515,8 @@ def main(player, fromFarm=False):
                                 if currentNode.responses[key+1][0] == "":
                                     if player.getAction() == "buying":
                                         currentNode = buyItem(player, item, value)
+                                    elif player.getAction() == "selling":
+                                        currentNode = sellItem(player, item, value)
                                 else:
                                     if "buy" in currentNode.text:
                                         player.changeAction("buying")
