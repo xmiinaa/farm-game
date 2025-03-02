@@ -272,9 +272,10 @@ def buyItem(player, toBuy, amount):
         totalPrice = singlePrice * amount # calculates the total price of purchase
 
         if player.getMoney() >= totalPrice: # checks if the player can afford the purchase
+            
             excess = player.inventory.add(item, amount) # adds items to inventory
             print(excess)
-            if excess != 0: # checks if there is some items that don't fit in inventory
+            if excess != 0 or excess is not None: # checks if there is some items that don't fit in inventory
 
                 # calculates how many items player actually bought and reduces value from player's money
                 bought = amount - excess
@@ -282,6 +283,11 @@ def buyItem(player, toBuy, amount):
                 player.reduceMoney(paid)
             else:
                 player.reduceMoney(totalPrice)
+            
+            return annabelleBuySuccess
+        
+        else:
+            return annabelleCantAfford
 
 
 def main(player, fromFarm=False):
@@ -486,7 +492,6 @@ def main(player, fromFarm=False):
                     if dialogueOn:
                         for key in range(numChoices):
                             if mousePos[0] in range(50, 1050) and mousePos[1] in range( (key+3)*40 + 400, (key+3)*40 + 440):
-                                print(currentNode.responses[key+1][0])
                                 if "buy" in currentNode.text:
                                     player.changeAction("buying")
                                 elif "sell" in currentNode.text:
@@ -495,7 +500,7 @@ def main(player, fromFarm=False):
                                     item = currentNode.responses[key+1][0]
                                 if currentNode.responses[key+1][0] == "":
                                     if player.getAction() == "buying":
-                                        buyItem(player, item, value)
+                                        currentNode = buyItem(player, item, value)
                                 currentNode = currentNode.responses[key+1][1]
 
                     if not dialogueOn:

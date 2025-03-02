@@ -174,7 +174,7 @@ class Player(Character):
          
         # creates an object as the inventory
         self.inventory = inventory.Inventory()
-        self.money = 1378
+        self.money = 13780000
 
         # stores what action the player is currently doing
         self.action = "idle"
@@ -459,8 +459,12 @@ annabelleTalk = dialogueNode("Im Annabelle, and I have 8 cats even though im dea
 annabelleBuy = dialogueNode("Oh you'd like to buy from me? Of course! What would you like to buy?")
 annabelleSell = dialogueNode("You want to sell something? Sure, what do you have?")
 annabelleBye = dialogueNode("It was nice chatting to you! Bye!!")
+
 annabelleAmountBuy = dialogueNode("How many do you want to buy?")
-#annabelleBuySuccess = 
+annabelleBuySuccess = dialogueNode("All good! Thank you for your purchase!")
+annabelleCantAfford = dialogueNode("Sorry! You don't have enough money for this purchase!")
+annabelleNoSpace = dialogueNode("Sorry! You don't have enough inventory space for this purchase!")
+
 annabelleAmountSell = dialogueNode("How many do you want to sell?")
 
 annabelleRoot.addResponse(1, "Who are you?", annabelleTalk)
@@ -473,6 +477,12 @@ annabelleTalk.addResponse(1, "Back to main options", annabelleRoot)
 annabelleBuy.addResponse(1, "Potato seeds", annabelleAmountBuy)
 annabelleBuy.addResponse(2, "Onion seeds", annabelleAmountBuy)
 annabelleBuy.addResponse(3, "Change my mind", annabelleRoot)
+
+annabelleBuySuccess.addResponse(1, "Back to main options", annabelleRoot)
+
+annabelleCantAfford.addResponse(1, "Change the amount", annabelleRoot)
+annabelleCantAfford.addResponse(2, "Buy something else", annabelleBuy)
+annabelleCantAfford.addResponse(3, "Back to main options", annabelleAmountBuy)
 
 annabelleSell.addResponse(1, "Potato seeds", annabelleAmountBuy)
 annabelleSell.addResponse(2, "Onion seeds", annabelleAmountBuy)
