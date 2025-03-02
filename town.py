@@ -273,8 +273,10 @@ def buyItem(player, toBuy, amount):
 
         if player.getMoney() >= totalPrice: # checks if the player can afford the purchase
             
-            excess = player.inventory.add(item, amount) # adds items to inventory
-            print(excess)
+            noexcess = player.inventory.add(item, amount) # adds items to inventory
+            print(noexcess)
+            
+            """
             if excess != 0 or excess is not None: # checks if there is some items that don't fit in inventory
 
                 # calculates how many items player actually bought and reduces value from player's money
@@ -283,8 +285,15 @@ def buyItem(player, toBuy, amount):
                 player.reduceMoney(paid)
             else:
                 player.reduceMoney(totalPrice)
+            """
+            if noexcess == True:
+                player.reduceMoney(totalPrice)
             
-            return annabelleBuySuccess
+                return annabelleBuySuccess
+            else:
+                print(amount-noexcess)
+                player.inventory.remove(item, amount-noexcess)
+                return annabelleNoSpace
         
         else:
             return annabelleCantAfford
@@ -492,16 +501,18 @@ def main(player, fromFarm=False):
                     if dialogueOn:
                         for key in range(numChoices):
                             if mousePos[0] in range(50, 1050) and mousePos[1] in range( (key+3)*40 + 400, (key+3)*40 + 440):
-                                if "buy" in currentNode.text:
-                                    player.changeAction("buying")
-                                elif "sell" in currentNode.text:
-                                    player.changeAction("selling")
-                                if "what" in currentNode.text or "What" in currentNode.text:
-                                    item = currentNode.responses[key+1][0]
                                 if currentNode.responses[key+1][0] == "":
                                     if player.getAction() == "buying":
                                         currentNode = buyItem(player, item, value)
-                                currentNode = currentNode.responses[key+1][1]
+                                else:
+                                    if "buy" in currentNode.text:
+                                        player.changeAction("buying")
+                                    elif "sell" in currentNode.text:
+                                        player.changeAction("selling")
+                                    if "what" in currentNode.text or "What" in currentNode.text:
+                                        item = currentNode.responses[key+1][0]
+                                    currentNode = currentNode.responses[key+1][1]
+                
 
                     if not dialogueOn:
                         player.inventory.click(mousePos)

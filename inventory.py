@@ -215,6 +215,7 @@ class Inventory:
     # adds a certain amount of an item to the inentory, returning any excess items it couldn't add    
     def add(self, itemType, amount=1): # defeault amount is 1
 
+        initialAmount = amount
         # first sweep for any open stacks
         if itemType.stackSize > 1:
             for slot in self.slots:
@@ -225,18 +226,22 @@ class Inventory:
                     slot.amount += addAmo
                     amount -= addAmo
                     if amount <= 0:
-                        return 0
+                        return True
         
+        space = False
         # places the item in the next slot
         for slot in self.slots:
             if slot.type == None:
+                space = True
                 slot.type = itemType
                 if itemType.stackSize < amount:
                     slot.amount = itemType.stackSize
                     return self.add(itemType, amount - itemType.stackSize)
                 else:
                     slot.amount = amount
-                    return 0
+                    return True
+        if space == False:
+            return amount
     
     def removeItemHeld(self):
         if self.slots[self.chosenSlot].amount == 1:
@@ -263,8 +268,9 @@ class Inventory:
                     slot.type = None
                     return found
                 
-                # if there is a surplus number of items in the slo
-                else:
+                # if there is a surplus number of items in the slot
+                elif slot.amount > amount:
+                    print("reached here")
                     found += amount
                     slot.amount -= amount
                     return found
