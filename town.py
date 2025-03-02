@@ -259,7 +259,7 @@ def checkEdgeOfTown(player):
     else:
         return False
 
-
+# allows player to purchase an item from an npc
 def buyItem(player, toBuy, amount):
     amount = int(amount)
     
@@ -274,25 +274,13 @@ def buyItem(player, toBuy, amount):
         if player.getMoney() >= totalPrice: # checks if the player can afford the purchase
             
             noexcess = player.inventory.add(item, amount) # adds items to inventory
-            print(noexcess)
             
-            """
-            if excess != 0 or excess is not None: # checks if there is some items that don't fit in inventory
-
-                # calculates how many items player actually bought and reduces value from player's money
-                bought = amount - excess
-                paid = bought * singlePrice
-                player.reduceMoney(paid)
-            else:
-                player.reduceMoney(totalPrice)
-            """
-            if noexcess == True:
+            if noexcess == True: # if the player has enough space in the inventory
                 player.reduceMoney(totalPrice)
             
                 return annabelleBuySuccess
             else:
-                print(amount-noexcess)
-                player.inventory.remove(item, amount-noexcess)
+                player.inventory.remove(item, amount-noexcess) # remove items that were added
                 return annabelleNoSpace
         
         else:

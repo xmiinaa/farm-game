@@ -256,6 +256,7 @@ class Inventory:
 
                 # if there is not enough items in the slot
                 if slot.amount < amount:
+                    amount -= slot.amount
                     found += slot.amount
                     slot.amount = 0
                     slot.type = None
@@ -266,13 +267,14 @@ class Inventory:
                     found += amount
                     slot.amount = 0
                     slot.type = None
+                    amount -= slot.amount
                     return found
                 
                 # if there is a surplus number of items in the slot
                 elif slot.amount > amount:
-                    print("reached here")
                     found += amount
                     slot.amount -= amount
+                    amount -= slot.amount
                     return found
                 
         return found # returns number of items found and therefore removed

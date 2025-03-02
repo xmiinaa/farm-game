@@ -481,14 +481,14 @@ annabelleBuy.addResponse(3, "Change my mind", annabelleRoot)
 annabelleBuySuccess.addResponse(1, "Back to main options", annabelleRoot)
 annabelleBuySuccess.addResponse(2, "Exit", annabelleBye)
 
-annabelleCantAfford.addResponse(1, "Change the amount", annabelleRoot)
+annabelleCantAfford.addResponse(1, "Change the amount", annabelleAmountBuy)
 annabelleCantAfford.addResponse(2, "Buy something else", annabelleBuy)
-annabelleCantAfford.addResponse(3, "Back to main options", annabelleAmountBuy)
+annabelleCantAfford.addResponse(3, "Back to main options", annabelleRoot)
 annabelleCantAfford.addResponse(4, "Exit", annabelleBye)
 
-annabelleNoSpace.addResponse(1, "Change the amount", annabelleRoot)
+annabelleNoSpace.addResponse(1, "Change the amount", annabelleAmountBuy)
 annabelleNoSpace.addResponse(2, "Buy something else", annabelleBuy)
-annabelleNoSpace.addResponse(3, "Back to main options", annabelleAmountBuy)
+annabelleNoSpace.addResponse(3, "Back to main options", annabelleRoot)
 annabelleNoSpace.addResponse(4, "Exit", annabelleBye)
 
 annabelleSell.addResponse(1, "Potato seeds", annabelleAmountBuy)
