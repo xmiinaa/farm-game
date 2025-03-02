@@ -81,7 +81,7 @@ class Entity():
 
 class Character(Entity):
 
-    def __init__(self, x, y, spritesheet, name):
+    def __init__(self, x, y, spritesheet, name, dialogueRoot):
         super().__init__(x, y, spritesheet)
 
         # the players name is the username made by the user
@@ -99,6 +99,8 @@ class Character(Entity):
 
         # (lower x, lower y, upper x, upper y) boundaries
         self.moveBox = [130, 130, 820, 470]
+
+        self.dialogueRoot = dialogueRoot
     
     def isMoving(self):
         return self.moving
@@ -115,6 +117,9 @@ class Character(Entity):
     def getName(self):
         return self.name
     
+    def getDialogueRoot(self):
+        return self.dialogueRoot
+
     # displays character image in direction it is facing
     def drawIdle(self):
         
@@ -162,14 +167,14 @@ class Character(Entity):
 
 class Player(Character):
         
-    def __init__(self, x, y, spritesheet, name):
-        super().__init__(x, y, spritesheet, name)
+    def __init__(self, x, y, spritesheet, name, dialogueRoot=None):
+        super().__init__(x, y, spritesheet, name, dialogueRoot)
 
         self.stamina = 100
          
         # creates an object as the inventory
         self.inventory = inventory.Inventory()
-        self.money = 478
+        self.money = 1378
 
         # stores what action the player is currently doing
         self.action = "idle"
@@ -226,6 +231,9 @@ class Player(Character):
 
     def getMoney(self):
         return self.money
+    
+    def reduceMoney(self, value):
+        self.money -= value
     
     def checkToMove(self, direction):
         canMove = True
@@ -446,12 +454,6 @@ class dialogueNode():
     def addResponse(self, option, responseText, nextNode):
         self.responses[option] = (responseText, nextNode)
 
-annabelle = Character(400, 335, annabelleSpriteSheet, "Annabelle")
-wesley = Character(1360, 410, wesleySpriteSheet, "Wesley")
-andre = Character(320, 980, andreSpriteSheet, "Andre")
-joan = Character(1450, 1080, joanSpriteSheet, "Joan")
-shayla = Character(810, 780, shaylaSpriteSheet, "Shayla")
-
 annabelleRoot = dialogueNode("Hii, is there anything I can help with?")
 annabelleTalk = dialogueNode("Im Annabelle, and I have 8 cats even though im deathly allergic.")
 annabelleBuy = dialogueNode("Oh you'd like to buy from me? Of course! What would you like to buy?")
@@ -515,7 +517,7 @@ wesleyAmountSell.addResponse(2, "Change my mind", wesleyRoot)
 
 wesleyBye.addResponse(1, "Bye!", None)
 
-shaylaRoot = dialogueNode("Hey girly pop! What's up?")
+shaylaRoot = dialogueNode("Hey girly pop! How are you?")
 shaylaTalk = dialogueNode("I'm shayla, and I built my own home with galvanised steel and eco-friendly wood!")
 shaylaBuy = dialogueNode("Oh you want to buy from me? What do you want to buy?")
 shaylaSell = dialogueNode("You want to sell something? Okay girl, what do you have?")
@@ -546,10 +548,10 @@ shaylaAmountSell.addResponse(2, "Change my mind", shaylaRoot)
 
 shaylaBye.addResponse(1, "Bye!", None)
 
-andreRoot = dialogueNode("What.")
+andreRoot = dialogueNode("Hmmm?")
 andreTalk = dialogueNode("If you must know, I'm Andre and i'm banned from 5 countries, including this one.")
 andreBuy = dialogueNode("Fine. What do you want to buy.")
-andreSell = dialogueNode("Hmm? You want to get rid of something? What item?")
+andreSell = dialogueNode("Oh? You want to get rid of something? What item?")
 andreBye = dialogueNode("Ok, bye.")
 andreAmountBuy = dialogueNode("How many do you want to buy?")
 andreAmountSell = dialogueNode("How many do you want to sell?")
@@ -609,53 +611,10 @@ joanAmountSell.addResponse(2, "Change my mind", joanRoot)
 joanBye.addResponse(1, "Bye!", None)
 
 # dictionary to pair npc with dialogue tree
-NPC_TO_DIALOGUE = {"Annabelle": annabelleRoot, "Shayla": shaylaRoot, "Wesley": wesleyRoot, "Andre": andreRoot, "Joan": joanRoot}
+#NPC_TO_DIALOGUE = {"Annabelle": annabelleRoot, "Shayla": shaylaRoot, "Wesley": wesleyRoot, "Andre": andreRoot, "Joan": joanRoot}
 
-def dialogue(npc):
-
-    currentNode = NPC_TO_DIALOGUE.get(npc, None)
-    print(currentNode)
-    conversing = True
-
-    while conversing:
-
-        # displays current dialogue
-        text = OCR_ERROR.render(currentNode.text, True, BLACK)
-        SCREEN.blit(currentNode.text, (100,200))
-        print(currentNode.text)
-        
-        # if there are no further choices, end conversation
-        if not currentNode.responses:
-            break
-
-        numChoices = 0
-
-        # display choices for user
-        for key, (responseText, _) in currentNode.responses.items():
-            optionText = OCR_ERROR.render(f"{key}, {responseText}", True, BLACK)
-            SCREEN.blit(optionText, (100,(key+2)*100))
-            print(f"{key}. {responseText}")
-            numChoices += 1
-        
-        #print(numChoices)
-
-        choice = int(input("Choose an option: "))
-
-        if choice in currentNode.responses:
-            currentNode = currentNode.responses[choice][1]
-
-        
-        for choice in range(numChoices):
-
-            # gets co-ordinates of mouse
-            mousePos = pygame.mouse.get_pos()
-
-            for event in pygame.event.get():
-
-                # checks if he player has clicked on the mouse
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button == 1:
-
-                        if mousePos[0] in range(80, 120) and mousePos[1] in range( ((key+2)*100)-20, ((key+2)*100) + 20):
-                            currentNode = currentNode.responses[choice][1]
-        
+annabelle = Character(400, 335, annabelleSpriteSheet, "Annabelle", annabelleRoot)
+wesley = Character(1360, 410, wesleySpriteSheet, "Wesley", wesleyRoot)
+andre = Character(320, 980, andreSpriteSheet, "Andre", andreRoot)
+joan = Character(1450, 1080, joanSpriteSheet, "Joan", joanRoot)
+shayla = Character(810, 780, shaylaSpriteSheet, "Shayla", shaylaRoot)

@@ -2,6 +2,7 @@ import pygame
 from config import *
 import game, sys, farm
 from Player import *
+import inventory
 
 # returns tile image of from a specific index of tilemap array
 def getTileImg(tilemap, row, col):
@@ -259,10 +260,28 @@ def checkEdgeOfTown(player):
         return False
 
 
-def buyItem(item, amount):
+def buyItem(player, toBuy, amount):
     amount = int(amount)
-    print("yayayayayay")
-    print(amount, item)
+    
+    ITEM_TO_OBJECT = {"Potato seeds": inventory.potatoSeed, "Onion seeds": inventory.onionSeed, "Radish seeds": inventory.radishSeed, "Spinach seeds": inventory.spinachSeed, "Carrot seeds": inventory.carrotSeed, "Turnip seeds": inventory.turnipSeed}
+    
+    item = ITEM_TO_OBJECT.get(toBuy, None)
+
+    if item is not None:
+        singlePrice = item.getPrice() # gets the price to buy the single item
+        totalPrice = singlePrice * amount # calculates the total price of purchase
+
+        if player.getMoney() >= totalPrice: # checks if the player can afford the purchase
+            excess = player.inventory.add(item, amount) # adds items to inventory
+            print(excess)
+            if excess != 0: # checks if there is some items that don't fit in inventory
+
+                # calculates how many items player actually bought and reduces value from player's money
+                bought = amount - excess
+                paid = bought * singlePrice
+                player.reduceMoney(paid)
+            else:
+                player.reduceMoney(totalPrice)
 
 
 def main(player, fromFarm=False):
@@ -299,8 +318,6 @@ def main(player, fromFarm=False):
 
         # displays background tiles
         SCREEN.blit(townMap, (cameraPos[0]-180, cameraPos[1]-360))
-
-        #print(player.getCoordinates())
 
         if checkEdgeOfTown(player) == True:
             farm.main(True)
@@ -382,8 +399,10 @@ def main(player, fromFarm=False):
                 if player.inventory.isInventoryOpen() == False:
 
                     if dialogueOn:
-                        if "buy" in currentNode.text:
+                        if "buy" or "sell" in currentNode.text: # checks if correct option is on
                             if keys[pygame.K_0] or keys[pygame.K_1] or keys[pygame.K_2] or keys[pygame.K_3] or keys[pygame.K_4] or keys[pygame.K_5] or keys[pygame.K_6] or keys[pygame.K_7] or keys[pygame.K_8] or keys[pygame.K_9]:
+                                
+                                # adds number onto the value displayed
                                 value += event.unicode
                             
                             if event.key == pygame.K_BACKSPACE: 
@@ -415,9 +434,8 @@ def main(player, fromFarm=False):
                             # checks if the player is near the npc
                             if npc.nearCharacter(x+200, y+400):
                                 npcConversing = npc
-                                print(npc.getName())
                                 dialogueOn = True
-                                currentNode = NPC_TO_DIALOGUE.get(npcConversing.getName(), None)
+                                currentNode = npcConversing.getDialogueRoot()
 
                     if keys[pygame.K_LSHIFT]:
                         player.changeSpeed(6)
@@ -468,17 +486,16 @@ def main(player, fromFarm=False):
                     if dialogueOn:
                         for key in range(numChoices):
                             if mousePos[0] in range(50, 1050) and mousePos[1] in range( (key+3)*40 + 400, (key+3)*40 + 440):
+                                print(currentNode.responses[key+1][0])
                                 if "buy" in currentNode.text:
-                                    item = currentNode.responses[key+1][0]
                                     player.changeAction("buying")
                                 elif "sell" in currentNode.text:
-                                    item = currentNode.responses[key+1][0]
                                     player.changeAction("selling")
-                                print(item)
+                                if "what" in currentNode.text or "What" in currentNode.text:
+                                    item = currentNode.responses[key+1][0]
                                 if currentNode.responses[key+1][0] == "":
                                     if player.getAction() == "buying":
-                                        print("the item", item)
-                                        buyItem(item, value)
+                                        buyItem(player, item, value)
                                 currentNode = currentNode.responses[key+1][1]
 
                     if not dialogueOn:

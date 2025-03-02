@@ -13,6 +13,12 @@ class ItemType:
         self.value = value
         self.price = price
         self.stackSize = stackSize
+    
+    def getPrice(self):
+        return self.price
+    
+    def getStackSize(self):
+        return self.stackSize
 
 # holds a quantity of an item
 class ItemSlot:
@@ -311,17 +317,17 @@ hoe = ItemType("hoe", HOE, 200, 100)
 waterCan = ItemType("waterCan", WATERCAN, 200, 100)
 scythe = ItemType("scythe", SCYTHE, 200, 100)
 
-potatoSeed = ItemType("potato seed", potatoObject.getImage(0, 1, 16, 16, 3), 300, 200)
+potatoSeed = ItemType("potato seed", potatoObject.getImage(0, 1, 16, 16, 3), 300, 200, 15)
 potato = ItemType("potato", potatoObject.getImage(1, 1, 16, 16, 3), 500, 400, 30)
-turnipSeed = ItemType("turnip seed", turnipObject.getImage(0, 1, 16, 16, 3), 300, 200)
+turnipSeed = ItemType("turnip seed", turnipObject.getImage(0, 1, 16, 16, 3), 300, 200, 15)
 turnip = ItemType("turnip", turnipObject.getImage(1, 1, 16, 16, 3), 500, 400, 30)
-onionSeed = ItemType("onion seed", onionObject.getImage(0, 1, 16, 16, 3), 300, 200)
+onionSeed = ItemType("onion seed", onionObject.getImage(0, 1, 16, 16, 3), 300, 200, 15)
 onion = ItemType("onion", onionObject.getImage(1, 1, 16, 16, 3), 500, 400, 30)
-radishSeed = ItemType("radish seed", radishObject.getImage(0, 1, 16, 16, 3), 300, 200)
+radishSeed = ItemType("radish seed", radishObject.getImage(0, 1, 16, 16, 3), 300, 200, 15)
 radish = ItemType("radish", radishObject.getImage(1, 1, 16, 16, 3), 500, 400, 30)
-carrotSeed = ItemType("carrot seed", carrotObject.getImage(0, 1, 16, 16, 3), 300, 200)
+carrotSeed = ItemType("carrot seed", carrotObject.getImage(0, 1, 16, 16, 3), 300, 200, 15)
 carrot = ItemType("carrot", carrotObject.getImage(1, 1, 16, 16, 3), 500, 400, 30)
-spinachSeed = ItemType("spinach seed", spinachObject.getImage(0, 1, 16, 16, 3), 300, 200)
+spinachSeed = ItemType("spinach seed", spinachObject.getImage(0, 1, 16, 16, 3), 300, 200, 15)
 spinach = ItemType("spinach", spinachObject.getImage(1, 1, 16, 16, 3), 500, 400, 30)
 
 CROP_STAGE3_TO_CROP = { "P3": potato, "T3": turnip, "O3": onion, "R3": radish, "C3": carrot, "S3": spinach}
