@@ -260,11 +260,15 @@ def checkEdgeOfTown(player):
         return False
 
 # allows player to purchase an item from an npc
-def buyItem(player, toBuy, amount):
+def buyItem(player, toBuy, amount, npc):
     amount = int(amount)
     
     ITEM_TO_OBJECT = {"Potato seeds": inventory.potatoSeed, "Onion seeds": inventory.onionSeed, "Radish seeds": inventory.radishSeed, "Spinach seeds": inventory.spinachSeed, "Carrot seeds": inventory.carrotSeed, "Turnip seeds": inventory.turnipSeed}
     
+    NPC_TO_BUYSUCCESS = {annabelle: annabelleBuySuccess, wesley: wesleyBuySuccess, shayla: shaylaBuySuccess, andre: andreBuySuccess, joan: joanBuySuccess}
+    NPC_TO_NOSPACE = {annabelle: annabelleNoSpace, wesley: wesleyNoSpace, shayla: shaylaNoSpace, andre: andreNoSpace, joan: joanNoSpace}
+    NPC_TO_CANTAFFORD = {annabelle: annabelleCantAfford, wesley: wesleyCantAfford, shayla: shaylaCantAfford, andre: andreCantAfford, joan: joanCantAfford}
+
     item = ITEM_TO_OBJECT.get(toBuy, None)
 
     if item is not None:
@@ -278,20 +282,23 @@ def buyItem(player, toBuy, amount):
             if noexcess == True: # if the player has enough space in the inventory
                 player.reduceMoney(totalPrice)
             
-                return annabelleBuySuccess
+                return NPC_TO_BUYSUCCESS.get(npc, None)
             else:
                 player.inventory.remove(item, amount-noexcess) # remove items that were added
-                return annabelleNoSpace
+                return NPC_TO_NOSPACE.get(npc, None)
         
         else:
-            return annabelleCantAfford
+            return NPC_TO_CANTAFFORD.get(npc, None)
 
 # allows player to purchase an item from an npc
-def sellItem(player, toSell, amount):
+def sellItem(player, toSell, amount, npc):
     amount = int(amount)
     
     ITEM_TO_OBJECT = {"Potatoes": inventory.potato, "Onions": inventory.onion, "Radishes": inventory.radish, "Spinaches": inventory.spinach, "Carrots": inventory.carrot, "Turnips": inventory.turnip}
     
+    NPC_TO_SELLSUCCESS = {annabelle: annabelleSellSuccess, wesley: wesleySellSuccess, shayla: shaylaSellSuccess, andre: andreSellSuccess, joan: joanSellSuccess}
+    NPC_TO_NOTENOUGH = {annabelle: annabelleNotEnough, wesley: wesleyNotEnough, shayla: shaylaNotEnough, andre: andreNotEnough, joan: joanNotEnough}
+
     item = ITEM_TO_OBJECT.get(toSell, None)
 
     if item is not None:
@@ -305,9 +312,9 @@ def sellItem(player, toSell, amount):
 
             player.addMoney(totalValue) # adds the money to the player
 
-            return annabelleSellSuccess
+            return NPC_TO_SELLSUCCESS.get(npc, None)
         else:
-            return annabelleNotEnough
+            return NPC_TO_NOTENOUGH.get(npc, None)
     
 
 def main(player, fromFarm=False):
@@ -394,6 +401,7 @@ def main(player, fromFarm=False):
                 # if there are no further choices, end conversation
                 if not currentNode.responses:
                     dialogueOn = False
+                    player.changeAction("idle")
 
                 numChoices = 0
 
@@ -514,9 +522,9 @@ def main(player, fromFarm=False):
                             if mousePos[0] in range(50, 1050) and mousePos[1] in range( (key+3)*40 + 400, (key+3)*40 + 440):
                                 if currentNode.responses[key+1][0] == "":
                                     if player.getAction() == "buying":
-                                        currentNode = buyItem(player, item, value)
+                                        currentNode = buyItem(player, item, value, npcConversing)
                                     elif player.getAction() == "selling":
-                                        currentNode = sellItem(player, item, value)
+                                        currentNode = sellItem(player, item, value, npcConversing)
                                 else:
                                     if "buy" in currentNode.text:
                                         player.changeAction("buying")

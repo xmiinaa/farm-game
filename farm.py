@@ -214,6 +214,7 @@ def main(fromTown=False):
 
                 if not keys[pygame.K_a] and not keys[pygame.K_d] and not keys[pygame.K_w] and not keys[pygame.K_s]:
                     player.setMoving(False)
+                    player.changeAction("idle")
 
             # checks if he player has clicked on the mouse
             if event.type == pygame.MOUSEBUTTONDOWN:
