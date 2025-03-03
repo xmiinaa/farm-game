@@ -16,10 +16,30 @@ def renderTime(player, skippedDay=False):
     # Get the time elapsed since the last frame in milliseconds
     deltaTime = CLOCK.get_time()
 
+    elapsedRealTime += deltaTime
+
+    # Convert real elapsed time into in-game time
+    elapsedGameTime = (elapsedRealTime / 1000) * (24 * 60 * 60 / DAY_DURATION)  # Scale to a 24-hour day
+    
+    gameHour = (START_HOUR + int(elapsedGameTime // 3600)) % 24
+    gameMinute = int((START_MINUTE + (elapsedGameTime % 3600) // 60) % 60)
+
     if skippedDay:
-        elapsedRealTime += DAY_DURATION * 1000 # skips a full day in game time
-        gameHour = 6
-        gameMinute = 0
+
+        # Get current in-game time in seconds
+        currentGameTimeInSeconds = (gameHour * 3600) + (gameMinute * 60)
+
+        # Target time is 6 AM next day in seconds (6 hours after midnight)
+        targetTimeInSeconds = (24 * 3600) + (6 * 3600)  # Full day + 6 hours
+
+        # Time difference to reach 6 AM the next day
+        timeToSkipInSeconds = targetTimeInSeconds - currentGameTimeInSeconds
+
+        # Convert game time to real-time milliseconds
+        timeToSkipInMilliseconds = (timeToSkipInSeconds / (24 * 60 * 60)) * (DAY_DURATION * 1000)
+
+        elapsedRealTime += timeToSkipInMilliseconds  # Add the exact time needed
+
     else:
         elapsedRealTime += deltaTime
 
