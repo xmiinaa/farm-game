@@ -9,18 +9,24 @@ import numpy as np
 weather = 0
 lastUpdatedDay = 0
 
-def renderTime(player):
+def renderTime(player, skippedDay=False):
 
     global elapsedRealTime, weather, lastUpdatedDay
 
     # Get the time elapsed since the last frame in milliseconds
     deltaTime = CLOCK.get_time()
-    elapsedRealTime += deltaTime
 
-    # Convert real elapsed time into in-game time
-    elapsedGameTime = (elapsedRealTime / 1000) * (24 * 60 * 60 / DAY_DURATION)  # Scale to a 24-hour day
-    gameHour = (START_HOUR + int(elapsedGameTime // 3600)) % 24
-    gameMinute = int((START_MINUTE + (elapsedGameTime % 3600) // 60) % 60)
+    if skippedDay:
+        elapsedRealTime += DAY_DURATION * 1000 # skips a full day in game time
+        gameHour = 6
+        gameMinute = 0
+    else:
+        elapsedRealTime += deltaTime
+
+        # Convert real elapsed time into in-game time
+        elapsedGameTime = (elapsedRealTime / 1000) * (24 * 60 * 60 / DAY_DURATION)  # Scale to a 24-hour day
+        gameHour = (START_HOUR + int(elapsedGameTime // 3600)) % 24
+        gameMinute = int((START_MINUTE + (elapsedGameTime % 3600) // 60) % 60)
 
     # Convert real elapsed time to in-game days
     elapsedDays = int((elapsedRealTime / 1000) // DAY_DURATION)

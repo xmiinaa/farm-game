@@ -258,7 +258,9 @@ def main(fromTown=False):
                     if atBed:
                         for choice in range(1,4):
                             if mousePos[0] in range(50, 1050) and mousePos[1] in range((choice)*40 + 480, (choice)*40 + 520):
-                                print(choice)
+                                
+                                if choice == 2:
+                                    game.renderTime(player, True)
                                 atBed = False
                     
                     else:
