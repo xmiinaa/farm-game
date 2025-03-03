@@ -56,6 +56,7 @@ def renderTime(player):
     if gameHour == 6 and gameMinute == 00 and currentDay != lastUpdatedDay:
         newDay(SEASONS[currentSeason])
         lastUpdatedDay = currentDay
+    
 
 def newDay(currentSeason):
     global weather

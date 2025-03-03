@@ -16,12 +16,35 @@ if chosenCharacter == "male":
 elif chosenCharacter == "female": # creates female player
     player = Player.Player(540, 360, femaleMCSpriteSheet, "Yue")
 
+def displayBedOptions():
+
+    text = OCR_ERROR.render("Skip to next day?", True, FONT_COLOUR)
+    pygame.draw.rect(SCREEN, BOX_FILL, pygame.Rect(70, 480, 950, 40), 0)
+    pygame.draw.rect(SCREEN, BOX_OUTLINE, pygame.Rect(70, 480, 950, 40), 2)
+    SCREEN.blit(text, (100,485))
+
+    text = OCR_ERROR.render("Save and continue", True, BLACK)
+    pygame.draw.rect(SCREEN, BOX_FILL, pygame.Rect(70, 520, 950, 40), 0)
+    pygame.draw.rect(SCREEN, BOX_OUTLINE, pygame.Rect(70, 520, 950, 40), 2)
+    SCREEN.blit(text, (100,525))
+    
+    text = OCR_ERROR.render("Continue without saving", True, BLACK)
+    pygame.draw.rect(SCREEN, BOX_FILL, pygame.Rect(70, 560, 950, 40), 0)
+    pygame.draw.rect(SCREEN, BOX_OUTLINE, pygame.Rect(70, 560, 950, 40), 2)
+    SCREEN.blit(text, (100,565))
+    
+    text = OCR_ERROR.render("Exit", True, BLACK)
+    pygame.draw.rect(SCREEN, BOX_FILL, pygame.Rect(70, 600, 950, 40), 0)
+    pygame.draw.rect(SCREEN, BOX_OUTLINE, pygame.Rect(70, 600, 950, 40), 2)
+    SCREEN.blit(text, (100,605))
+
 def main(fromTown=False):
     running = True
 
     global player
 
     pause = False
+    atBed = False
 
     player.setLocation("Farm")
 
@@ -101,12 +124,12 @@ def main(fromTown=False):
         if slotItem != None and mouseDrag: # checks to see if the player's mouse is holding an item
             player.inventory.displayItem(mousePos, slotItem) # displays item relative to player's mouse
 
+        if atBed:
+            displayBedOptions()
+
         # displays time
         if not pause:
             game.renderTime(player)
-
-        if player.nearBed():
-            print("ok")
 
         for event in pygame.event.get():
 
@@ -179,6 +202,9 @@ def main(fromTown=False):
 
                                     # changes the attribute as appropiate
                                     player.changeAction("harvesting")
+
+                        if player.nearBed():
+                            atBed = True
                             
                 
                 if keys[pygame.K_e]:
@@ -226,44 +252,52 @@ def main(fromTown=False):
 
                     mouseDrag = True
 
-                    # checks if inventory is open
-                    if player.inventory.isInventoryOpen():
-                        slotItem = player.inventory.getDragItem(mousePos) # gets item that player is holding on
-
-                    if player.mouseOnPlayer(mousePos):
-
-                        # gets the item that the player is currently holding
-                        item = player.inventory.getItem()
+                    if atBed:
+                        for choice in range(1,4):
+                            if mousePos[0] in range(50, 1050) and mousePos[1] in range((choice)*40 + 480, (choice)*40 + 520):
+                                print(choice)
+                                atBed = False
                     
-                        if item != "None":
+                    else:
 
-                            # ensures the player is not already engaged in another action
-                            if player.isActive() == False:
+                        # checks if inventory is open
+                        if player.inventory.isInventoryOpen():
+                            slotItem = player.inventory.getDragItem(mousePos) # gets item that player is holding on
 
-                                player.resetAnimation() # sets animation back to 0
-                                player.activate()
+                        if player.mouseOnPlayer(mousePos):
 
-                                if item == "hoe":
+                            # gets the item that the player is currently holding
+                            item = player.inventory.getItem()
+                        
+                            if item != "None":
 
-                                    # changes the attribute as appropiate
-                                    player.changeAction("till")
-                                
-                                if item == "scythe":
+                                # ensures the player is not already engaged in another action
+                                if player.isActive() == False:
 
-                                    # changes the attribute as appropiate
-                                    player.changeAction("untill")
-                                
-                                if item == "waterCan":
+                                    player.resetAnimation() # sets animation back to 0
+                                    player.activate()
 
-                                    # changes the attribute as appropiate
-                                    player.changeAction("water")
-                                
-                                if "seed" in item:
+                                    if item == "hoe":
 
-                                    player.offFlag()
+                                        # changes the attribute as appropiate
+                                        player.changeAction("till")
+                                    
+                                    if item == "scythe":
 
-                                    # changes the attribute as appropiate
-                                    player.changeAction("planting")
+                                        # changes the attribute as appropiate
+                                        player.changeAction("untill")
+                                    
+                                    if item == "waterCan":
+
+                                        # changes the attribute as appropiate
+                                        player.changeAction("water")
+                                    
+                                    if "seed" in item:
+
+                                        player.offFlag()
+
+                                        # changes the attribute as appropiate
+                                        player.changeAction("planting")
                     
             if event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 1:
