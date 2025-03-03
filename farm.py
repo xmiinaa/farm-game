@@ -78,7 +78,7 @@ def main(fromTown=False):
 
         if tile.checkEdgeOfFarm(player) == True:
             town.main(player, True)
-
+        
         # checks if the player is moving and they are not in another action, and displays it appropiately if they are
         if player.isMoving() and player.isActive() == False:
 
@@ -141,25 +141,27 @@ def main(fromTown=False):
 
                 if player.inventory.isInventoryOpen() == False:
 
-                    if keys[pygame.K_a] or keys[pygame.K_d] or keys[pygame.K_w] or keys[pygame.K_s]:
-                        player.setMoving(True)
-        
-                    if keys[pygame.K_a] and direction != 1:
-                        player.changeDirection(1)
+                    if not atBed:
 
-                    elif keys[pygame.K_d]:
-                        player.changeDirection(3)
+                        if keys[pygame.K_a] or keys[pygame.K_d] or keys[pygame.K_w] or keys[pygame.K_s]:
+                            player.setMoving(True)
+            
+                        if keys[pygame.K_a] and direction != 1:
+                            player.changeDirection(1)
 
-                    if keys[pygame.K_w]:
-                        player.changeDirection(0)
+                        elif keys[pygame.K_d]:
+                            player.changeDirection(3)
 
-                    elif keys[pygame.K_s]:
-                        player.changeDirection(2)
+                        if keys[pygame.K_w]:
+                            player.changeDirection(0)
 
-                    if keys[pygame.K_LSHIFT]:
-                        player.changeSpeed(6)
-                    else:
-                        player.changeSpeed(4)
+                        elif keys[pygame.K_s]:
+                            player.changeDirection(2)
+
+                        if keys[pygame.K_LSHIFT]:
+                            player.changeSpeed(6)
+                        else:
+                            player.changeSpeed(4)
 
                     if keys[pygame.K_x]:
 
@@ -168,69 +170,71 @@ def main(fromTown=False):
                         # gets the item that the player is currently holding
                         item = player.inventory.getItem()
 
-                        if item == "hoe" or item == "scythe" or item == "waterCan" or "seed" in item or item == "None":
+                        if player.nearBed() == False:
 
-                            # ensures the player is not already engaged in another action
-                            if player.isActive() == False:
+                            if item == "hoe" or item == "scythe" or item == "waterCan" or "seed" in item or item == "None":
 
-                                player.resetAnimation() # sets animation back to 0
-                                player.activate()
+                                # ensures the player is not already engaged in another action
+                                if player.isActive() == False and not atBed:
 
-                                if item == "hoe":
+                                    player.resetAnimation() # sets animation back to 0
+                                    player.activate()
 
-                                    # changes the attribute as appropiate
-                                    player.changeAction("till")
-                                
-                                if item == "scythe":
+                                    if item == "hoe":
 
-                                    # changes the attribute as appropiate
-                                    player.changeAction("untill")
-                                
-                                if item == "waterCan":
-
-                                    # changes the attribute as appropiate
-                                    player.changeAction("water")
-                                
-                                if "seed" in item:
-
-                                    player.offFlag()
+                                        # changes the attribute as appropiate
+                                        player.changeAction("till")
                                     
-                                    # changes the attribute as appropiate
-                                    player.changeAction("planting")
+                                    if item == "scythe":
 
-                                if item == "None":
+                                        # changes the attribute as appropiate
+                                        player.changeAction("untill")
+                                    
+                                    if item == "waterCan":
 
-                                    # changes the attribute as appropiate
-                                    player.changeAction("harvesting")
+                                        # changes the attribute as appropiate
+                                        player.changeAction("water")
+                                    
+                                    if "seed" in item:
 
-                        if player.nearBed():
+                                        player.offFlag()
+                                        
+                                        # changes the attribute as appropiate
+                                        player.changeAction("planting")
+
+                                    if item == "None":
+
+                                        # changes the attribute as appropiate
+                                        player.changeAction("harvesting")
+
+                        else:
                             atBed = True
                             
-                
-                if keys[pygame.K_e]:
-                    player.inventory.openCloseInventory()
+                if atBed == False:
+                    if keys[pygame.K_e]:
+                        player.inventory.openCloseInventory()
 
-                # checks to see if the user has pressed keys 1 to 0, changing the inventory slot if they have to the corresponding one
-                if keys[pygame.K_1]:
-                    player.inventory.changeSlot(0)
-                if keys[pygame.K_2]:
-                    player.inventory.changeSlot(1)
-                if keys[pygame.K_3]:
-                    player.inventory.changeSlot(2)
-                if keys[pygame.K_4]:
-                    player.inventory.changeSlot(3)
-                if keys[pygame.K_5]:
-                    player.inventory.changeSlot(4)
-                if keys[pygame.K_6]:
-                    player.inventory.changeSlot(5)
-                if keys[pygame.K_7]:
-                    player.inventory.changeSlot(6)
-                if keys[pygame.K_8]:
-                    player.inventory.changeSlot(7)
-                if keys[pygame.K_9]:
-                    player.inventory.changeSlot(8)
-                if keys[pygame.K_0]:
-                    player.inventory.changeSlot(9)
+                    # checks to see if the user has pressed keys 1 to 0, changing the inventory slot if they have to the corresponding one
+                    if keys[pygame.K_1]:
+                        player.inventory.changeSlot(0)
+                    if keys[pygame.K_2]:
+                        player.inventory.changeSlot(1)
+                    if keys[pygame.K_3]:
+                        player.inventory.changeSlot(2)
+                    if keys[pygame.K_4]:
+                        player.inventory.changeSlot(3)
+                    if keys[pygame.K_5]:
+                        player.inventory.changeSlot(4)
+                    if keys[pygame.K_6]:
+                        player.inventory.changeSlot(5)
+                    if keys[pygame.K_7]:
+                        player.inventory.changeSlot(6)
+                    if keys[pygame.K_8]:
+                        player.inventory.changeSlot(7)
+                    if keys[pygame.K_9]:
+                        player.inventory.changeSlot(8)
+                    if keys[pygame.K_0]:
+                        player.inventory.changeSlot(9)
                         
             # checks if player is not pressing down a key
             if event.type == pygame.KEYUP:
@@ -240,7 +244,6 @@ def main(fromTown=False):
 
                 if not keys[pygame.K_a] and not keys[pygame.K_d] and not keys[pygame.K_w] and not keys[pygame.K_s]:
                     player.setMoving(False)
-                    player.changeAction("idle")
 
             # checks if he player has clicked on the mouse
             if event.type == pygame.MOUSEBUTTONDOWN:

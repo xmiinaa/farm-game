@@ -2,7 +2,6 @@ import pygame
 from config import *
 from game import *
 from Player import *
-from furniture import *
 from inventory import *
 
 plantingDone = False

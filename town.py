@@ -281,13 +281,18 @@ def buyItem(player, toBuy, amount, npc):
             
             if noexcess == True: # if the player has enough space in the inventory
                 player.reduceMoney(totalPrice)
-            
+
+                player.changeAction("idle")
                 return NPC_TO_BUYSUCCESS.get(npc, None)
             else:
+
+                player.changeAction("idle")
                 player.inventory.remove(item, amount-noexcess) # remove items that were added
                 return NPC_TO_NOSPACE.get(npc, None)
         
         else:
+
+            player.changeAction("idle")
             return NPC_TO_CANTAFFORD.get(npc, None)
 
 # allows player to purchase an item from an npc
@@ -312,9 +317,13 @@ def sellItem(player, toSell, amount, npc):
 
             player.addMoney(totalValue) # adds the money to the player
 
+            player.changeAction("idle")
             return NPC_TO_SELLSUCCESS.get(npc, None)
         else:
+
+            player.changeAction("idle")
             return NPC_TO_NOTENOUGH.get(npc, None)
+    player.changeAction("idle")
     
 
 def main(player, fromFarm=False):
