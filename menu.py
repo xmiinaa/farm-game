@@ -1,5 +1,5 @@
 # importing all libraries needed in this module, including other python files
-import pygame, database, Classes.box as box, re, hashlib, game, sys
+import pygame, database, Classes.box as box, re, hashlib, game, sys, farm
 from config import *
 
 pygame.init()
@@ -391,7 +391,7 @@ def newgame2_loop(saveChoice):
                         # this creates a new save in the database using the information inputted
                         database.create_newsave(username, passwordHash, saveChoice)
 
-                        game.main()
+                        farm.main()
 
             # checks to see if the user has pressed a key
             if event.type == pygame.KEYDOWN: 
@@ -595,7 +595,7 @@ def loadgame_loop():
                             correct = database.checkPassword(userChoice, passwordHash)
 
                             if correct:
-                                game.main()
+                                farm.main()
                             else:
                                 passwordError.activate()
             
@@ -645,6 +645,13 @@ def instructions_loop():
     # creation of objects
     titleBox = box.TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "How to Play")
     backButton = box.Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
+
+    instruction1 = box.TextBox(300, 290, 170, 40, OCR_ERROR, "Move player")
+    instruction2 = box.TextBox(220, 450, 280, 40, OCR_ERROR, "Open / close inventory")
+    instruction3 = box.TextBox(220, 560, 270, 40, OCR_ERROR, "Use item / interact")
+    instruction4 = box.TextBox(710, 280, 280, 40, OCR_ERROR, "Change inventory slot")
+    instruction5 = box.TextBox(750, 455, 70, 40, OCR_ERROR, "Run")
+    instruction6 = box.TextBox(710, 560, 210, 40, OCR_ERROR, "Pause / Unpause")
     
     while running:
 
@@ -654,8 +661,25 @@ def instructions_loop():
         # the current position of the mouse is saved to a variable, mouse
         mouse = pygame.mouse.get_pos()
 
+        SCREEN.blit(W_IMG, (150, 255))
+        SCREEN.blit(A_IMG, (95, 310))
+        SCREEN.blit(S_IMG, (150, 310))
+        SCREEN.blit(D_IMG, (205, 310))
+
+        SCREEN.blit(E_IMG, (120, 440))
+
+        SCREEN.blit(X_IMG, (120, 550))
+
+        SCREEN.blit(ZERO_IMG, (570, 270))
+        SCREEN.blit(NINE_IMG, (640, 270))
+
+        SCREEN.blit(SHIFT_IMG, (570, 440))
+
+        SCREEN.blit(ESC_IMG, (570, 555))
+        
+
         # displays all elements
-        for textBox in [titleBox]:
+        for textBox in [titleBox, instruction1, instruction2, instruction3, instruction4, instruction5, instruction6]:
           textBox.draw()
 
         for button in [backButton]:

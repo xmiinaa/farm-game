@@ -39,6 +39,18 @@ OCR_INVENTORY = pygame.font.Font('Resources/OCR.ttf', 15)
 # images 
 MENU_BG = pygame.transform.scale(pygame.image.load('Resources/Images/Menu/menu-background.png'), (WIDTH, HEIGHT))
 
+W_IMG = pygame.transform.scale(pygame.image.load('Resources/Images/Keyboard Images/w.png'), (56, 56))
+A_IMG = pygame.transform.scale(pygame.image.load('Resources/Images/Keyboard Images/a.png'), (56, 56))
+S_IMG = pygame.transform.scale(pygame.image.load('Resources/Images/Keyboard Images/s.png'), (56, 56))
+D_IMG = pygame.transform.scale(pygame.image.load('Resources/Images/Keyboard Images/d.png'), (56, 56))
+E_IMG = pygame.transform.scale(pygame.image.load('Resources/Images/Keyboard Images/e.png'), (56, 56))
+X_IMG = pygame.transform.scale(pygame.image.load('Resources/Images/Keyboard Images/x.png'), (56, 56))
+ZERO_IMG = pygame.transform.scale(pygame.image.load('Resources/Images/Keyboard Images/0.png'), (65, 65))
+NINE_IMG = pygame.transform.scale(pygame.image.load('Resources/Images/Keyboard Images/9.png'), (65, 65))
+ESC_IMG = pygame.transform.scale(pygame.image.load('Resources/Images/Keyboard Images/esc.png'), (96, 48))
+SHIFT_IMG = pygame.transform.scale(pygame.image.load('Resources/Images/Keyboard Images/shift.png'), (134, 56))
+
+
 BL_TILE = pygame.transform.rotate(pygame.image.load('Resources/Images/tiles/grass corner.png'), 0)
 TL_TILE = pygame.transform.rotate(pygame.image.load('Resources/Images/tiles/grass corner.png'), 270)
 BR_TILE = pygame.transform.rotate(pygame.image.load('Resources/Images/tiles/grass corner.png'), 90)
@@ -114,7 +126,6 @@ joanHouseMiddleFloor = pygame.transform.scale( pygame.image.load("Resources/Imag
 
 window1 = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/window.png").convert_alpha(), (70,70))
 window2 = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/window2.png").convert_alpha(), (70,70))
-
 
 blueBed = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/bluebed.png").convert_alpha(), (60,100))
 bigblueBed = pygame.transform.scale( pygame.image.load("Resources/Images/Houses/lightbluebed.png").convert_alpha(), (95,125))
@@ -202,7 +213,7 @@ CROP_STAGES = { "P1": potatoList[0], "P2": potatoList[1], "P3": potatoList[2], "
 # In-game time configuration
 START_HOUR = 6  # Start time is 6:00 AM
 START_MINUTE = 0
-DAY_DURATION = 1 * 60  # Total duration of a day in seconds (15 minutes)
+DAY_DURATION = 15 * 60  # Total duration of a day in seconds (15 minutes)
 
 START_DATE = 1 # first date in the game
 
