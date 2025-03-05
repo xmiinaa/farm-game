@@ -645,13 +645,15 @@ def instructions_loop():
     # creation of objects
     titleBox = box.TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "How to Play")
     backButton = box.Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
+    nextButton = box.Button(900, 610, 150, 50, OCR_ERROR, "Next page" )
+
 
     instruction1 = box.TextBox(300, 290, 170, 40, OCR_ERROR, "Move player")
-    instruction2 = box.TextBox(220, 450, 280, 40, OCR_ERROR, "Open / close inventory")
-    instruction3 = box.TextBox(220, 560, 270, 40, OCR_ERROR, "Use item / interact")
+    instruction2 = box.TextBox(220, 430, 280, 40, OCR_ERROR, "Open / close inventory")
+    instruction3 = box.TextBox(220, 540, 270, 40, OCR_ERROR, "Use item / interact")
     instruction4 = box.TextBox(710, 280, 280, 40, OCR_ERROR, "Change inventory slot")
-    instruction5 = box.TextBox(750, 455, 70, 40, OCR_ERROR, "Run")
-    instruction6 = box.TextBox(710, 560, 210, 40, OCR_ERROR, "Pause / Unpause")
+    instruction5 = box.TextBox(750, 430, 70, 40, OCR_ERROR, "Run")
+    instruction6 = box.TextBox(710, 540, 210, 40, OCR_ERROR, "Pause / Unpause")
     
     while running:
 
@@ -666,20 +668,73 @@ def instructions_loop():
         SCREEN.blit(S_IMG, (150, 310))
         SCREEN.blit(D_IMG, (205, 310))
 
-        SCREEN.blit(E_IMG, (120, 440))
+        SCREEN.blit(E_IMG, (120, 420))
 
-        SCREEN.blit(X_IMG, (120, 550))
+        SCREEN.blit(X_IMG, (120, 530))
 
         SCREEN.blit(ZERO_IMG, (570, 270))
         SCREEN.blit(NINE_IMG, (640, 270))
 
-        SCREEN.blit(SHIFT_IMG, (570, 440))
+        SCREEN.blit(SHIFT_IMG, (570, 420))
 
-        SCREEN.blit(ESC_IMG, (570, 555))
+        SCREEN.blit(ESC_IMG, (570, 535))
         
 
         # displays all elements
         for textBox in [titleBox, instruction1, instruction2, instruction3, instruction4, instruction5, instruction6]:
+          textBox.draw()
+
+        for button in [backButton, nextButton]:
+
+            # checks to see if the user's mouse is hovering over the button
+            button.checkHover(mouse)
+            button.draw()
+        
+        # handles user interaction
+        for event in pygame.event.get():
+
+            # checks to see if the user has clicked on the mouse
+            if event.type == pygame.MOUSEBUTTONDOWN:
+
+                # this goes back to the main menu screen if the back button is clicked on
+                if backButton.onClick(mouse):
+                    mainmenu_loop()
+                if nextButton.onClick(mouse):
+                    instructions_loop2()
+
+            # exits program if user clicks on exit button (pygame.QUIT)
+            if event.type == pygame.QUIT:
+                running = False
+
+        # update the display
+        pygame.display.flip()
+        
+        # control frame rate
+        CLOCK.tick(60)
+
+    # Cleanly exit the program
+    pygame.quit()
+    sys.exit()
+
+# handles the instructions screen 
+def instructions_loop2():
+
+    running = True
+
+    # creation of objects
+    titleBox = box.TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "How to Play")
+    backButton = box.Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
+    
+    while running:
+
+        # displays menu image background
+        SCREEN.blit(MENU_BG, (0, 0))
+
+        # the current position of the mouse is saved to a variable, mouse
+        mouse = pygame.mouse.get_pos()
+
+        # displays all elements
+        for textBox in [titleBox]:
           textBox.draw()
 
         for button in [backButton]:
@@ -696,7 +751,7 @@ def instructions_loop():
 
                 # this goes back to the main menu screen if the back button is clicked on
                 if backButton.onClick(mouse):
-                    mainmenu_loop()
+                    instructions_loop()
 
             # exits program if user clicks on exit button (pygame.QUIT)
             if event.type == pygame.QUIT:
