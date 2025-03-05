@@ -441,6 +441,9 @@ def main(player, fromFarm=False):
 
                 if player.inventory.isInventoryOpen() == False:
 
+                    if keys[pygame.K_ESCAPE]:
+                        game.pauseScreen(player)
+
                     if dialogueOn:
                         if "buy" or "sell" in currentNode.text: # checks if correct option is on
                             if keys[pygame.K_0] or keys[pygame.K_1] or keys[pygame.K_2] or keys[pygame.K_3] or keys[pygame.K_4] or keys[pygame.K_5] or keys[pygame.K_6] or keys[pygame.K_7] or keys[pygame.K_8] or keys[pygame.K_9]:

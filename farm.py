@@ -162,8 +162,12 @@ def main(fromTown=False):
                             player.changeSpeed(6)
                         else:
                             player.changeSpeed(4)
+                    
+                    if keys[pygame.K_ESCAPE]:
+                        game.pauseScreen(player)
 
                     if keys[pygame.K_x]:
+
 
                         keyPressed = "x"
 

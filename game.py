@@ -2,8 +2,8 @@ import pygame
 from config import *
 import sys
 import Player
-import tile
-import random, town
+import tile, menu, farm, town
+from Classes import box
 import numpy as np
 
 weather = 0
@@ -99,3 +99,77 @@ def newDay(currentSeason):
     tile.itsanewDay(WEATHERS[weather])
 
     farmMap = tile.renderFarmMap()
+
+
+# handles the game paused and gives options to the user
+def pauseScreen(player):
+    running = True
+
+    # creation of objects
+    titleBox = box.TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "Pause")
+
+    continueButton = box.Button(WIDTH // 2 - 140, 220, 300, 70, OCR_TEXT, "Continue")
+    saveButton = box.Button(WIDTH // 2 - 140, 320, 300, 70, OCR_TEXT, "Save progress")
+    quitButton = box.Button(WIDTH // 2 - 140, 420, 300, 70, OCR_TEXT, "Exit to menu")
+    instructionsButton = box.Button(WIDTH // 2 - 140, 520, 300, 70, OCR_TEXT, "How To Play")
+    settingsButton = box.Button(WIDTH // 2 - 140, 620, 300, 70, OCR_TEXT, "Settings")
+
+    while running:
+
+        # displays translucent background
+        SCREEN.blit(PAUSE_SCREEN, (0, 0))
+
+        # the current position of the mouse is saved to a variable, mouse
+        mouse = pygame.mouse.get_pos()
+
+        # displays all elements
+        titleBox.draw()
+
+        for button in [continueButton, saveButton, quitButton, instructionsButton, settingsButton]:
+
+            # checks to see if the user's mouse is hovering over the button, which will draw the object differently
+            button.checkHover(mouse)
+            button.draw()
+
+        # handling user interaction
+        for event in pygame.event.get():
+
+            # checks if player presses down a key
+            if event.type == pygame.KEYDOWN:
+                
+                # collects all keys Boolean value of whether it has been pressed or not and stores in list
+                keys = pygame.key.get_pressed()
+
+                if keys[pygame.K_ESCAPE]:
+                    if player.getLocation() == "Farm":
+                        farm.main()
+                    elif player.getLocation() == "Town":
+                        town.main(player)
+
+            # checks to see if user clicks with the mosue, and calls the corresponding loop depending on the button clicked
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if continueButton.onClick(mouse):
+                    if player.getLocation() == "Farm":
+                        farm.main()
+                    elif player.getLocation() == "Town":
+                        town.main(player)
+                if quitButton.onClick(mouse):
+                    menu.mainmenu_loop()
+                if instructionsButton.onClick(mouse):
+                    menu.instructions_loop()
+                if settingsButton.onClick(mouse):
+                    menu.settings_loop()
+            
+            #  stops the loop if user clicks quit
+            if event.type == pygame.QUIT:
+                exit()
+        
+        # updates the display
+        pygame.display.flip()
+
+        # controls the frame rate
+        CLOCK.tick(60)
+    
+    # cleanly exits the program
+    pygame.quit()
+    sys.exit()
