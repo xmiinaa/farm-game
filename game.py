@@ -1,7 +1,7 @@
 import pygame
 from config import *
 import sys
-import Player
+from Player import *
 import tile, menu, farm, town
 from Classes import box
 import numpy as np
@@ -114,8 +114,32 @@ def pauseScreen(player):
     instructionsButton = box.Button(WIDTH // 2 - 160, 520, 320, 70, OCR_TEXT, "How To Play")
     settingsButton = box.Button(WIDTH // 2 - 160, 620, 320, 70, OCR_TEXT, "Settings")
 
-    # displays translucent background
+    if player.getLocation() == "Farm":
+        map = tile.renderFarmMap()
+    elif player.getLocation() == "Town":
+        map = town.renderTownMap()
 
+    # gets co-ordinates of camera
+    cameraPos = player.getMapPos()
+
+    # displays background tiles
+    SCREEN.blit(map, (cameraPos[0]-180, cameraPos[1]-360))
+
+    player.drawIdle()
+        
+    player.inventory.draw()
+
+    if player.getLocation() == "Town":
+        print("hellow")
+        shayla.drawIdle()
+        wesley.drawIdle()
+        joan.drawIdle()
+        andre.drawIdle()
+        annabelle.drawIdle()
+
+    renderTime(player)
+
+    # displays translucent background
     for _ in range(2):
         SCREEN.blit(PAUSE_SCREEN, (-50, -50))
 
@@ -158,9 +182,9 @@ def pauseScreen(player):
                 if quitButton.onClick(mouse):
                     menu.mainmenu_loop()
                 if instructionsButton.onClick(mouse):
-                    menu.instructions_loop(True)
+                    menu.instructions_loop(True, player)
                 if settingsButton.onClick(mouse):
-                    menu.settings_loop(True)
+                    menu.settings_loop(True, player)
             
             #  stops the loop if user clicks quit
             if event.type == pygame.QUIT:

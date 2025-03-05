@@ -638,7 +638,7 @@ def loadgame_loop():
     sys.exit()
 
 # handles the instructions screen 
-def instructions_loop(fromGame=False):
+def instructions_loop(fromGame=False, player=False):
 
     running = True
 
@@ -699,7 +699,7 @@ def instructions_loop(fromGame=False):
                 # this goes back to the main menu screen if the back button is clicked on
                 if backButton.onClick(mouse):
                     if fromGame:
-                        game.pauseScreen()
+                        game.pauseScreen(player)
                     else:
                         mainmenu_loop()
                 if nextButton.onClick(mouse):
@@ -771,7 +771,7 @@ def instructions_loop2():
     sys.exit()
 
 # handles the settings screen and the functions within
-def settings_loop(fromGame=False):
+def settings_loop(fromGame=False, player=False):
 
     running = True
 
@@ -820,7 +820,7 @@ def settings_loop(fromGame=False):
                 # this goes back to the main menu screen if the back button is clicked on
                 if backButton.onClick(mouse):
                     if fromGame:
-                        game.pauseScreen()
+                        game.pauseScreen(player)
                     else:
                         mainmenu_loop()
 
