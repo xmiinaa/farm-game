@@ -122,13 +122,6 @@ def pauseScreen(player):
     # gets co-ordinates of camera
     cameraPos = player.getMapPos()
 
-    # displays background tiles
-    SCREEN.blit(map, (cameraPos[0]-180, cameraPos[1]-360))
-
-    player.drawIdle()
-        
-    player.inventory.draw()
-
     if player.getLocation() == "Town":
         print("hellow")
         shayla.drawIdle()
@@ -136,6 +129,13 @@ def pauseScreen(player):
         joan.drawIdle()
         andre.drawIdle()
         annabelle.drawIdle()
+
+    # displays background tiles
+    SCREEN.blit(map, (cameraPos[0]-180, cameraPos[1]-360))
+
+    player.drawIdle()
+        
+    player.inventory.draw()
 
     renderTime(player)
 
