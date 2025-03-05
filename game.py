@@ -108,16 +108,18 @@ def pauseScreen(player):
     # creation of objects
     titleBox = box.TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "Pause")
 
-    continueButton = box.Button(WIDTH // 2 - 140, 220, 300, 70, OCR_TEXT, "Continue")
-    saveButton = box.Button(WIDTH // 2 - 140, 320, 300, 70, OCR_TEXT, "Save progress")
-    quitButton = box.Button(WIDTH // 2 - 140, 420, 300, 70, OCR_TEXT, "Exit to menu")
-    instructionsButton = box.Button(WIDTH // 2 - 140, 520, 300, 70, OCR_TEXT, "How To Play")
-    settingsButton = box.Button(WIDTH // 2 - 140, 620, 300, 70, OCR_TEXT, "Settings")
+    continueButton = box.Button(WIDTH // 2 - 160, 220, 320, 70, OCR_TEXT, "Continue")
+    saveButton = box.Button(WIDTH // 2 - 160, 320, 320, 70, OCR_TEXT, "Save progress")
+    quitButton = box.Button(WIDTH // 2 - 160, 420, 320, 70, OCR_TEXT, "Exit to menu")
+    instructionsButton = box.Button(WIDTH // 2 - 160, 520, 320, 70, OCR_TEXT, "How To Play")
+    settingsButton = box.Button(WIDTH // 2 - 160, 620, 320, 70, OCR_TEXT, "Settings")
+
+    # displays translucent background
+
+    for _ in range(2):
+        SCREEN.blit(PAUSE_SCREEN, (-50, -50))
 
     while running:
-
-        # displays translucent background
-        SCREEN.blit(PAUSE_SCREEN, (0, 0))
 
         # the current position of the mouse is saved to a variable, mouse
         mouse = pygame.mouse.get_pos()
@@ -156,9 +158,9 @@ def pauseScreen(player):
                 if quitButton.onClick(mouse):
                     menu.mainmenu_loop()
                 if instructionsButton.onClick(mouse):
-                    menu.instructions_loop()
+                    menu.instructions_loop(True)
                 if settingsButton.onClick(mouse):
-                    menu.settings_loop()
+                    menu.settings_loop(True)
             
             #  stops the loop if user clicks quit
             if event.type == pygame.QUIT:

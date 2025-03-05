@@ -71,7 +71,7 @@ SLOT = pygame.image.load('Resources/Images/slot.png')
 CHOSEN_SLOT = pygame.image.load('Resources/Images/chosenSlot.png')
 
 TOP_SCREEN = pygame.transform.scale(pygame.image.load('Resources/Images/topscreen.png'), (1100, 40))
-PAUSE_SCREEN = pygame.transform.scale(pygame.image.load('Resources/Images/topscreen.png'), (1080, 720)) 
+PAUSE_SCREEN = pygame.transform.scale(pygame.image.load('Resources/Images/topscreen.png'), (1300, 1000)) 
 
 # spritesheet for crops and its different stages (seed to final)
 POTATO_SHEET = pygame.image.load('Resources/Images/Crops/Spring/Potato.png')

@@ -638,7 +638,7 @@ def loadgame_loop():
     sys.exit()
 
 # handles the instructions screen 
-def instructions_loop():
+def instructions_loop(fromGame=False):
 
     running = True
 
@@ -698,7 +698,10 @@ def instructions_loop():
 
                 # this goes back to the main menu screen if the back button is clicked on
                 if backButton.onClick(mouse):
-                    mainmenu_loop()
+                    if fromGame:
+                        game.pauseScreen()
+                    else:
+                        mainmenu_loop()
                 if nextButton.onClick(mouse):
                     instructions_loop2()
 
@@ -768,7 +771,7 @@ def instructions_loop2():
     sys.exit()
 
 # handles the settings screen and the functions within
-def settings_loop():
+def settings_loop(fromGame=False):
 
     running = True
 
@@ -816,7 +819,10 @@ def settings_loop():
 
                 # this goes back to the main menu screen if the back button is clicked on
                 if backButton.onClick(mouse):
-                    mainmenu_loop()
+                    if fromGame:
+                        game.pauseScreen()
+                    else:
+                        mainmenu_loop()
 
                 # checks to see if the user clicked on the minus music button
                 if minusMusicButton.onClick(mouse):
