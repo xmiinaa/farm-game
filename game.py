@@ -106,7 +106,7 @@ def pauseScreen(player):
     running = True
 
     # creation of objects
-    titleBox = box.TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "Pause")
+    titleBox = box.TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "Paused")
 
     continueButton = box.Button(WIDTH // 2 - 160, 220, 320, 70, OCR_TEXT, "Continue")
     saveButton = box.Button(WIDTH // 2 - 160, 320, 320, 70, OCR_TEXT, "Save progress")

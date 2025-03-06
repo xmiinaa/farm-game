@@ -703,7 +703,7 @@ def instructions_loop(fromGame=False, player=False):
                     else:
                         mainmenu_loop()
                 if nextButton.onClick(mouse):
-                    instructions_loop2()
+                    instructions_loop2(True, player)
 
             # exits program if user clicks on exit button (pygame.QUIT)
             if event.type == pygame.QUIT:
@@ -720,7 +720,7 @@ def instructions_loop(fromGame=False, player=False):
     sys.exit()
 
 # handles the instructions screen 
-def instructions_loop2():
+def instructions_loop2(fromGame=False, player=False):
 
     running = True
 
@@ -754,7 +754,10 @@ def instructions_loop2():
 
                 # this goes back to the main menu screen if the back button is clicked on
                 if backButton.onClick(mouse):
-                    instructions_loop()
+                    if fromGame:
+                        instructions_loop(True, player)
+                    else:
+                        instructions_loop()
 
             # exits program if user clicks on exit button (pygame.QUIT)
             if event.type == pygame.QUIT:
