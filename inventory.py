@@ -183,6 +183,9 @@ class Inventory:
     def isInventoryOpen(self):
         return self.inventoryOpen
 
+    def getInventory(self):
+        return self.slots
+
     def dragDropItem(self, mousePos, slot):
         if self.slots[slot].type != None:
             SCREEN.blit(self.slots[slot].type.icon, (mousePos[0] - self.slots[slot].type.icon.get_width() // 2, mousePos[1] - self.slots[slot].type.icon.get_height() // 2 + 2))

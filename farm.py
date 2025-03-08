@@ -11,10 +11,10 @@ chosenCharacter = "male"
 
 # creates player object depending on the variable, chosenCharacter
 if chosenCharacter == "male":
-    player = Player.Player(540, 360, maleMCSpriteSheet, "Bob")
+    player = Player.Player(540, 360, maleMCSpriteSheet, "Bob", "Female")
 
 elif chosenCharacter == "female": # creates female player
-    player = Player.Player(540, 360, femaleMCSpriteSheet, "Yue")
+    player = Player.Player(540, 360, femaleMCSpriteSheet, "Yue", "Male")
 
 def displayBedOptions():
 
@@ -262,7 +262,10 @@ def main(fromTown=False):
                     if atBed:
                         for choice in range(1,4):
                             if mousePos[0] in range(50, 1050) and mousePos[1] in range((choice)*40 + 480, (choice)*40 + 520):
-                                
+                                if choice == 1:
+                                    game.saveTheGame(player, tile.tilemap)
+                                    game.renderTime(player, True)
+
                                 if choice == 2:
                                     game.renderTime(player, True)
                                 atBed = False

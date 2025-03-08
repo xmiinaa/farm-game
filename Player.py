@@ -185,9 +185,17 @@ class Player(Character):
         self.flag = False
 
         self.feetrect = pygame.Rect((x,y+52), (72, 20))
+
+        if spritesheet == maleMCSpriteSheet:
+            self.gender = "Male"
+        elif spritesheet == femaleMCSpriteSheet:
+            self.gender = "Female"
     
     def changeAction(self, action):
         self.action = action
+
+    def getGender(self):
+        return self.gender
 
     # displays character image in direction it is facing
     def drawIdle(self):

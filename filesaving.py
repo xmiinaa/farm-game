@@ -24,7 +24,7 @@ def saveGame(saveID, name, playerX, playerY, cameraX, cameraY, money, location, 
     }
 
     # creates a json object to write to file
-    jsonObject = json.dumps(information, indent = 16)
+    jsonObject = json.dumps(information, indent = 17)
 
     # opens file in write mode
     with open(saveFile, "w") as outfile:

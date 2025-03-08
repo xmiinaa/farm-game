@@ -5,13 +5,18 @@ from Player import *
 import tile, menu, farm, town
 from Classes import box
 import numpy as np
+import filesaving
 
 weather = 0
 lastUpdatedDay = 0
+gameHour = START_HOUR
+gameMinute = START_MINUTE
+currentDay = START_DATE
+currentSeason = START_HOUR
 
 def renderTime(player, skippedDay=False):
 
-    global elapsedRealTime, weather, lastUpdatedDay
+    global elapsedRealTime, weather, lastUpdatedDay, gameHour, gameMinute
 
     # Get the time elapsed since the last frame in milliseconds
     deltaTime = CLOCK.get_time()
@@ -83,6 +88,26 @@ def renderTime(player, skippedDay=False):
         newDay(SEASONS[currentSeason])
         lastUpdatedDay = currentDay
     
+def saveTheGame(player, map):
+    global weather
+
+    playerX, playerY = player.getPosition()
+    cameraPos = player.getMapPos()
+    name = player.getName()
+    money = player.getMoney()
+    location = player.getLocation()
+    gender = player.getGender()
+    inventory = player.inventory.getInventory()
+
+    tilemap = map
+
+    day = currentDay
+    season = currentSeason
+    hour = gameHour
+    minute = gameMinute
+
+    filesaving.saveGame(1, name , playerX, playerY, cameraPos[0], cameraPos[1], money, location, gender, "inventory", tilemap, day, season, hour, minute, weather, 15)
+
 
 def newDay(currentSeason):
     global weather
