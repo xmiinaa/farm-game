@@ -172,6 +172,40 @@ def getUsernames():
     
     return names
 
+# gets all the usernames stored in the 3 saves and returns it in a form of a list
+def getSaveNo(name):
+    sql = """ SELECT USERNAME
+                FROM save
+                WHERE SAVE_ID = ? """
+    saveNo = None
+
+    try:
+        with sqlite3.connect('farmsave.db') as conn:
+            cur = conn.cursor()
+
+            # repeats 3 times for each save
+            for x in range(1,4):
+                cur.execute(sql, (x,))
+
+                #if x == saveNo:
+
+                # gets each name
+                username = cur.fetchone()
+
+                if username[0] == name:
+
+                    # adds the username to a list call names
+                    saveNo = x
+                conn.commit()
+                
+    except sqlite3.Error as e:
+        print(e)
+    finally:
+        if conn:
+            conn.close()
+    
+    return saveNo
+
 # this is called at the start of program which calls all the relavent functions that starts up the database
 def startupDatabase():
     create_database()

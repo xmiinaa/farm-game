@@ -313,7 +313,7 @@ class Inventory:
                 s += str(self.slots[i].type.name) + ":" + str(self.slots[i].amount) + "\t"
             else:
                 s += "Empty slot\t"
-        print(s)
+        return s
         
     # returns how many slots are currently open
     def getFreeSlots(self):

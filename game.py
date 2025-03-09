@@ -6,6 +6,7 @@ import tile, menu, farm, town
 from Classes import box
 import numpy as np
 import filesaving
+import database
 
 weather = 0
 lastUpdatedDay = 0
@@ -91,22 +92,25 @@ def renderTime(player, skippedDay=False):
 def saveTheGame(player, map):
     global weather
 
+    print(database.getSaveNo(player.getName()))
+
     playerX, playerY = player.getPosition()
     cameraPos = player.getMapPos()
     name = player.getName()
     money = player.getMoney()
     location = player.getLocation()
     gender = player.getGender()
-    inventory = player.inventory.getInventory()
+    inventory = player.inventory.string()
 
     tilemap = map
+    weather = int(weather)
 
     day = currentDay
     season = currentSeason
     hour = gameHour
     minute = gameMinute
 
-    filesaving.saveGame(1, name , playerX, playerY, cameraPos[0], cameraPos[1], money, location, gender, "inventory", tilemap, day, season, hour, minute, weather, 15)
+    filesaving.saveGame(1, name , playerX, playerY, cameraPos[0], cameraPos[1], money, location, gender, inventory, tilemap, day, season, hour, minute, weather, 15)
 
 
 def newDay(currentSeason):

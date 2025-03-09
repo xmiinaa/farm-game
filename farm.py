@@ -4,17 +4,17 @@ import sys
 import Player
 import tile
 import town
-import game
+import game, filesaving
 
 # this would not be set in real game, but rather obtained from the database
 chosenCharacter = "male"
 
 # creates player object depending on the variable, chosenCharacter
 if chosenCharacter == "male":
-    player = Player.Player(540, 360, maleMCSpriteSheet, "Bob", "Female")
+    player = Player.Player(540, 360, maleMCSpriteSheet, "Aminaa", "Male")
 
 elif chosenCharacter == "female": # creates female player
-    player = Player.Player(540, 360, femaleMCSpriteSheet, "Yue", "Male")
+    player = Player.Player(540, 360, femaleMCSpriteSheet, "Yue", "Female")
 
 def displayBedOptions():
 
@@ -264,6 +264,7 @@ def main(fromTown=False):
                             if mousePos[0] in range(50, 1050) and mousePos[1] in range((choice)*40 + 480, (choice)*40 + 520):
                                 if choice == 1:
                                     game.saveTheGame(player, tile.tilemap)
+                                    #filesaving.test()
                                     game.renderTime(player, True)
 
                                 if choice == 2:
