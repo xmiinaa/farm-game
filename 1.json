@@ -1,11 +1,11 @@
 {
                  "name": "Aminaa",
-                 "playerX": 152,
+                 "playerX": 862,
                  "playerY": 300,
-                 "cameraX": 180,
+                 "cameraX": -540,
                  "cameraY": 0,
                  "money": 1000,
-                 "location": "Town",
+                 "location": "Farm",
                  "gender": "Male",
                  "inventory": "potato seed:5\tturnip seed:5\tonion seed:5\tradish seed:5\tcarrot seed:5\tspinach seed:5\tEmpty slot\thoe:1\twaterCan:1\tscythe:1\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\t",
                  "tilemap": [
@@ -2425,8 +2425,8 @@
                  ],
                  "day": 1,
                  "season": 6,
-                 "hour": 8,
-                 "minute": 46,
+                 "hour": 6,
+                 "minute": 28,
                  "weather": 0,
-                 "dayDuration": 15
+                 "dayDuration": 900
 }

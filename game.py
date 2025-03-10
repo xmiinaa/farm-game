@@ -14,10 +14,11 @@ gameHour = START_HOUR
 gameMinute = START_MINUTE
 currentDay = START_DATE
 currentSeason = START_HOUR
+dayDuration = DAY_DURATION * 60
 
 def renderTime(player, skippedDay=False):
 
-    global elapsedRealTime, weather, lastUpdatedDay, gameHour, gameMinute
+    global elapsedRealTime, weather, lastUpdatedDay, gameHour, gameMinute, dayDuration
 
     # Get the time elapsed since the last frame in milliseconds
     deltaTime = CLOCK.get_time()
@@ -25,7 +26,7 @@ def renderTime(player, skippedDay=False):
     elapsedRealTime += deltaTime
 
     # Convert real elapsed time into in-game time
-    elapsedGameTime = (elapsedRealTime / 1000) * (24 * 60 * 60 / DAY_DURATION)  # Scale to a 24-hour day
+    elapsedGameTime = (elapsedRealTime / 1000) * (24 * 60 * 60 / dayDuration)  # Scale to a 24-hour day
     
     gameHour = (START_HOUR + int(elapsedGameTime // 3600)) % 24
     gameMinute = int((START_MINUTE + (elapsedGameTime % 3600) // 60) % 60)
@@ -42,7 +43,7 @@ def renderTime(player, skippedDay=False):
         timeToSkipInSeconds = targetTimeInSeconds - currentGameTimeInSeconds
 
         # Convert game time to real-time milliseconds
-        timeToSkipInMilliseconds = (timeToSkipInSeconds / (24 * 60 * 60)) * (DAY_DURATION * 1000)
+        timeToSkipInMilliseconds = (timeToSkipInSeconds / (24 * 60 * 60)) * (dayDuration * 1000)
 
         elapsedRealTime += timeToSkipInMilliseconds  # Add the exact time needed
 
@@ -50,12 +51,12 @@ def renderTime(player, skippedDay=False):
         elapsedRealTime += deltaTime
 
         # Convert real elapsed time into in-game time
-        elapsedGameTime = (elapsedRealTime / 1000) * (24 * 60 * 60 / DAY_DURATION)  # Scale to a 24-hour day
+        elapsedGameTime = (elapsedRealTime / 1000) * (24 * 60 * 60 / dayDuration)  # Scale to a 24-hour day
         gameHour = (START_HOUR + int(elapsedGameTime // 3600)) % 24
         gameMinute = int((START_MINUTE + (elapsedGameTime % 3600) // 60) % 60)
 
     # Convert real elapsed time to in-game days
-    elapsedDays = int((elapsedRealTime / 1000) // DAY_DURATION)
+    elapsedDays = int((elapsedRealTime / 1000) // dayDuration)
 
     # Calculate the in-game date
     currentDay = int((START_DATE + elapsedDays) % 30)
@@ -84,7 +85,6 @@ def renderTime(player, skippedDay=False):
 
     pygame.draw.rect(SCREEN, DARK_GREY, pygame.Rect(-10, -5, 1100, 40), 1, 0)
 
-    flag = False
     if gameHour == 6 and gameMinute == 00 and currentDay != lastUpdatedDay:
         newDay(SEASONS[currentSeason])
         lastUpdatedDay = currentDay
@@ -93,9 +93,9 @@ def createNewSave(saveNo, name, gender, speed):
 
     speed = "Slow"
     if speed == "Slow":
-        dayDuration = 15
+        dayDuration = 15 * 60
     elif speed == "Fast":
-        dayDuration = 10
+        dayDuration = 10 * 60
     
     print(speed)
     print(speed)
@@ -107,7 +107,8 @@ def createNewSave(saveNo, name, gender, speed):
 
 
 def saveTheGame(player, map):
-    global weather
+
+    global weather, gameHour, gameMinute, currentDay, currentSeason, dayDuration
 
     saveNo = database.getSaveNo(player.getName())
 
@@ -127,9 +128,11 @@ def saveTheGame(player, map):
     hour = gameHour
     minute = gameMinute
 
-    filesaving.saveGame(saveNo, name , playerX, playerY, cameraPos[0], cameraPos[1], money, location, gender, inventory, tilemap, day, season, hour, minute, weather, 15)
+    filesaving.saveGame(saveNo, name , playerX, playerY, cameraPos[0], cameraPos[1], money, location, gender, inventory, tilemap, day, season, hour, minute, weather, dayDuration)
 
 def loadTheGame(saveNo):
+
+    global elapsedRealTime, weather, gameHour, gameMinute, currentDay, currentSeason, dayDuration
     
     data = filesaving.loadGame(saveNo)
 
@@ -143,10 +146,10 @@ def loadTheGame(saveNo):
     gender = data.get("gender", None)
     inventory = data.get("inventory", None)
     tilemap = data.get("tilemap", None)
-    day = data.get("day", None)
-    season = data.get("season", None)
-    hour = data.get("hour", None)
-    minute = data.get("minute", None)
+    currentDay = data.get("day", None)
+    currentSeason = data.get("season", None)
+    gameHour = data.get("hour", None)
+    gameMinute = data.get("minute", None)
     weather = data.get("weather", None)
     dayDuration = data.get("dayDuration", None)
 
@@ -182,7 +185,6 @@ def newDay(currentSeason):
     tile.itsanewDay(WEATHERS[weather])
 
     farmMap = tile.renderFarmMap()
-
 
 # handles the game paused and gives options to the user
 def pauseScreen(player):

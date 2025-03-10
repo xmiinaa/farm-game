@@ -1,8 +1,8 @@
 {
                  "name": "PassPass2",
-                 "playerX": 866,
-                 "playerY": 300,
-                 "cameraX": -540,
+                 "playerX": 138,
+                 "playerY": 168,
+                 "cameraX": -140,
                  "cameraY": 0,
                  "money": 1000,
                  "location": "Farm",
@@ -2426,7 +2426,7 @@
                  "day": 1,
                  "season": 6,
                  "hour": 6,
-                 "minute": 33,
+                 "minute": 5,
                  "weather": 2,
-                 "dayDuration": 15
+                 "dayDuration": 600
 }
