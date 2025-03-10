@@ -334,12 +334,12 @@ def newgame2_loop(saveChoice):
                 
                 # checks to see if a character image has been clicked, and draws it differently depending on it
                 if femaleCharacter.onClick(mouse):
-                    chosenCharacter = "female"
+                    chosenCharacter = "Female"
                     femaleCharacter.activate()
                     maleCharacter.deactivate()
                 
                 if maleCharacter.onClick(mouse):
-                    chosenCharacter = "male"
+                    chosenCharacter = "Male"
                     maleCharacter.activate()
                     femaleCharacter.deactivate()
                 
@@ -391,7 +391,8 @@ def newgame2_loop(saveChoice):
                         # this creates a new save in the database using the information inputted
                         database.create_newsave(username, passwordHash, saveChoice)
 
-                        farm.main()
+                        game.createNewSave(saveChoice, username, chosenCharacter, speed)
+                        game.loadTheGame(saveChoice)
 
             # checks to see if the user has pressed a key
             if event.type == pygame.KEYDOWN: 
@@ -596,7 +597,6 @@ def loadgame_loop():
 
                             if correct:
                                 game.loadTheGame(userChoice)
-                                #farm.main()
                             else:
                                 passwordError.activate()
             

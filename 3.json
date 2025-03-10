@@ -1,12 +1,12 @@
 {
-                 "name": "Aminaa",
-                 "playerX": 152,
+                 "name": "PassPass2",
+                 "playerX": 866,
                  "playerY": 300,
-                 "cameraX": 180,
+                 "cameraX": -540,
                  "cameraY": 0,
                  "money": 1000,
-                 "location": "Town",
-                 "gender": "Male",
+                 "location": "Farm",
+                 "gender": "Female",
                  "inventory": "potato seed:5\tturnip seed:5\tonion seed:5\tradish seed:5\tcarrot seed:5\tspinach seed:5\tEmpty slot\thoe:1\twaterCan:1\tscythe:1\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\t",
                  "tilemap": [
                                   [
@@ -2425,8 +2425,8 @@
                  ],
                  "day": 1,
                  "season": 6,
-                 "hour": 8,
-                 "minute": 46,
-                 "weather": 0,
+                 "hour": 6,
+                 "minute": 33,
+                 "weather": 2,
                  "dayDuration": 15
 }

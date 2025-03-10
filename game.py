@@ -89,6 +89,23 @@ def renderTime(player, skippedDay=False):
         newDay(SEASONS[currentSeason])
         lastUpdatedDay = currentDay
     
+def createNewSave(saveNo, name, gender, speed):
+
+    speed = "Slow"
+    if speed == "Slow":
+        dayDuration = 15
+    elif speed == "Fast":
+        dayDuration = 10
+    
+    print(speed)
+    print(speed)
+    print(speed)
+    print(speed)
+
+
+    filesaving.saveGame(saveNo, name , 540, 360, 0, 0, 1000, "Farm", gender, "inventory", tile.tilemap, 1, "Spring", 6, 0, 0, dayDuration)
+
+
 def saveTheGame(player, map):
     global weather
 
@@ -234,7 +251,7 @@ def pauseScreen(player):
 
                 if keys[pygame.K_ESCAPE]:
                     if player.getLocation() == "Farm":
-                        farm.main()
+                        farm.main(player)
                     elif player.getLocation() == "Town":
                         town.main(player)
 
@@ -245,6 +262,8 @@ def pauseScreen(player):
                         farm.main()
                     elif player.getLocation() == "Town":
                         town.main(player)
+                if saveButton.onClick(mouse):
+                    saveTheGame(player, tile.tilemap)
                 if quitButton.onClick(mouse):
                     menu.mainmenu_loop()
                 if instructionsButton.onClick(mouse):

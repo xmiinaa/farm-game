@@ -362,7 +362,7 @@ def main(player, fromFarm=False):
         SCREEN.blit(townMap, (cameraPos[0]-180, cameraPos[1]-360))
 
         if checkEdgeOfTown(player) == True:
-            farm.main(True)
+            farm.main(player, True)
 
         # checks if the player is moving and they are not in another action, and displays it appropiately if they are
         if player.isMoving() and player.isActive() == False:

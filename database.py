@@ -172,7 +172,7 @@ def getUsernames():
     
     return names
 
-# gets all the usernames stored in the 3 saves and returns it in a form of a list
+# gets the save number in the database by searching using the username
 def getSaveNo(name):
     sql = """ SELECT USERNAME
                 FROM save
