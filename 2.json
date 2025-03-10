@@ -1,13 +1,13 @@
 {
                   "name": "Password1",
-                  "playerX": 342,
-                  "playerY": 472,
+                  "playerX": 446,
+                  "playerY": 284,
                   "cameraX": -96,
-                  "cameraY": 148,
+                  "cameraY": -288,
                   "money": 1000,
                   "location": "Farm",
                   "gender": "Male",
-                  "inventory": "potato seed:5\tturnip seed:5\tonion seed:5\tradish seed:5\tcarrot seed:5\tspinach seed:5\tEmpty slot\thoe:1\twaterCan:1\tscythe:1\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\t",
+                  "inventory": "potato seed:5\tturnip seed:5\tonion seed:5\tradish seed:3\tcarrot seed:5\tspinach seed:5\tEmpty slot\thoe:1\twaterCan:1\tscythe:1\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\t",
                   "tilemap": [
                                     [
                                                       [
@@ -1692,22 +1692,38 @@
                                                                         null
                                                       ],
                                                       [
-                                                                        "GM",
+                                                                        "WD",
+                                                                        [
+                                                                                          "R1",
+                                                                                          "R1",
+                                                                                          "R1",
+                                                                                          "R2",
+                                                                                          "R2",
+                                                                                          "R2",
+                                                                                          "R3"
+                                                                        ],
+                                                                        0
+                                                      ],
+                                                      [
+                                                                        "WD",
+                                                                        [
+                                                                                          "R1",
+                                                                                          "R1",
+                                                                                          "R1",
+                                                                                          "R2",
+                                                                                          "R2",
+                                                                                          "R2",
+                                                                                          "R3"
+                                                                        ],
+                                                                        0
+                                                      ],
+                                                      [
+                                                                        "WD",
                                                                         null,
                                                                         null
                                                       ],
                                                       [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
+                                                                        "WD",
                                                                         null,
                                                                         null
                                                       ],
@@ -2425,9 +2441,9 @@
                   ],
                   "day": 1,
                   "season": 6,
-                  "hour": 14,
-                  "minute": 25,
+                  "hour": 15,
+                  "minute": 13,
                   "weather": 2,
                   "dayDuration": 900,
-                  "elapsedRealTime": 30916240.0
+                  "elapsedRealTime": 30945820.0
 }

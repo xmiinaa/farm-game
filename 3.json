@@ -1,13 +1,13 @@
 {
                   "name": "PassPass2",
-                  "playerX": 458,
-                  "playerY": 324,
-                  "cameraX": -124,
-                  "cameraY": -288,
+                  "playerX": 714,
+                  "playerY": 312,
+                  "cameraX": -312,
+                  "cameraY": 44,
                   "money": 700,
                   "location": "Farm",
                   "gender": "Female",
-                  "inventory": "potato seed:5\tturnip seed:5\tonion seed:5\tradish seed:5\tcarrot seed:5\tspinach seed:5\tEmpty slot\thoe:1\twaterCan:1\tscythe:1\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\t",
+                  "inventory": "potato seed:5\tturnip seed:5\tonion seed:5\tradish seed:3\tcarrot seed:5\tspinach seed:5\tEmpty slot\thoe:1\twaterCan:1\tscythe:1\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\tEmpty slot\t",
                   "tilemap": [
                                     [
                                                       [
@@ -1239,12 +1239,12 @@
                                                                         null
                                                       ],
                                                       [
-                                                                        "GM",
+                                                                        "WD",
                                                                         null,
                                                                         null
                                                       ],
                                                       [
-                                                                        "GM",
+                                                                        "TD",
                                                                         null,
                                                                         null
                                                       ],
@@ -1366,14 +1366,30 @@
                                                                         null
                                                       ],
                                                       [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
+                                                                        "TD",
+                                                                        [
+                                                                                          "R1",
+                                                                                          "R1",
+                                                                                          "R1",
+                                                                                          "R2",
+                                                                                          "R2",
+                                                                                          "R2",
+                                                                                          "R3"
+                                                                        ],
+                                                                        0
                                                       ],
                                                       [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
+                                                                        "WD",
+                                                                        [
+                                                                                          "R1",
+                                                                                          "R1",
+                                                                                          "R1",
+                                                                                          "R2",
+                                                                                          "R2",
+                                                                                          "R2",
+                                                                                          "R3"
+                                                                        ],
+                                                                        0
                                                       ],
                                                       [
                                                                         "GM",
@@ -2425,9 +2441,9 @@
                   ],
                   "day": 1,
                   "season": 6,
-                  "hour": 8,
-                  "minute": 52,
+                  "hour": 10,
+                  "minute": 22,
                   "weather": 1,
                   "dayDuration": 600,
-                  "elapsedRealTime": 11471826.666666666
+                  "elapsedRealTime": 11509204.666666666
 }

@@ -1,6 +1,6 @@
 import pygame
 from config import *
-from game import *
+import game
 from Player import *
 from inventory import *
 
@@ -26,17 +26,17 @@ def renderFarmMap():
 
 
     # displays tile images from tilemap onto surface
-    for row in range(len(tilemap)):
-        for col in range(len(tilemap[row])):
+    for row in range(len(game.tilemap)):
+        for col in range(len(game.tilemap[row])):
 
-            tileImg = getTileImg(tilemap, row, col) # gets image to display
+            tileImg = getTileImg(game.tilemap, row, col) # gets image to display
             
             farmMap.blit(tileImg, (col*72, row*72))
 
             # checks if there is a crop
-            if tilemap[row][col][1] != None:
+            if game.tilemap[row][col][1] != None:
 
-                cropImg = getCropImg(tilemap, row, col)
+                cropImg = getCropImg(game.tilemap, row, col)
 
                 if cropImg is not None:
                     farmMap.blit(cropImg, ((col*72) +10, (row*72) -30))
@@ -92,29 +92,29 @@ def displayMCHouse():
 
 def itsanewDay(weather):
     
-    for row in range(len(tilemap)):
-        for col in range(len(tilemap[row])):
+    for row in range(len(game.tilemap)):
+        for col in range(len(game.tilemap[row])):
             # checks if there is a crop
-            if tilemap[row][col][1] != None:
+            if game.tilemap[row][col][1] != None:
                         
                 # gets the number of days the crop has been growing for
-                stage = tilemap[row][col][2]
+                stage = game.tilemap[row][col][2]
 
                 # gets the stage it is at
-                tile = tilemap[row][col][1][stage]
+                tile = game.tilemap[row][col][1][stage]
 
                 # checks if the crop is not fully grown and the tile has been watered
-                if tile[1] != "3" and tilemap[row][col][0] == "WD":
+                if tile[1] != "3" and game.tilemap[row][col][0] == "WD":
                     stage += 1
-                    tilemap[row][col][2] = stage
+                    game.tilemap[row][col][2] = stage
 
             if weather == "Rainy":
-                if tilemap[row][col][0] == "TD" or tilemap[row][col][0] == "WD":
-                    tilemap[row][col][0] = "WD"
+                if game.tilemap[row][col][0] == "TD" or game.tilemap[row][col][0] == "WD":
+                    game.tilemap[row][col][0] = "WD"
 
             elif weather == "Sunny" or weather == "Cloudy":
-                if tilemap[row][col][0] == "TD" or tilemap[row][col][0] == "WD":
-                    tilemap[row][col][0] = "TD"
+                if game.tilemap[row][col][0] == "TD" or game.tilemap[row][col][0] == "WD":
+                    game.tilemap[row][col][0] = "TD"
 
 # tills the tile
 def till(player, mousePos, key, weather):
@@ -125,18 +125,18 @@ def till(player, mousePos, key, weather):
     playerTileX, playerTileY = player.getTilePosition()
 
     # checks to see if the tile is "tillable"
-    if tilemap[playerTileY][playerTileX][0] == "GM":
+    if game.tilemap[playerTileY][playerTileX][0] == "GM":
 
         #  checks if the player pressed the key x
         if key == "x":
 
             # if it is raining
             if weather == 2:
-                tilemap[playerTileY][playerTileX][0] = "WD" # tile is already watered from rain
+                game.tilemap[playerTileY][playerTileX][0] = "WD" # tile is already watered from rain
             
             else:
                 # changes the tile to tilled land and displays it
-                tilemap[playerTileY][playerTileX][0] = "TD"
+                game.tilemap[playerTileY][playerTileX][0] = "TD"
             farmMap = renderFarmMap()
 
         # checks to see if the player clicked on the mouse
@@ -146,11 +146,11 @@ def till(player, mousePos, key, weather):
             if player.mouseOnPlayer(mousePos):
 
                 if weather == 2:
-                    tilemap[playerTileY][playerTileX][0] = "WD"
+                    game.tilemap[playerTileY][playerTileX][0] = "WD"
             
                 else:
                     # changes the tile to tilled land and displays it
-                    tilemap[playerTileY][playerTileX][0] = "TD"
+                    game.tilemap[playerTileY][playerTileX][0] = "TD"
                 farmMap = renderFarmMap()
     
     player.animateTillWater()
@@ -164,15 +164,15 @@ def untill(player, mousePos, key):
     playerTileX, playerTileY = player.getTilePosition()
 
     # checks to see if the tile has been tilled
-    if tilemap[playerTileY][playerTileX][0] == "TD" or tilemap[playerTileY][playerTileX][0] == "WD":
+    if game.tilemap[playerTileY][playerTileX][0] == "TD" or game.tilemap[playerTileY][playerTileX][0] == "WD":
 
         #  checks if the player pressed the key x
         if key == "x":
 
             # changes the tile to untilled land and displays it
-            tilemap[playerTileY][playerTileX][0] = "GM"
-            tilemap[playerTileY][playerTileX][1] = None
-            tilemap[playerTileY][playerTileX][2] = None
+            game.tilemap[playerTileY][playerTileX][0] = "GM"
+            game.tilemap[playerTileY][playerTileX][1] = None
+            game.tilemap[playerTileY][playerTileX][2] = None
             farmMap = renderFarmMap()
 
         # checks to see if the player clicked on the mouse
@@ -182,9 +182,9 @@ def untill(player, mousePos, key):
             if player.mouseOnPlayer(mousePos):
 
                 # changes the tile to untilled land and displays it
-                tilemap[playerTileY][playerTileX][0] = "GM"
-                tilemap[playerTileY][playerTileX][1] = None
-                tilemap[playerTileY][playerTileX][2] = None
+                game.tilemap[playerTileY][playerTileX][0] = "GM"
+                game.tilemap[playerTileY][playerTileX][1] = None
+                game.tilemap[playerTileY][playerTileX][2] = None
                 farmMap = renderFarmMap()
     
     # animates the player
@@ -199,13 +199,13 @@ def water(player, mousePos, key):
     playerTileX, playerTileY = player.getTilePosition()
 
     # checks to see if the tile is "tillable"
-    if tilemap[playerTileY][playerTileX][0] == "TD":
+    if game.tilemap[playerTileY][playerTileX][0] == "TD":
 
         #  checks if the player pressed the key x
         if key == "x":
 
             # changes the tile to tilled land and displays it
-            tilemap[playerTileY][playerTileX][0] = "WD"
+            game.tilemap[playerTileY][playerTileX][0] = "WD"
             farmMap = renderFarmMap()
 
         # checks to see if the player clicked on the mouse
@@ -215,7 +215,7 @@ def water(player, mousePos, key):
             if player.mouseOnPlayer(mousePos):
 
                 # changes the tile to tilled land and displays it
-                tilemap[playerTileY][playerTileX][0] = "WD"
+                game.tilemap[playerTileY][playerTileX][0] = "WD"
                 farmMap = renderFarmMap()
     
     # animates the player
@@ -231,7 +231,7 @@ def plant(player, mousePos, key):
     playerItem = player.inventory.getItem()
     
     # checks to see if the tile is "plantable"
-    if (tilemap[playerTileY][playerTileX][0] == "TD" or tilemap[playerTileY][playerTileX][0] == "WD") and tilemap[playerTileY][playerTileX][1] == None:
+    if (game.tilemap[playerTileY][playerTileX][0] == "TD" or game.tilemap[playerTileY][playerTileX][0] == "WD") and game.tilemap[playerTileY][playerTileX][1] == None:
 
         #  checks if the player pressed the key x
         if key == "x" and player.isActive():
@@ -239,8 +239,8 @@ def plant(player, mousePos, key):
             # calculates the code for the crop
             cropList = SEED_TO_CROP_STAGES.get(playerItem, None)
 
-            tilemap[playerTileY][playerTileX][1] = cropList
-            tilemap[playerTileY][playerTileX][2] = 0
+            game.tilemap[playerTileY][playerTileX][1] = cropList
+            game.tilemap[playerTileY][playerTileX][2] = 0
             farmMap = renderFarmMap()
 
             if player.getFlag() == False:
@@ -257,8 +257,8 @@ def plant(player, mousePos, key):
                 # calculates the code for the crop
                 cropList = SEED_TO_CROP_STAGES.get(playerItem, None)
 
-                tilemap[playerTileY][playerTileX][1] = cropList
-                tilemap[playerTileY][playerTileX][2] = 0
+                game.tilemap[playerTileY][playerTileX][1] = cropList
+                game.tilemap[playerTileY][playerTileX][2] = 0
 
                 farmMap = renderFarmMap()
 
@@ -278,25 +278,25 @@ def harvest(player, mousePos, key):
     playerTileX, playerTileY = player.getTilePosition()
 
     # checks to see if the tile has a crop planted
-    if tilemap[playerTileY][playerTileX][1] != None:
+    if game.tilemap[playerTileY][playerTileX][1] != None:
 
-        stage = tilemap[playerTileY][playerTileX][2] # gets the current stage of the crop
+        stage = game.tilemap[playerTileY][playerTileX][2] # gets the current stage of the crop
 
-        if tilemap[playerTileY][playerTileX][1][stage][1] == "3": # checks if the crop is at its last stage
+        if game.tilemap[playerTileY][playerTileX][1][stage][1] == "3": # checks if the crop is at its last stage
 
             #  checks if the player pressed the key x or has clicked on the player
             if key == "x" or (key == "mouse" and player.mouseOnPlayer(mousePos)):
 
-                cropStage = tilemap[playerTileY][playerTileX][1][stage]
+                cropStage = game.tilemap[playerTileY][playerTileX][1][stage]
 
                 crop = CROP_STAGE3_TO_CROP.get(cropStage, None)
 
                 player.inventory.add(crop)
 
                 # changes the tile to untilled land and displays it
-                tilemap[playerTileY][playerTileX][0] = "GM"
-                tilemap[playerTileY][playerTileX][1] = None
-                tilemap[playerTileY][playerTileX][2] = None
+                game.tilemap[playerTileY][playerTileX][0] = "GM"
+                game.tilemap[playerTileY][playerTileX][1] = None
+                game.tilemap[playerTileY][playerTileX][2] = None
                 farmMap = renderFarmMap()
             
             else:
@@ -315,33 +315,10 @@ def checkEdgeOfFarm(player):
     # gets the tile position of the player
     playerTileX, playerTileY = player.getTilePosition()
 
-    if tilemap[playerTileY][playerTileX][0] == "DE":
+    if game.tilemap[playerTileY][playerTileX][0] == "DE":
         return True
     else:
         return False
 
-# 2D array storing whole tilemap status
-tilemap = [
-    [["TL", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TR", None, None]],
-    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
-    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
-    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
-    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
-    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
-    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
-    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
-    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
-    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["DE", None, None]],
-    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["DE", None, None]],
-    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["XX", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
-    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
-    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
-    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
-    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
-    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
-    [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
-    [["BL", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BR", None, None]] ]
-
 # creates empty surface 
 farmMap = pygame.Surface((1800, 1440))
-house = pygame.Rect(417,417, 318, 160)
