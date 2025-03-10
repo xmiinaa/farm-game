@@ -37,7 +37,7 @@ def loadGame(saveID):
     with open(saveFile, "r") as openFile:
         jsonObject = json.load(openFile) # creates a json object to store information in
     
-    print(jsonObject) # outputs data
+    return jsonObject # returns data
 
 
 def test():
@@ -63,4 +63,3 @@ def test():
     [["BL", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BR", None, None]] ]
 
     saveGame(1,"Amina", 300, 400, 0, 0, 430, "Farm", "Female", [2,3,4,5], tilemap, 4, "Spring", 6, 34, "Sunny", 15)
-    loadGame(1)

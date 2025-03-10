@@ -92,7 +92,7 @@ def renderTime(player, skippedDay=False):
 def saveTheGame(player, map):
     global weather
 
-    print(database.getSaveNo(player.getName()))
+    saveNo = database.getSaveNo(player.getName())
 
     playerX, playerY = player.getPosition()
     cameraPos = player.getMapPos()
@@ -110,7 +110,44 @@ def saveTheGame(player, map):
     hour = gameHour
     minute = gameMinute
 
-    filesaving.saveGame(1, name , playerX, playerY, cameraPos[0], cameraPos[1], money, location, gender, inventory, tilemap, day, season, hour, minute, weather, 15)
+    filesaving.saveGame(saveNo, name , playerX, playerY, cameraPos[0], cameraPos[1], money, location, gender, inventory, tilemap, day, season, hour, minute, weather, 15)
+
+def loadTheGame(saveNo):
+    
+    data = filesaving.loadGame(saveNo)
+
+    name = data.get("name", None)
+    playerX = data.get("playerX", None)
+    playerY = data.get("playerY", None)
+    cameraX = data.get("cameraX", None)
+    cameraY = data.get("cameraY", None)
+    money = data.get("money", None)
+    location = data.get("location", None)
+    gender = data.get("gender", None)
+    inventory = data.get("inventory", None)
+    tilemap = data.get("tilemap", None)
+    day = data.get("day", None)
+    season = data.get("season", None)
+    hour = data.get("hour", None)
+    minute = data.get("minute", None)
+    weather = data.get("weather", None)
+    dayDuration = data.get("dayDuration", None)
+
+    if gender == "Male":
+        player = Player(playerX, playerY, maleMCSpriteSheet, name, gender)
+    elif gender == "Female":
+        player = Player(playerX, playerY, femaleMCSpriteSheet, name, gender)
+
+    player.changeMapPos(cameraX, cameraY)
+    player.setMoney(money)
+    player.setLocation(location)
+
+    if location == "Farm":
+        farm.main(player)
+    elif location == "Town":
+        town.main(player)
+    
+
 
 
 def newDay(currentSeason):

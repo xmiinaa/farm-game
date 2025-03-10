@@ -38,10 +38,8 @@ def displayBedOptions():
     pygame.draw.rect(SCREEN, BOX_OUTLINE, pygame.Rect(70, 600, 950, 40), 2)
     SCREEN.blit(text, (100,605))
 
-def main(fromTown=False):
+def main(player, fromTown=False):
     running = True
-
-    global player
 
     pause = False
     atBed = False

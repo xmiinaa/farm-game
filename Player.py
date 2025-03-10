@@ -239,6 +239,9 @@ class Player(Character):
 
     def getMoney(self):
         return self.money
+
+    def setMoney(self, value):
+        self.money = value
     
     def reduceMoney(self, value):
         self.money -= value

@@ -595,7 +595,8 @@ def loadgame_loop():
                             correct = database.checkPassword(userChoice, passwordHash)
 
                             if correct:
-                                farm.main()
+                                game.loadTheGame(userChoice)
+                                #farm.main()
                             else:
                                 passwordError.activate()
             

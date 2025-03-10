@@ -13,5 +13,5 @@ if __name__ == "__main__":
     config.initialise()
 
     # calls the loops that displdays the first screen
-    #menu.mainmenu_loop()
-    farm.main()
+    menu.mainmenu_loop()
+    #farm.main()

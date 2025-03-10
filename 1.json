@@ -1,7 +1,7 @@
 {
                  "name": "Aminaa",
-                 "playerX": 260,
-                 "playerY": 172,
+                 "playerX": 264,
+                 "playerY": 196,
                  "cameraX": 0,
                  "cameraY": 0,
                  "money": 1000,
@@ -2426,7 +2426,7 @@
                  "day": 1,
                  "season": 6,
                  "hour": 6,
-                 "minute": 15,
-                 "weather": 1,
+                 "minute": 14,
+                 "weather": 0,
                  "dayDuration": 15
 }
