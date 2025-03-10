@@ -103,12 +103,12 @@ def createNewSave(saveNo, name, gender, speed):
     print(speed)
 
 
-    filesaving.saveGame(saveNo, name , 540, 360, 0, 0, 1000, "Farm", gender, "inventory", tile.tilemap, 1, "Spring", 6, 0, 0, dayDuration)
+    filesaving.saveGame(saveNo, name , 540, 360, 0, 0, 1000, "Farm", gender, "inventory", tile.tilemap, 1, "Spring", 6, 0, 0, dayDuration, 0)
 
 
 def saveTheGame(player, map):
 
-    global weather, gameHour, gameMinute, currentDay, currentSeason, dayDuration
+    global elapsedRealTime, weather, gameHour, gameMinute, currentDay, currentSeason, dayDuration
 
     saveNo = database.getSaveNo(player.getName())
 
@@ -128,12 +128,14 @@ def saveTheGame(player, map):
     hour = gameHour
     minute = gameMinute
 
-    filesaving.saveGame(saveNo, name , playerX, playerY, cameraPos[0], cameraPos[1], money, location, gender, inventory, tilemap, day, season, hour, minute, weather, dayDuration)
+    print(day, season, hour, minute)
+
+    filesaving.saveGame(saveNo, name , playerX, playerY, cameraPos[0], cameraPos[1], money, location, gender, inventory, tilemap, day, season, hour, minute, weather, dayDuration, elapsedRealTime)
 
 def loadTheGame(saveNo):
 
     global elapsedRealTime, weather, gameHour, gameMinute, currentDay, currentSeason, dayDuration
-    
+
     data = filesaving.loadGame(saveNo)
 
     name = data.get("name", None)
@@ -152,6 +154,9 @@ def loadTheGame(saveNo):
     gameMinute = data.get("minute", None)
     weather = data.get("weather", None)
     dayDuration = data.get("dayDuration", None)
+    elapsedRealTime = data.get("elapsedRealTime", None)
+
+    print(gameHour, gameMinute, currentDay, currentSeason)
 
     if gender == "Male":
         player = Player(playerX, playerY, maleMCSpriteSheet, name, gender)
@@ -188,6 +193,9 @@ def newDay(currentSeason):
 
 # handles the game paused and gives options to the user
 def pauseScreen(player):
+    global elapsedRealTime
+    print(elapsedRealTime)
+
     running = True
 
     # creation of objects
@@ -261,7 +269,7 @@ def pauseScreen(player):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if continueButton.onClick(mouse):
                     if player.getLocation() == "Farm":
-                        farm.main()
+                        farm.main(player)
                     elif player.getLocation() == "Town":
                         town.main(player)
                 if saveButton.onClick(mouse):

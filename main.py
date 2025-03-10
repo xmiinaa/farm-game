@@ -14,4 +14,3 @@ if __name__ == "__main__":
 
     # calls the loops that displdays the first screen
     menu.mainmenu_loop()
-    #farm.main()

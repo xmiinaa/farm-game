@@ -1,6 +1,6 @@
 import json
 
-def saveGame(saveID, name, playerX, playerY, cameraX, cameraY, money, location, gender, inventory, tilemap, day, season, hour, minute, weather, dayDuration):
+def saveGame(saveID, name, playerX, playerY, cameraX, cameraY, money, location, gender, inventory, tilemap, day, season, hour, minute, weather, dayDuration, elapsedRealTime):
     saveFile = f"{saveID}.json" # creates the name of the save file
 
     # formats data to store in json file
@@ -20,11 +20,12 @@ def saveGame(saveID, name, playerX, playerY, cameraX, cameraY, money, location, 
         "hour": hour,
         "minute": minute,
         "weather": weather,
-        "dayDuration": dayDuration
+        "dayDuration": dayDuration,
+        "elapsedRealTime": elapsedRealTime
     }
 
     # creates a json object to write to file
-    jsonObject = json.dumps(information, indent = 17)
+    jsonObject = json.dumps(information, indent = 18)
 
     # opens file in write mode
     with open(saveFile, "w") as outfile:
