@@ -61,26 +61,6 @@ class Inventory:
 
         self.inventoryOpen = False
 
-        # for now i am initiating the items here though it may change
-        self.slots[7].type = hoe
-        self.slots[7].amount = 1
-        self.slots[8].type = waterCan 
-        self.slots[8].amount = 1
-        self.slots[9].type = scythe 
-        self.slots[9].amount = 1
-
-        self.slots[0].type = potatoSeed
-        self.slots[0].amount = 5
-        self.slots[1].type = turnipSeed
-        self.slots[1].amount = 5
-        self.slots[2].type = onionSeed
-        self.slots[2].amount = 5
-        self.slots[3].type = radishSeed
-        self.slots[3].amount = 5
-        self.slots[4].type = carrotSeed
-        self.slots[4].amount = 5
-        self.slots[5].type = spinachSeed
-        self.slots[5].amount = 5
     
     # displays the inventory main 10 slots
     def draw(self):
@@ -217,6 +197,20 @@ class Inventory:
             self.slots[swapSlot].type = tempType
             self.slots[swapSlot].amount = tempAmount
 
+    def initialiseInventory(self):
+        # for now i am initiating the items here though it may change
+        self.slots[7].type = hoe
+        self.slots[7].amount = 1
+        self.slots[8].type = waterCan 
+        self.slots[8].amount = 1
+        self.slots[9].type = scythe 
+        self.slots[9].amount = 1
+
+        self.slots[0].type = potatoSeed
+        self.slots[0].amount = 5
+        self.slots[2].type = onionSeed
+        self.slots[2].amount = 5
+
 
     # adds a certain amount of an item to the inentory, returning any excess items it couldn't add    
     def add(self, itemType, amount=1): # defeault amount is 1
@@ -314,7 +308,30 @@ class Inventory:
             else:
                 s += "Empty slot\t"
         return s
+
+    # creates a dictionary of inventory to store in json file
+    def dictionary(self):
+        dict = {}
+
+        for i in range(self.capacity):
+            if self.slots[i].type is not None:
+                dict[i] = [str(self.slots[i].type.name), self.slots[i].amount]
+            else:
+                dict[i] = [None, 0]
         
+        return dict
+        
+    def setUpInventory(self, dictionary):
+
+        STRING_TO_OBJECT = {"hoe": hoe, "waterCan": waterCan, "scythe": scythe, "potato seed": potatoSeed, "potato": potato, "turnip seed": turnipSeed, "turnip": turnip, "onion seed": onionSeed, "onion": onion, "radish seed": radishSeed, "radish": radish, "carrot seed": carrotSeed, "carrot": carrot, "spinach seed": spinachSeed, "spinach": spinach}
+
+        for i in range(self.capacity):
+            values = dictionary.get(str(i), None)
+            print(values)
+            if values[0] is not None:
+                self.slots[i].type = STRING_TO_OBJECT.get(values[0])
+                self.slots[i].amount = values[1]
+
     # returns how many slots are currently open
     def getFreeSlots(self):
         i = 0

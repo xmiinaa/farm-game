@@ -97,6 +97,8 @@ def createNewSave(saveNo, name, gender, speed):
         dayDuration = 15 * 60
     elif speed == "Fast":
         dayDuration = 10 * 60
+
+    inventory = {0: ['potato seed', 5], 1: ['onion seed', 5], 2: [None, 0], 3: [None, 0], 4: [None, 0], 5: [None, 0], 6: [None, 0], 7: ['hoe', 1], 8: ['waterCan', 1], 9: ['scythe', 1], 10: [None, 0], 11: [None, 0], 12: [None, 0], 13: [None, 0], 14: [None, 0], 15: [None, 0], 16: [None, 0], 17: [None, 0], 18: [None, 0], 19: [None, 0], 20: [None, 0], 21: [None, 0], 22: [None, 0], 23: [None, 0], 24: [None, 0], 25: [None, 0], 26: [None, 0], 27: [None, 0], 28: [None, 0], 29: [None, 0], 30: [None, 0], 31: [None, 0], 32: [None, 0], 33: [None, 0], 34: [None, 0], 35: [None, 0], 36: [None, 0], 37: [None, 0], 38: [None, 0], 39: [None, 0]}
     
     # 2D array storing whole tilemap status
     tilemap = [
@@ -120,7 +122,7 @@ def createNewSave(saveNo, name, gender, speed):
     [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],
     [["BL", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BE", None, None], ["BR", None, None]] ]
 
-    filesaving.saveGame(saveNo, name , 540, 360, 0, 0, 1000, "Farm", gender, "inventory", tilemap, 1, "Spring", 6, 0, 0, dayDuration, 0)
+    filesaving.saveGame(saveNo, name , 540, 360, 0, 0, 1000, "Farm", gender, inventory, tilemap, 1, "Spring", 6, 0, 0, dayDuration, 0)
 
 
 def saveTheGame(player):
@@ -135,9 +137,8 @@ def saveTheGame(player):
     money = player.getMoney()
     location = player.getLocation()
     gender = player.getGender()
-    inventory = player.inventory.string()
+    inventory = player.inventory.dictionary()
 
-    #tilemap = map
     weather = int(weather)
 
     day = currentDay
@@ -163,7 +164,7 @@ def loadTheGame(saveNo):
     money = data.get("money", None)
     location = data.get("location", None)
     gender = data.get("gender", None)
-    inventory = data.get("inventory", None)
+    invent = data.get("inventory", None)
     tilemap = data.get("tilemap", None)
     currentDay = data.get("day", None)
     currentSeason = data.get("season", None)
@@ -179,7 +180,9 @@ def loadTheGame(saveNo):
         player = Player(playerX, playerY, maleMCSpriteSheet, name, gender)
     elif gender == "Female":
         player = Player(playerX, playerY, femaleMCSpriteSheet, name, gender)
+    
 
+    player.inventory.setUpInventory(invent)
     player.changeMapPos(cameraX, cameraY)
     player.setMoney(money)
     player.setLocation(location)
