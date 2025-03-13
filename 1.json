@@ -1,20 +1,20 @@
 {
-                  "name": "Aminaa",
-                  "playerX": 542,
-                  "playerY": 316,
-                  "cameraX": -132,
-                  "cameraY": -8,
+                  "name": "Amina",
+                  "playerX": 616,
+                  "playerY": 376,
+                  "cameraX": -188,
+                  "cameraY": 0,
                   "money": 1000,
                   "location": "Farm",
-                  "gender": "Male",
+                  "gender": "Female",
                   "inventory": {
                                     "0": [
                                                       "potato seed",
-                                                      5
+                                                      3
                                     ],
                                     "1": [
                                                       "onion seed",
-                                                      5
+                                                      3
                                     ],
                                     "2": [
                                                       null,
@@ -1507,14 +1507,19 @@
                                                                         null
                                                       ],
                                                       [
-                                                                        "TD",
+                                                                        "WD",
                                                                         null,
                                                                         null
                                                       ],
                                                       [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
+                                                                        "WD",
+                                                                        [
+                                                                                          "O1",
+                                                                                          "O2",
+                                                                                          "O2",
+                                                                                          "O3"
+                                                                        ],
+                                                                        1
                                                       ],
                                                       [
                                                                         "TD",
@@ -1524,13 +1529,12 @@
                                                       [
                                                                         "TD",
                                                                         [
-                                                                                          "S1",
-                                                                                          "S2",
-                                                                                          "S2",
-                                                                                          "S2",
-                                                                                          "S3"
+                                                                                          "O1",
+                                                                                          "O2",
+                                                                                          "O2",
+                                                                                          "O3"
                                                                         ],
-                                                                        2
+                                                                        1
                                                       ],
                                                       [
                                                                         "GM",
@@ -1640,22 +1644,34 @@
                                                                         null
                                                       ],
                                                       [
-                                                                        "GM",
+                                                                        "WD",
+                                                                        [
+                                                                                          "P1",
+                                                                                          "P1",
+                                                                                          "P2",
+                                                                                          "P2",
+                                                                                          "P3"
+                                                                        ],
+                                                                        1
+                                                      ],
+                                                      [
+                                                                        "WD",
                                                                         null,
                                                                         null
                                                       ],
                                                       [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
+                                                                        "TD",
+                                                                        [
+                                                                                          "P1",
+                                                                                          "P1",
+                                                                                          "P2",
+                                                                                          "P2",
+                                                                                          "P3"
+                                                                        ],
+                                                                        1
                                                       ],
                                                       [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
+                                                                        "TD",
                                                                         null,
                                                                         null
                                                       ],
@@ -2591,10 +2607,10 @@
                                     ]
                   ],
                   "day": 1,
-                  "season": 6,
-                  "hour": 8,
-                  "minute": 12,
-                  "weather": 0,
+                  "season": "Spring",
+                  "hour": 7,
+                  "minute": 4,
+                  "weather": 1,
                   "dayDuration": 900,
-                  "elapsedRealTime": 12683082.0
+                  "elapsedRealTime": 940447.0
 }

@@ -87,7 +87,7 @@ TILE_IMAGES = { "TL": TL_TILE, "TR": TR_TILE, "BL": BL_TILE, "BR": BR_TILE, "TE"
 TILE_SIZE = 72
 
 # music
-musicVal = 0 # todo: set this to 5
+musicVal = 5 
 sfxVal = 5
 
 # sound effects
@@ -236,7 +236,7 @@ def initialise():
     # loads up music and plays it
     pygame.mixer.music.load('Resources/Music/music1.mp3')
     pygame.mixer.music.play(-1)
-    pygame.mixer.music.set_volume(0) # todo: set to 5
+    pygame.mixer.music.set_volume(5) 
 
     # sets up sound effects
     for sounds in [button1, button2]:
