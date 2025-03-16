@@ -1,8 +1,8 @@
 {
                   "name": "Amina",
-                  "playerX": 616,
-                  "playerY": 376,
-                  "cameraX": -188,
+                  "playerX": 338,
+                  "playerY": 340,
+                  "cameraX": -540,
                   "cameraY": 0,
                   "money": 1000,
                   "location": "Farm",
@@ -2608,9 +2608,9 @@
                   ],
                   "day": 1,
                   "season": "Spring",
-                  "hour": 7,
-                  "minute": 4,
+                  "hour": 12,
+                  "minute": 58,
                   "weather": 1,
                   "dayDuration": 900,
-                  "elapsedRealTime": 940447.0
+                  "elapsedRealTime": 1161611.0
 }

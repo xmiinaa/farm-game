@@ -54,7 +54,7 @@ def mainmenu_loop():
     running = True
 
     # creation of objects
-    titleBox = box.TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "Arable  Valley")
+    titleBox = box.TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "Arable  Adventures")
 
     newGameButton = box.Button(WIDTH // 2 - 140, 220, 280, 70, OCR_TEXT, "New Game")
     loadGameButton = box.Button(WIDTH // 2 - 140, 320, 280, 70, OCR_TEXT, "Load Game")

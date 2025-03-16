@@ -9,7 +9,7 @@ WIDTH = 1080
 HEIGHT = 720
 
 # dimensions of the title box
-TITLE_WIDTH = 450
+TITLE_WIDTH = 550
 TITLE_HEIGHT = 90
 
 # colours
@@ -231,7 +231,7 @@ elapsedRealTime = 0
 def initialise():
 
     # set up window
-    pygame.display.set_caption('Arable Valley')
+    pygame.display.set_caption('Arable Adventures')
 
     # loads up music and plays it
     pygame.mixer.music.load('Resources/Music/music1.mp3')
