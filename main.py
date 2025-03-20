@@ -1,4 +1,4 @@
-# imports the pygame library, and oher libraries used and needed in program
+# imports the pygame library, and other libraries used and needed in program
 import pygame, database, config, menu, farm, filesaving
 
 # initiailses the pygame library so it can be used

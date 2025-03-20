@@ -685,7 +685,7 @@ def instructions_loop(fromGame=False, player=False):
         for textBox in [titleBox, instruction1, instruction2, instruction3, instruction4, instruction5, instruction6]:
           textBox.draw()
 
-        for button in [backButton, nextButton]:
+        for button in [backButton]:
 
             # checks to see if the user's mouse is hovering over the button
             button.checkHover(mouse)

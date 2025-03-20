@@ -1,20 +1,20 @@
 {
-                  "name": "kalam",
-                  "playerX": 130,
-                  "playerY": 160,
-                  "cameraX": -116,
+                  "name": "George",
+                  "playerX": 752,
+                  "playerY": 372,
+                  "cameraX": -188,
                   "cameraY": 0,
-                  "money": 400,
+                  "money": 1000,
                   "location": "Farm",
-                  "gender": "Female",
+                  "gender": "Male",
                   "inventory": {
                                     "0": [
                                                       "potato seed",
-                                                      4
+                                                      5
                                     ],
                                     "1": [
                                                       "onion seed",
-                                                      7
+                                                      5
                                     ],
                                     "2": [
                                                       null,
@@ -1629,15 +1629,9 @@
                                                                         null
                                                       ],
                                                       [
-                                                                        "WD",
-                                                                        [
-                                                                                          "P1",
-                                                                                          "P1",
-                                                                                          "P2",
-                                                                                          "P2",
-                                                                                          "P3"
-                                                                        ],
-                                                                        3
+                                                                        "GM",
+                                                                        null,
+                                                                        null
                                                       ],
                                                       [
                                                                         "GM",
@@ -2592,9 +2586,9 @@
                   ],
                   "day": 1,
                   "season": "Spring",
-                  "hour": 7,
-                  "minute": 9,
+                  "hour": 6,
+                  "minute": 31,
                   "weather": 1,
                   "dayDuration": 900,
-                  "elapsedRealTime": 2743424.0
+                  "elapsedRealTime": 19878
 }
