@@ -1,3 +1,4 @@
+# imports and initialise the pygame library, and oher libraries used and needed in program
 import pygame
 from config import *
 import game, sys, farm
@@ -11,6 +12,7 @@ def getTileImg(tilemap, row, col):
 
     return TILE_IMAGES.get(tile, GM_TILE) # if key is not found, grass middle tile is returned
 
+# displays annabelle's house
 def renderAnnabelleHouse(): # x: 0 y: -300
     townMap.blit(annaHouseTopWall, (332, 132))
     townMap.blit(annaHouseTopWall, (404, 132))
@@ -55,6 +57,7 @@ def renderAnnabelleHouse(): # x: 0 y: -300
 
     pygame.draw.rect(townMap, GM_GREEN, pygame.Rect(422, 485, 100, 14))
 
+# displays wesley's house
 def renderWesleyHouse(): # x: +800 y: -200
     townMap.blit(wesleyHouseTopWall, (1232, 232))
     townMap.blit(wesleyHouseTopWall, (1304, 232))
@@ -99,6 +102,7 @@ def renderWesleyHouse(): # x: +800 y: -200
 
     pygame.draw.rect(townMap, GM_GREEN, pygame.Rect(1322, 585, 100, 14))
 
+# displays andre's house
 def renderAndreHouse(): # x: +600 y: +500
     townMap.blit(andreHouseTopWall, (232, 832))
     townMap.blit(andreHouseTopWall, (304, 832))
@@ -143,6 +147,7 @@ def renderAndreHouse(): # x: +600 y: +500
 
     pygame.draw.rect(townMap, GM_GREEN, pygame.Rect(322, 1185, 100, 14))
 
+# displays shayla's house
 def renderShaylaHouse(): # x: +400 y: +300
     townMap.blit(shaylaHouseTopWall, (732, 632))
     townMap.blit(shaylaHouseTopWall, (804, 632))
@@ -187,6 +192,7 @@ def renderShaylaHouse(): # x: +400 y: +300
 
     pygame.draw.rect(townMap, GM_GREEN, pygame.Rect(822, 985, 100, 14))
 
+# displays joan's house
 def renderJoanHouse(): # x: +600 y: +500
     townMap.blit(joanHouseTopWall, (1332, 932))
     townMap.blit(joanHouseTopWall, (1404, 932))
@@ -240,8 +246,9 @@ def renderTownMap():
 
             tileImg = getTileImg(townTileMap, row, col) # gets image to display
             
-            townMap.blit(tileImg, (col*72, row*72))
+            townMap.blit(tileImg, (col*72, row*72)) # displays it on townmap
     
+    # calls functions which displays NPC's houses
     renderAnnabelleHouse()
     renderWesleyHouse()
     renderAndreHouse()
@@ -250,10 +257,13 @@ def renderTownMap():
     
     return townMap
 
+# checks if the player is walking to farm
 def checkEdgeOfTown(player):
+
     # gets the tile position of the player
     playerTileX, playerTileY = player.getTilePosition()
 
+    # checks if the player is near edge of town
     if townTileMap[playerTileY][playerTileX][0] == "DE":
         return True
     else:
@@ -261,17 +271,22 @@ def checkEdgeOfTown(player):
 
 # allows player to purchase an item from an npc
 def buyItem(player, toBuy, amount, npc):
+
     amount = int(amount)
     
+    # converts string to object
     ITEM_TO_OBJECT = {"Potato seeds": inventory.potatoSeed, "Onion seeds": inventory.onionSeed, "Radish seeds": inventory.radishSeed, "Spinach seeds": inventory.spinachSeed, "Carrot seeds": inventory.carrotSeed, "Turnip seeds": inventory.turnipSeed}
     
+    # converts npc to its equivalent dialogue node
     NPC_TO_BUYSUCCESS = {annabelle: annabelleBuySuccess, wesley: wesleyBuySuccess, shayla: shaylaBuySuccess, andre: andreBuySuccess, joan: joanBuySuccess}
     NPC_TO_NOSPACE = {annabelle: annabelleNoSpace, wesley: wesleyNoSpace, shayla: shaylaNoSpace, andre: andreNoSpace, joan: joanNoSpace}
     NPC_TO_CANTAFFORD = {annabelle: annabelleCantAfford, wesley: wesleyCantAfford, shayla: shaylaCantAfford, andre: andreCantAfford, joan: joanCantAfford}
 
+    # gets which item the player is trying to buy
     item = ITEM_TO_OBJECT.get(toBuy, None)
 
     if item is not None:
+
         singlePrice = item.getPrice() # gets the price to buy the single item
         totalPrice = singlePrice * amount # calculates the total price of purchase
 
@@ -280,6 +295,8 @@ def buyItem(player, toBuy, amount, npc):
             noexcess = player.inventory.add(item, amount) # adds items to inventory
             
             if noexcess == True: # if the player has enough space in the inventory
+                
+                # deduct player's money
                 player.reduceMoney(totalPrice)
 
                 player.changeAction("idle")
@@ -298,15 +315,19 @@ def buyItem(player, toBuy, amount, npc):
 # allows player to purchase an item from an npc
 def sellItem(player, toSell, amount, npc):
     amount = int(amount)
-    
+
+    # converts string to object
     ITEM_TO_OBJECT = {"Potatoes": inventory.potato, "Onions": inventory.onion, "Radishes": inventory.radish, "Spinaches": inventory.spinach, "Carrots": inventory.carrot, "Turnips": inventory.turnip}
     
+    # converts npc to its equivalent dialogue node
     NPC_TO_SELLSUCCESS = {annabelle: annabelleSellSuccess, wesley: wesleySellSuccess, shayla: shaylaSellSuccess, andre: andreSellSuccess, joan: joanSellSuccess}
     NPC_TO_NOTENOUGH = {annabelle: annabelleNotEnough, wesley: wesleyNotEnough, shayla: shaylaNotEnough, andre: andreNotEnough, joan: joanNotEnough}
 
+    # gets which item the player is trying to but
     item = ITEM_TO_OBJECT.get(toSell, None)
 
     if item is not None:
+
         singleValue = item.getValue() # gets the value of the single item
         totalValue = singleValue * amount # calculates the total value of all items
             
@@ -323,16 +344,19 @@ def sellItem(player, toSell, amount, npc):
 
             player.changeAction("idle")
             return NPC_TO_NOTENOUGH.get(npc, None)
+        
     player.changeAction("idle")
     
-
+# main function for the town
 def main(player, fromFarm=False):
 
+    # sets player's location to town
     player.setLocation("Town")
 
     # creates the farmMap
     townMap = renderTownMap()
 
+    # if player is coming from farm, change player's position to arrive centre-left edge of town
     if fromFarm:
         player.changeMapPos(180, 0)
         player.setPosition(40, 300)
@@ -340,16 +364,25 @@ def main(player, fromFarm=False):
     # gets co-ordinates of camera
     cameraPos = player.getMapPos()
 
+    # stores what key player has pressed
     keyPressed = ""
     mouseDrag = False
+
+    # stores slot item
     slotItem = None
+
+    # stores amount player is purchasing / selling
     value = "1"
+
+    # stores item the player is purchasing / selling
     item = None
 
+    # sets dialogue to off
     dialogueOn = False
     npcConversing = None
 
     running = True
+
     while running:
 
         # gets player direction
@@ -361,6 +394,7 @@ def main(player, fromFarm=False):
         # displays background tiles
         SCREEN.blit(townMap, (cameraPos[0]-180, cameraPos[1]-360))
 
+        # if player is near centre-right edge of town, move to farm
         if checkEdgeOfTown(player) == True:
             farm.main(player, True)
 
@@ -374,6 +408,7 @@ def main(player, fromFarm=False):
         else:
             player.drawIdle()
 
+        # display NPCs as idle
         shayla.drawIdle()
         wesley.drawIdle()
         joan.drawIdle()
@@ -382,6 +417,7 @@ def main(player, fromFarm=False):
 
         x,y = player.getCoordinates()
         
+        # display player's inventory
         player.inventory.draw()
 
         if not dialogueOn: # can't interact with inventory when in dialogue
@@ -398,9 +434,10 @@ def main(player, fromFarm=False):
             pygame.draw.rect(SCREEN, BOX_OUTLINE, pygame.Rect(70, 440, 200, 40), 2)
             SCREEN.blit(text, (100,445))
 
-            if currentNode is None:
+            if currentNode is None: # if the user has reached the end of dialogue, end conversation
                 dialogueOn = False
             else:
+
                 # displays current dialogue
                 text = OCR_ERROR.render(currentNode.text, True, FONT_COLOUR)
                 pygame.draw.rect(SCREEN, BOX_FILL, pygame.Rect(70, 480, 950, 40), 0)
@@ -412,10 +449,13 @@ def main(player, fromFarm=False):
                     dialogueOn = False
                     player.changeAction("idle")
 
+                # stores number of dialogue choices player has
                 numChoices = 0
 
                 # display choices for user
                 for key, (responseText, _) in currentNode.responses.items():
+
+                    # checks if dialogue option is an input value from user, displaying that value instead
                     if responseText == "":
                         optionText = OCR_ERROR.render(f"{key}, {value}", True, BLACK)
                     else:
@@ -427,10 +467,10 @@ def main(player, fromFarm=False):
                     numChoices += 1
             
 
-
         # displays time
         game.renderTime(player)
 
+        # handles user interaction
         for event in pygame.event.get():
 
             # checks if player presses down a key
@@ -439,12 +479,16 @@ def main(player, fromFarm=False):
                 # collects all keys Boolean value of whether it has been pressed or not and stores in list
                 keys = pygame.key.get_pressed()
 
+                # checks if inventory is open
                 if player.inventory.isInventoryOpen() == False:
 
+                    # pauses gameplay
                     if keys[pygame.K_ESCAPE]:
                         game.pauseScreen(player)
 
+                    # if player is mid-conversation
                     if dialogueOn:
+
                         if "buy" or "sell" in currentNode.text: # checks if correct option is on
                             if keys[pygame.K_0] or keys[pygame.K_1] or keys[pygame.K_2] or keys[pygame.K_3] or keys[pygame.K_4] or keys[pygame.K_5] or keys[pygame.K_6] or keys[pygame.K_7] or keys[pygame.K_8] or keys[pygame.K_9]:
                                 
@@ -480,9 +524,10 @@ def main(player, fromFarm=False):
                             # checks if the player is near the npc
                             if npc.nearCharacter(x+200, y+400):
                                 npcConversing = npc
-                                dialogueOn = True
+                                dialogueOn = True # start conversation with npc
                                 currentNode = npcConversing.getDialogueRoot()
 
+                    # increases player's speed when pressing shift
                     if keys[pygame.K_LSHIFT]:
                         player.changeSpeed(6)
                     else:
@@ -525,49 +570,80 @@ def main(player, fromFarm=False):
     
             # checks if he player has clicked on the mouse
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
+
+                if event.button == 1: # left-click
 
                     keyPressed = "mouse"
 
                     if dialogueOn:
+
                         for key in range(numChoices):
+
+                            # if the player clicks on a specific option
                             if mousePos[0] in range(50, 1050) and mousePos[1] in range( (key+3)*40 + 400, (key+3)*40 + 440):
+
+                                # checks if player has chosen the value option
                                 if currentNode.responses[key+1][0] == "":
+
+                                    # buys item
                                     if player.getAction() == "buying":
                                         currentNode = buyItem(player, item, value, npcConversing)
+                                    
+                                    # sells item
                                     elif player.getAction() == "selling":
                                         currentNode = sellItem(player, item, value, npcConversing)
                                 else:
+
+                                    # changes player's action depending on which option they choose
                                     if "buy" in currentNode.text:
                                         player.changeAction("buying")
+
                                     elif "sell" in currentNode.text:
                                         player.changeAction("selling")
+                                    
+                                    # stores which item the player wants to buy / sell
                                     if "what" in currentNode.text or "What" in currentNode.text:
                                         item = currentNode.responses[key+1][0]
+                                    
+                                    # moves onto next node
                                     currentNode = currentNode.responses[key+1][1]
                 
-
+                    # if player is not interacting with an npc
                     if not dialogueOn:
+
+                        # allow user to interact with inventory
                         player.inventory.click(mousePos)
 
                         mouseDrag = True
 
                         # checks if inventory is open
                         if player.inventory.isInventoryOpen():
+                            
                             slotItem = player.inventory.getDragItem(mousePos) # gets item that player is holding on
                     
+            # checks if the player has stopped holding the left click
             if event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 1:
 
                     mouseDrag = False
 
+                    # checks if the inventory is open and if a swap can be made
                     if player.inventory.isInventoryOpen() and (slotItem != None or slotItem == 0):
+
+                        # swaps items that were dragged
                         player.inventory.swapItems(slotItem, mousePos)
                 
+            # checks if the mouse is moving
             if event.type == pygame.MOUSEMOTION:  
                 if mouseDrag:
+
+                    # checks if inventory is open
                     if player.inventory.isInventoryOpen():
+                            
+                            # checks if there is an item in the slot that the user is dragging
                             if slotItem != None or slotItem == 0:
+
+                                # moves the item that the player is dragging on screen
                                 player.inventory.dragDropItem(mousePos, slotItem)  
 
             # handles the exit of the game
@@ -582,8 +658,10 @@ def main(player, fromFarm=False):
         CLOCK.tick(60)
         pygame.display.update()
 
-
+# creates empty surface
 townMap = pygame.Surface((1800, 1440))
+
+# town 2D tilemap that is displayed on townMap above
 townTileMap = [
     [["TL", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TE", None, None], ["TR", None, None]],
     [["LE", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["GM", None, None], ["RE", None, None]],

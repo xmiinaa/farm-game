@@ -1,5 +1,4 @@
 # imports and initialise the pygame library, and oher libraries used and needed in program
-
 import pygame
 from spritesheet import SpriteSheet
 pygame.init()
@@ -185,6 +184,7 @@ radishObject = SpriteSheet(RADISH_SHEET)
 carrotObject = SpriteSheet(CARROT_SHEET)
 spinachObject = SpriteSheet(SPINACH_SHEET)
 
+# creates a list of images for the different stages for each crop
 potatoList, turnipList, onionList, radishList, carrotList, spinachList = [], [], [], [], [], []
 
 for x in range(2,5):

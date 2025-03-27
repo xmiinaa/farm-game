@@ -4,7 +4,6 @@ from config import *
 
 pygame.init()
 
-
 # checks to see if the password entered fits the requiremens and is valid
 def checkNewPassword(password1, password2, matchError, characterError):
 
@@ -83,12 +82,16 @@ def mainmenu_loop():
 
             # checks to see if user clicks with the mosue, and calls the corresponding loop depending on the button clicked
             if event.type == pygame.MOUSEBUTTONDOWN:
+
                 if newGameButton.onClick(mouse):
                     newgame1_loop()
+
                 if loadGameButton.onClick(mouse):
                     loadgame_loop()
+
                 if instructionsButton.onClick(mouse):
                     instructions_loop()
+
                 if settingsButton.onClick(mouse):
                     settings_loop()
             
@@ -334,20 +337,26 @@ def newgame2_loop(saveChoice):
                 
                 # checks to see if a character image has been clicked, and draws it differently depending on it
                 if femaleCharacter.onClick(mouse):
+
+                    # changes the variable to indicate chosen character
                     chosenCharacter = "Female"
                     femaleCharacter.activate()
                     maleCharacter.deactivate()
                 
                 if maleCharacter.onClick(mouse):
+
+                    # changes the variable to indicate chosen character
                     chosenCharacter = "Male"
                     maleCharacter.activate()
                     femaleCharacter.deactivate()
                 
                 # changes the speed between fast and slow when the user clicks on the button
                 if speedButton.onClick(mouse):
+
                     if speedButton.getText() == "Slow":
                         speed = "Fast"
                         speedButton.changeText("Fast")
+
                     elif speedButton.getText() == "Fast":
                         speed = "Slow"
                         speedButton.changeText("Slow")
@@ -375,8 +384,8 @@ def newgame2_loop(saveChoice):
 
                         #  checks to see if the name inputted already exists
                         validName = database.checkUsername(str(username))
-                    
 
+                    # checks if the username is valid
                     if validName:
                         usernameError.deactivate()
                     else:
@@ -391,7 +400,10 @@ def newgame2_loop(saveChoice):
                         # this creates a new save in the database using the information inputted
                         database.create_newsave(username, passwordHash, saveChoice)
 
+                        # creates a new empty json file with all the default data
                         game.createNewSave(saveChoice, username, chosenCharacter, speed)
+
+                        # loads the game save just created
                         game.loadTheGame(saveChoice)
 
             # checks to see if the user has pressed a key
@@ -664,6 +676,7 @@ def instructions_loop(fromGame=False, player=False):
         # the current position of the mouse is saved to a variable, mouse
         mouse = pygame.mouse.get_pos()
 
+        # displays all key images on screen
         SCREEN.blit(W_IMG, (150, 255))
         SCREEN.blit(A_IMG, (95, 310))
         SCREEN.blit(S_IMG, (150, 310))
@@ -681,7 +694,7 @@ def instructions_loop(fromGame=False, player=False):
         SCREEN.blit(ESC_IMG, (570, 535))
         
 
-        # displays all elements
+        # displays all text boxes
         for textBox in [titleBox, instruction1, instruction2, instruction3, instruction4, instruction5, instruction6]:
           textBox.draw()
 
@@ -699,66 +712,12 @@ def instructions_loop(fromGame=False, player=False):
 
                 # this goes back to the main menu screen if the back button is clicked on
                 if backButton.onClick(mouse):
+
+                    # checks to see if the instructions was accessed via menu or paused screen
                     if fromGame:
                         game.pauseScreen(player)
                     else:
                         mainmenu_loop()
-                if nextButton.onClick(mouse):
-                    instructions_loop2(True, player)
-
-            # exits program if user clicks on exit button (pygame.QUIT)
-            if event.type == pygame.QUIT:
-                running = False
-
-        # update the display
-        pygame.display.flip()
-        
-        # control frame rate
-        CLOCK.tick(60)
-
-    # Cleanly exit the program
-    pygame.quit()
-    sys.exit()
-
-# handles the instructions screen 
-def instructions_loop2(fromGame=False, player=False):
-
-    running = True
-
-    # creation of objects
-    titleBox = box.TextBox(WIDTH // 2 - (TITLE_WIDTH // 2), 100, TITLE_WIDTH, TITLE_HEIGHT, OCR_TITLE, "How to Play")
-    backButton = box.Button(30, 30, 90, 70, OCR_TITLE, "<-"  )
-    
-    while running:
-
-        # displays menu image background
-        SCREEN.blit(MENU_BG, (0, 0))
-
-        # the current position of the mouse is saved to a variable, mouse
-        mouse = pygame.mouse.get_pos()
-
-        # displays all elements
-        for textBox in [titleBox]:
-          textBox.draw()
-
-        for button in [backButton]:
-
-            # checks to see if the user's mouse is hovering over the button
-            button.checkHover(mouse)
-            button.draw()
-        
-        # handles user interaction
-        for event in pygame.event.get():
-
-            # checks to see if the user has clicked on the mouse
-            if event.type == pygame.MOUSEBUTTONDOWN:
-
-                # this goes back to the main menu screen if the back button is clicked on
-                if backButton.onClick(mouse):
-                    if fromGame:
-                        instructions_loop(True, player)
-                    else:
-                        instructions_loop()
 
             # exits program if user clicks on exit button (pygame.QUIT)
             if event.type == pygame.QUIT:
@@ -823,6 +782,8 @@ def settings_loop(fromGame=False, player=False):
 
                 # this goes back to the main menu screen if the back button is clicked on
                 if backButton.onClick(mouse):
+
+                    # returns user to menu or paused game screen depending on how they accessed settings
                     if fromGame:
                         game.pauseScreen(player)
                     else:

@@ -1,8 +1,10 @@
+# imports and initialise the pygame library, and oher libraries used and needed in program
 import pygame
 from spritesheet import SpriteSheet
 from config import *
 import inventory
 
+# parent class for npcs, animals and player
 class Entity():
     def __init__(self, x, y, spritesheet):
         
@@ -108,6 +110,7 @@ class Character(Entity):
     def setMoving(self, new):
         self.moving = new
     
+    # returns the direction the character is moving in
     def whichDirection(self):
         return self.direction
     
@@ -125,7 +128,10 @@ class Character(Entity):
         
         from town import townMap
 
+        # calculates characters co-ordinates on map
         x, y = self.getCoordinates()
+
+        # displays character on map
         townMap.blit(self.idleList[self.direction], (x, y))
 
     # animates character moving in direction it is facing 
@@ -150,14 +156,16 @@ class Character(Entity):
         # show frame image
         townMap.blit(self.walkList[self.direction][self.frame], (self.rect.x, self.rect.y ))
     
+    # gets the position of the player in relation to farmMap or townMap screen
     def getCoordinates(self):
 
-        # gets the position of the player in relation to farmMap screen
+        #caluclates relative position
         worldX = self.rect.x - self.mapPos[0]
         worldY = self.rect.y - self.mapPos[1]
 
         return (worldX, worldY)
     
+    # checks if the player is near the character, returning a Boolean
     def nearCharacter(self, x, y):
         characterX, characterY = self.getCoordinates()
         if characterX - 60 < x < characterX + 90 and characterY - 60 < y < characterY + 90:
@@ -169,8 +177,6 @@ class Player(Character):
         
     def __init__(self, x, y, spritesheet, name, dialogueRoot=None):
         super().__init__(x, y, spritesheet, name, dialogueRoot)
-
-        self.stamina = 100
          
         # creates an object as the inventory
         self.inventory = inventory.Inventory()
@@ -180,12 +186,12 @@ class Player(Character):
         self.action = "idle"
         self.active = False
 
+        # stores farm or town, indicating which map they are on
         self.location = "farm"
 
         self.flag = False
 
-        self.feetrect = pygame.Rect((x,y+52), (72, 20))
-
+        # sets gender depending on which spritesheet is passed in
         if spritesheet == maleMCSpriteSheet:
             self.gender = "Male"
         elif spritesheet == femaleMCSpriteSheet:
@@ -249,11 +255,14 @@ class Player(Character):
     def addMoney(self, value):
         self.money += value
     
+    # checks if the player is able to move (collision detection)
     def checkToMove(self, direction):
         canMove = True
         position = self.getCoordinates()
 
         if self.location == "Farm":
+            
+            # checks if player is walking through house wall
 
             if direction == 0: # facing up
                 if (200 < position[0] < 510 and position[1] == 160) or ((190 < position[0] < 300 or 390 < position[0] < 510) and position[1] == 360) :
@@ -276,6 +285,8 @@ class Player(Character):
     # checks if the user is near their bed
     def nearBed(self):
         position = self.getCoordinates()
+
+        # compares player's coordinates with bed co-ordinates
         if self.location == "Farm" and 210 < position[0] < 320 and 140 < position[1] < 210:
                 return True
         else:
@@ -382,6 +393,7 @@ class Player(Character):
     # animates the player tilling or watering
     def animateTillWater(self):
         
+        # checks if player is doing correct action
         if (self.action == "till" or self.action == "water" or self.action == "untill") and not self.animationFinished:
 
             # update animation
@@ -410,6 +422,7 @@ class Player(Character):
     # animates the player tilling or watering
     def animatePlanting(self):
         
+        # ensures animation only plays once previous one is completed
         if self.action == "planting" and not self.animationFinished:
 
             # update animation
@@ -459,7 +472,9 @@ class Player(Character):
     def getInventory(self):
         return self.inventory
 
+# used to create dialogue tree for NPCs
 class dialogueNode():
+
     def __init__(self, text):
         self.text = text # the text displayed to the user
         self.responses = {} # key: response option, value: next node
@@ -468,6 +483,7 @@ class dialogueNode():
     def addResponse(self, option, responseText, nextNode):
         self.responses[option] = (responseText, nextNode)
 
+# annabelle's dialogue graph
 annabelleRoot = dialogueNode("Hii, is there anything I can help with?")
 annabelleTalk = dialogueNode("Im Annabelle, and I have 8 cats even though im deathly allergic.")
 annabelleBye = dialogueNode("It was nice chatting to you! Bye!!")
@@ -527,6 +543,7 @@ annabelleNotEnough.addResponse(4, "Exit", annabelleBye)
 
 annabelleBye.addResponse(1, "Bye!", None)
 
+# wesley's dialogue graph
 wesleyRoot = dialogueNode("Hello, did you need something?")
 wesleyTalk = dialogueNode("I am Wesley, and I chop wood in my free time.")
 wesleyBye = dialogueNode("Great convo, bye!")
@@ -586,6 +603,7 @@ wesleyNotEnough.addResponse(4, "Exit", wesleyBye)
 
 wesleyBye.addResponse(1, "Bye!", None)
 
+# shayla's dialogue graph
 shaylaRoot = dialogueNode("Hey girly pop! How are you?")
 shaylaTalk = dialogueNode("I'm shayla, and I built my own home with galvanised steel and eco-friendly wood!")
 shaylaBye = dialogueNode("Bye Bye!")
@@ -645,6 +663,7 @@ shaylaNotEnough.addResponse(4, "Exit", shaylaBye)
 
 shaylaBye.addResponse(1, "Bye!", None)
 
+# andre's dialogue graph
 andreRoot = dialogueNode("Hmmm?")
 andreTalk = dialogueNode("If you must know, I'm Andre and i'm banned from 5 countries, including this one.")
 andreBye = dialogueNode("Ok, bye.")
@@ -704,6 +723,7 @@ andreNotEnough.addResponse(4, "Exit", andreBye)
 
 andreBye.addResponse(1, "Bye!", None)
 
+# joan's dialogue graph
 joanRoot = dialogueNode("Salut mon ami, was there something you wanted to talk to me about?")
 joanTalk = dialogueNode("Im joan, and I am, to some, considered a saint in France")
 joanBye = dialogueNode("Au revoir! I'll see you around")
@@ -763,6 +783,7 @@ joanNotEnough.addResponse(4, "Exit", joanBye)
 
 joanBye.addResponse(1, "Bye!", None)
 
+# creates NPCs as objects of character class
 annabelle = Character(400, 335, annabelleSpriteSheet, "Annabelle", annabelleRoot)
 wesley = Character(1360, 410, wesleySpriteSheet, "Wesley", wesleyRoot)
 andre = Character(320, 980, andreSpriteSheet, "Andre", andreRoot)

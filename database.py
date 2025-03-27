@@ -49,6 +49,8 @@ def initialise_empty_saves():
             count = cur.fetchone()[0]
             if count == 0:
                 for x in range(1,4):
+
+                    # fills in with empty values
                     cur.execute(sql, (x, "NULL", "NULL"))
                     conn.commit()
                     SAVE_ID =  cur.lastrowid
@@ -62,6 +64,8 @@ def initialise_empty_saves():
 # prints out the contents of the table for developing reasons
 def view_table():
     try:
+
+        # creates a connection to the database
         with sqlite3.connect('farmsave.db') as conn:
             cur = conn.cursor()
             cur.execute("SELECT * FROM save;")
@@ -98,6 +102,7 @@ def checkUsername(name):
     valid = True
 
     try:
+        # creates a connection to the database
         with sqlite3.connect('farmsave.db') as conn:
             cur = conn.cursor()
 
@@ -127,11 +132,14 @@ def checkPassword(choice, passwordHash):
     match = False
 
     try:
+        # creates a connection to the database
         with sqlite3.connect('farmsave.db') as conn:
             cur = conn.cursor()
             cur.execute(sql, (choice,))
             passHash = cur.fetchone()
             conn.commit()
+
+            # checks if the passwords match
             if passHash[0] == passwordHash:
                 match = True
     except sqlite3.Error as e:
@@ -150,6 +158,7 @@ def getUsernames():
     names = []
 
     try:
+        # creates a connection to the database
         with sqlite3.connect('farmsave.db') as conn:
             cur = conn.cursor()
 
@@ -180,6 +189,7 @@ def getSaveNo(name):
     saveNo = None
 
     try:
+        # creates a connection to the database
         with sqlite3.connect('farmsave.db') as conn:
             cur = conn.cursor()
 

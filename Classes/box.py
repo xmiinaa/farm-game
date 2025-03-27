@@ -1,3 +1,4 @@
+# imports and initialise the pygame library, and oher libraries used and needed in program
 import pygame
 from config import *
 

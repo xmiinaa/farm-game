@@ -1,3 +1,4 @@
+# imports and initialise the pygame library, and oher libraries used and needed in program
 import pygame
 from config import *
 import game
@@ -24,7 +25,6 @@ def getCropImg(tilemap, row, col):
 # creates farm map screen
 def renderFarmMap():
 
-
     # displays tile images from tilemap onto surface
     for row in range(len(game.tilemap)):
         for col in range(len(game.tilemap[row])):
@@ -45,6 +45,7 @@ def renderFarmMap():
     
     return farmMap
 
+# display's player's house on screen
 def displayMCHouse():
     farmMap.blit(MCHouseTopWall, (432, 432))
     farmMap.blit(MCHouseTopWall, (504, 432))
@@ -89,7 +90,7 @@ def displayMCHouse():
 
     pygame.draw.rect(farmMap, GM_GREEN, pygame.Rect(522, 785, 100, 14))
 
-
+# called at 6:00am everyday to update data
 def itsanewDay(weather):
     
     for row in range(len(game.tilemap)):
@@ -108,10 +109,12 @@ def itsanewDay(weather):
                     stage += 1
                     game.tilemap[row][col][2] = stage
 
+            # if it is raining, all tilled tiles are automatically set to watered
             if weather == "Rainy":
                 if game.tilemap[row][col][0] == "TD" or game.tilemap[row][col][0] == "WD":
                     game.tilemap[row][col][0] = "WD"
 
+            # in other weather conditions, tiles are reset to just tilled, not watered
             elif weather == "Sunny" or weather == "Cloudy":
                 if game.tilemap[row][col][0] == "TD" or game.tilemap[row][col][0] == "WD":
                     game.tilemap[row][col][0] = "TD"
@@ -198,7 +201,7 @@ def water(player, mousePos, key):
     # gets the tile position of the player
     playerTileX, playerTileY = player.getTilePosition()
 
-    # checks to see if the tile is "tillable"
+    # checks to see if the tile can be watered
     if game.tilemap[playerTileY][playerTileX][0] == "TD":
 
         #  checks if the player pressed the key x
@@ -223,11 +226,13 @@ def water(player, mousePos, key):
 
 # plants seeds in a tile
 def plant(player, mousePos, key):
+
     global farmMap, plantingDone
 
     # gets the tile position of the player
     playerTileX, playerTileY = player.getTilePosition()
 
+    # gets the item the player is currently holding
     playerItem = player.inventory.getItem()
     
     # checks to see if the tile is "plantable"
@@ -239,10 +244,14 @@ def plant(player, mousePos, key):
             # calculates the code for the crop
             cropList = SEED_TO_CROP_STAGES.get(playerItem, None)
 
+            # updates tilemap with crop information
             game.tilemap[playerTileY][playerTileX][1] = cropList
             game.tilemap[playerTileY][playerTileX][2] = 0
+
+            # re-draws farmMap with new crop
             farmMap = renderFarmMap()
 
+            # removes item from player's inventory once
             if player.getFlag() == False:
 
                 player.inventory.removeItemHeld()
@@ -257,11 +266,14 @@ def plant(player, mousePos, key):
                 # calculates the code for the crop
                 cropList = SEED_TO_CROP_STAGES.get(playerItem, None)
 
+                # updates tilemap with crop information
                 game.tilemap[playerTileY][playerTileX][1] = cropList
                 game.tilemap[playerTileY][playerTileX][2] = 0
 
+                # re-draws farmMap with new crop
                 farmMap = renderFarmMap()
 
+                # removes item from player's inventory once
                 if player.getFlag() == False:
 
                     player.inventory.removeItemHeld()
@@ -287,13 +299,16 @@ def harvest(player, mousePos, key):
             #  checks if the player pressed the key x or has clicked on the player
             if key == "x" or (key == "mouse" and player.mouseOnPlayer(mousePos)):
 
+                # gets the stage of the crop from the tile that the player is at
                 cropStage = game.tilemap[playerTileY][playerTileX][1][stage]
 
+                # gets the equivalent crop object
                 crop = CROP_STAGE3_TO_CROP.get(cropStage, None)
 
+                # adds crop to player's inventory
                 player.inventory.add(crop)
 
-                # changes the tile to untilled land and displays it
+                # changes the tile to untilled land with no crop growing and displays it
                 game.tilemap[playerTileY][playerTileX][0] = "GM"
                 game.tilemap[playerTileY][playerTileX][1] = None
                 game.tilemap[playerTileY][playerTileX][2] = None
@@ -311,10 +326,13 @@ def harvest(player, mousePos, key):
         player.deactivate()
         player.changeAction("idle") # resets player to idle state
 
+# checks if the player is walking to town
 def checkEdgeOfFarm(player):
+
     # gets the tile position of the player
     playerTileX, playerTileY = player.getTilePosition()
 
+    # checks if player is at edge of farm
     if game.tilemap[playerTileY][playerTileX][0] == "DE":
         return True
     else:
