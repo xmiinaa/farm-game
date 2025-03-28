@@ -1,20 +1,20 @@
 {
-                  "name": "George",
-                  "playerX": 752,
-                  "playerY": 372,
-                  "cameraX": -188,
-                  "cameraY": 0,
-                  "money": 1000,
+                  "name": "saqib",
+                  "playerX": 402,
+                  "playerY": 396,
+                  "cameraX": -84,
+                  "cameraY": -8,
+                  "money": 460,
                   "location": "Farm",
                   "gender": "Male",
                   "inventory": {
                                     "0": [
-                                                      "potato seed",
-                                                      5
+                                                      "potato",
+                                                      1
                                     ],
                                     "1": [
-                                                      "onion seed",
-                                                      5
+                                                      null,
+                                                      0
                                     ],
                                     "2": [
                                                       null,
@@ -862,154 +862,27 @@
                                                                         null
                                                       ],
                                                       [
-                                                                        "GM",
+                                                                        "TD",
                                                                         null,
                                                                         null
                                                       ],
                                                       [
-                                                                        "GM",
+                                                                        "TD",
                                                                         null,
                                                                         null
                                                       ],
                                                       [
-                                                                        "GM",
+                                                                        "TD",
                                                                         null,
                                                                         null
                                                       ],
                                                       [
-                                                                        "GM",
+                                                                        "TD",
                                                                         null,
                                                                         null
                                                       ],
                                                       [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "RE",
-                                                                        null,
-                                                                        null
-                                                      ]
-                                    ],
-                                    [
-                                                      [
-                                                                        "LE",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "XX",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "XX",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "XX",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "XX",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "XX",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "XX",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
+                                                                        "TD",
                                                                         null,
                                                                         null
                                                       ],
@@ -1116,154 +989,27 @@
                                                                         null
                                                       ],
                                                       [
-                                                                        "GM",
+                                                                        "TD",
                                                                         null,
                                                                         null
                                                       ],
                                                       [
-                                                                        "GM",
+                                                                        "TD",
                                                                         null,
                                                                         null
                                                       ],
                                                       [
-                                                                        "GM",
+                                                                        "TD",
                                                                         null,
                                                                         null
                                                       ],
                                                       [
-                                                                        "GM",
+                                                                        "TD",
                                                                         null,
                                                                         null
                                                       ],
                                                       [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "RE",
-                                                                        null,
-                                                                        null
-                                                      ]
-                                    ],
-                                    [
-                                                      [
-                                                                        "LE",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "XX",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "XX",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "XX",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "XX",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "XX",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "XX",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
+                                                                        "TD",
                                                                         null,
                                                                         null
                                                       ],
@@ -1370,6 +1116,46 @@
                                                                         null
                                                       ],
                                                       [
+                                                                        "TD",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "TD",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "TD",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "TD",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "TD",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "GM",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "GM",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "GM",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
                                                                         "GM",
                                                                         null,
                                                                         null
@@ -1393,6 +1179,244 @@
                                                                         "GM",
                                                                         null,
                                                                         null
+                                                      ],
+                                                      [
+                                                                        "RE",
+                                                                        null,
+                                                                        null
+                                                      ]
+                                    ],
+                                    [
+                                                      [
+                                                                        "LE",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "GM",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "GM",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "GM",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "GM",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "XX",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "XX",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "XX",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "XX",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "XX",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "XX",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "TD",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "TD",
+                                                                        [
+                                                                                          "P1",
+                                                                                          "P1",
+                                                                                          "P2",
+                                                                                          "P2",
+                                                                                          "P3"
+                                                                        ],
+                                                                        4
+                                                      ],
+                                                      [
+                                                                        "TD",
+                                                                        [
+                                                                                          "P1",
+                                                                                          "P1",
+                                                                                          "P2",
+                                                                                          "P2",
+                                                                                          "P3"
+                                                                        ],
+                                                                        4
+                                                      ],
+                                                      [
+                                                                        "TD",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "TD",
+                                                                        [
+                                                                                          "P1",
+                                                                                          "P1",
+                                                                                          "P2",
+                                                                                          "P2",
+                                                                                          "P3"
+                                                                        ],
+                                                                        4
+                                                      ],
+                                                      [
+                                                                        "GM",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "GM",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "GM",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "GM",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "GM",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "GM",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "GM",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "GM",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "RE",
+                                                                        null,
+                                                                        null
+                                                      ]
+                                    ],
+                                    [
+                                                      [
+                                                                        "LE",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "GM",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "GM",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "GM",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "GM",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "XX",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "XX",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "XX",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "XX",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "XX",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "XX",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "TD",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "TD",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "TD",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "TD",
+                                                                        null,
+                                                                        null
+                                                      ],
+                                                      [
+                                                                        "TD",
+                                                                        [
+                                                                                          "P1",
+                                                                                          "P1",
+                                                                                          "P2",
+                                                                                          "P2",
+                                                                                          "P3"
+                                                                        ],
+                                                                        4
                                                       ],
                                                       [
                                                                         "GM",
@@ -1497,29 +1521,47 @@
                                                                         null
                                                       ],
                                                       [
-                                                                        "GM",
+                                                                        "TD",
                                                                         null,
                                                                         null
                                                       ],
                                                       [
-                                                                        "GM",
+                                                                        "TD",
+                                                                        [
+                                                                                          "P1",
+                                                                                          "P1",
+                                                                                          "P2",
+                                                                                          "P2",
+                                                                                          "P3"
+                                                                        ],
+                                                                        4
+                                                      ],
+                                                      [
+                                                                        "TD",
                                                                         null,
                                                                         null
                                                       ],
                                                       [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
+                                                                        "TD",
+                                                                        [
+                                                                                          "P1",
+                                                                                          "P1",
+                                                                                          "P2",
+                                                                                          "P2",
+                                                                                          "P3"
+                                                                        ],
+                                                                        4
                                                       ],
                                                       [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
-                                                      ],
-                                                      [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
+                                                                        "TD",
+                                                                        [
+                                                                                          "P1",
+                                                                                          "P1",
+                                                                                          "P2",
+                                                                                          "P2",
+                                                                                          "P3"
+                                                                        ],
+                                                                        4
                                                       ],
                                                       [
                                                                         "GM",
@@ -1624,29 +1666,56 @@
                                                                         null
                                                       ],
                                                       [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
+                                                                        "TD",
+                                                                        [
+                                                                                          "O1",
+                                                                                          "O2",
+                                                                                          "O2",
+                                                                                          "O3"
+                                                                        ],
+                                                                        2
                                                       ],
                                                       [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
+                                                                        "TD",
+                                                                        [
+                                                                                          "O1",
+                                                                                          "O2",
+                                                                                          "O2",
+                                                                                          "O3"
+                                                                        ],
+                                                                        2
                                                       ],
                                                       [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
+                                                                        "TD",
+                                                                        [
+                                                                                          "O1",
+                                                                                          "O2",
+                                                                                          "O2",
+                                                                                          "O3"
+                                                                        ],
+                                                                        2
                                                       ],
                                                       [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
+                                                                        "TD",
+                                                                        [
+                                                                                          "P1",
+                                                                                          "P1",
+                                                                                          "P2",
+                                                                                          "P2",
+                                                                                          "P3"
+                                                                        ],
+                                                                        4
                                                       ],
                                                       [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
+                                                                        "TD",
+                                                                        [
+                                                                                          "P1",
+                                                                                          "P1",
+                                                                                          "P2",
+                                                                                          "P2",
+                                                                                          "P3"
+                                                                        ],
+                                                                        4
                                                       ],
                                                       [
                                                                         "GM",
@@ -1751,29 +1820,56 @@
                                                                         null
                                                       ],
                                                       [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
+                                                                        "TD",
+                                                                        [
+                                                                                          "O1",
+                                                                                          "O2",
+                                                                                          "O2",
+                                                                                          "O3"
+                                                                        ],
+                                                                        2
                                                       ],
                                                       [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
+                                                                        "TD",
+                                                                        [
+                                                                                          "O1",
+                                                                                          "O2",
+                                                                                          "O2",
+                                                                                          "O3"
+                                                                        ],
+                                                                        2
                                                       ],
                                                       [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
+                                                                        "TD",
+                                                                        [
+                                                                                          "O1",
+                                                                                          "O2",
+                                                                                          "O2",
+                                                                                          "O3"
+                                                                        ],
+                                                                        2
                                                       ],
                                                       [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
+                                                                        "TD",
+                                                                        [
+                                                                                          "P1",
+                                                                                          "P1",
+                                                                                          "P2",
+                                                                                          "P2",
+                                                                                          "P3"
+                                                                        ],
+                                                                        4
                                                       ],
                                                       [
-                                                                        "GM",
-                                                                        null,
-                                                                        null
+                                                                        "TD",
+                                                                        [
+                                                                                          "P1",
+                                                                                          "P1",
+                                                                                          "P2",
+                                                                                          "P2",
+                                                                                          "P3"
+                                                                        ],
+                                                                        4
                                                       ],
                                                       [
                                                                         "GM",
@@ -2587,8 +2683,8 @@
                   "day": 1,
                   "season": "Spring",
                   "hour": 6,
-                  "minute": 31,
+                  "minute": 28,
                   "weather": 1,
-                  "dayDuration": 900,
-                  "elapsedRealTime": 19878
+                  "dayDuration": 600,
+                  "elapsedRealTime": 7211970.333333334
 }

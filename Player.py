@@ -191,6 +191,8 @@ class Player(Character):
 
         self.flag = False
 
+        self.feetrect = pygame.Rect((x,y+52), (72, 20))
+
         # sets gender depending on which spritesheet is passed in
         if spritesheet == maleMCSpriteSheet:
             self.gender = "Male"
@@ -483,7 +485,7 @@ class dialogueNode():
     def addResponse(self, option, responseText, nextNode):
         self.responses[option] = (responseText, nextNode)
 
-# annabelle's dialogue graph
+# annabelle's dialogue tree
 annabelleRoot = dialogueNode("Hii, is there anything I can help with?")
 annabelleTalk = dialogueNode("Im Annabelle, and I have 8 cats even though im deathly allergic.")
 annabelleBye = dialogueNode("It was nice chatting to you! Bye!!")
